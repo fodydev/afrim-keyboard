@@ -17,29 +17,29 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="english_ime_settings">
     <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.PreferencesSettingsFragment"
+        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.PreferencesSettingsFragment"
         android:title="@string/settings_screen_preferences"
         android:key="screen_preferences" />
     <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.KeyPressSettingsFragment"
+        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.KeyPressSettingsFragment"
         android:title="@string/settings_screen_key_press"
         android:key="screen_key_press" />
     <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.AppearanceSettingsFragment"
+        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.AppearanceSettingsFragment"
         android:title="@string/settings_screen_appearance"
         android:key="screen_appearance" />
     <Preference
         android:title="@string/privacy_policy">
         <intent
             android:action="android.intent.action.VIEW"
-            android:data="https://github.com/rkkr/simple-keyboard/blob/master/PRIVACY.md"
+            android:data="https://github.com/pythonbrad/afrim-keyboard/blob/master/PRIVACY.md"
             />
     </Preference>
     <Preference
         android:title="@string/license">
         <intent
             android:action="android.intent.action.VIEW"
-            android:data="https://github.com/rkkr/simple-keyboard/blob/master/LICENSE"
+            android:data="https://github.com/pythonbrad/afrim-keyboard/blob/master/LICENSE"
             />
     </Preference>
 </PreferenceScreen>

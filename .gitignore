@@ -42,3 +42,6 @@ captures/
 *.jks
 
 .idea
+
+.cxx/
+target/

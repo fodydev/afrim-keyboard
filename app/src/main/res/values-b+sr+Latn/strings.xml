@@ -49,5 +49,5 @@
     <string name="space_swipe">Prevlačenjem preko razmaka pomera se selektor</string>
     <string name="delete_swipe">Brisanje prevlačenjem</string>
     <string name="matching_navbar_color">Koristi boju navigacione trake</string>
-    <string name="setup_message">Simple Keyboard nije omogućena. Kliknite OK da otvorite podešavanja jezika i unosa. Treba da selektujete Simple Keyboard kao vašu podrazumevanu tastaturu da biste je koristili.</string>
+    <string name="setup_message">Afrim Keyboard nije omogućena. Kliknite OK da otvorite podešavanja jezika i unosa. Treba da selektujete Afrim Keyboard kao vašu podrazumevanu tastaturu da biste je koristili.</string>
 </resources>

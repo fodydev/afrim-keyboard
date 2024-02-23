@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     defaultConfig {
-        applicationId "rkr.simplekeyboard.inputmethod"
+        applicationId "com.afrimkeyboard.inputmethod"
         compileSdk 34
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 34
         versionCode 102
         versionName "5.16"
@@ -15,7 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'rkr.simplekeyboard.inputmethod'
+    namespace 'com.afrimkeyboard.inputmethod'
 }
 
 dependencies {

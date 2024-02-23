@@ -23,7 +23,7 @@
         android:title="@string/vibrate_on_keypress"
         android:defaultValue="@bool/config_default_vibration_enabled"
         android:persistent="true" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+    <com.afrimkeyboard.inputmethod.latin.settings.SeekBarDialogPreference
         android:key="pref_vibration_duration_settings"
         android:title="@string/prefs_keypress_vibration_duration_settings"
         android:dependency="vibrate_on"
@@ -33,7 +33,7 @@
         android:title="@string/sound_on_keypress"
         android:defaultValue="@bool/config_default_sound_enabled"
         android:persistent="true" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+    <com.afrimkeyboard.inputmethod.latin.settings.SeekBarDialogPreference
         android:key="pref_keypress_sound_volume"
         android:title="@string/prefs_keypress_sound_volume_settings"
         android:dependency="sound_on"
@@ -43,7 +43,7 @@
         android:title="@string/popup_on_keypress"
         android:defaultValue="@bool/config_default_key_preview_popup"
         android:persistent="true" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+    <com.afrimkeyboard.inputmethod.latin.settings.SeekBarDialogPreference
         android:key="pref_key_longpress_timeout"
         android:title="@string/prefs_key_longpress_timeout_settings"
         latin:minValue="@integer/config_min_longpress_timeout"

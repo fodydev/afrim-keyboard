@@ -20,17 +20,17 @@
     android:key="screen_appearance"
     android:title="@string/settings_screen_appearance">
     <PreferenceScreen
-        android:fragment="rkr.simplekeyboard.inputmethod.latin.settings.ThemeSettingsFragment"
+        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.ThemeSettingsFragment"
         android:key="screen_theme"
         android:title="@string/settings_screen_theme" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.ColorDialogPreference
+    <com.afrimkeyboard.inputmethod.latin.settings.ColorDialogPreference
         android:key="pref_keyboard_color"
         android:title="@string/keyboard_color" />
     <CheckBoxPreference
         android:key="pref_matching_navbar_color"
         android:title="@string/matching_navbar_color"
         android:defaultValue="false" />
-    <rkr.simplekeyboard.inputmethod.latin.settings.SeekBarDialogPreference
+    <com.afrimkeyboard.inputmethod.latin.settings.SeekBarDialogPreference
         android:key="pref_keyboard_height"
         android:title="@string/prefs_keyboard_height_settings"
         latin:minValue="@integer/config_min_keyboar_height"
