@@ -1,0 +1,91 @@
+#![deny(missing_docs)]
+/// Binding of the afrim preprocessor.
+///
+use afrim_preprocessor::Preprocessor as NativePreprocessor;
+use indexmap::IndexMap;
+
+pub struct Preprocessor {
+    native: NativePreprocessor,
+}
+
+impl Preprocessor {
+    /// Initializes the preprocessor.
+    pub fn new(data: IndexMap<String, String>, buffer_size: usize) -> Result<Self, String> {
+        let data = data
+            .iter()
+            .map(|(key, value)| vec![key.as_str(), value.as_str()])
+            .collect();
+        let map = utils::build_map(data);
+
+        Ok(Self {
+            native: NativePreprocessor::new(map, buffer_size),
+        })
+    }
+
+    /// Process the keyboard event.
+    pub fn process_key(&mut self, key: String, state: String) -> Result<(bool, bool), String> {
+        let key_event = utils::parse_event(key, state)?;
+        let status = self.native.process(key_event);
+
+        Ok(status)
+    }
+
+    /// Commits the text.
+    pub fn commit_text(&mut self, text: String) {
+        self.native.commit(&text);
+    }
+
+    /// Returns the next command to be executed.
+    pub fn pop_stack(&mut self) -> String {
+        self.native
+            .pop_stack()
+            .map(utils::parse_command)
+            .unwrap_or(".".to_owned())
+    }
+
+    /// Returns the input from the memory.
+    pub fn get_input(&self) -> String {
+        self.native.get_input()
+    }
+
+    /// Clears the preprocessor commands from the stack.
+    pub fn clear_stack(&mut self) {
+        self.native.clear_stack();
+    }
+}
+
+mod utils {
+    pub use afrim_preprocessor::utils::*;
+    use afrim_preprocessor::{Command, Key, KeyState, KeyboardEvent};
+    use std::str::FromStr;
+
+    /// Deserializes the KeyboardEvent.
+    pub fn parse_event(key: String, state: String) -> Result<KeyboardEvent, String> {
+        let event = KeyboardEvent {
+            key: Key::from_str(&key).map_err(|err| {
+                format!("[preprocessor] Unrecognized key `{key}`.\nCaused by:\n\t{err}.")
+            })?,
+            state: match state.as_str() {
+                "keydown" => KeyState::Down,
+                "keyup" => KeyState::Up,
+                _ => Default::default(),
+            },
+            ..Default::default()
+        };
+
+        Ok(event)
+    }
+
+    /// Converts a preprocessor command to speudo code.
+    pub fn parse_command(command: Command) -> String {
+        match command {
+            Command::CommitText(text) => text,
+            Command::Pause => "!pause".to_string(),
+            Command::Resume => "!resume".to_string(),
+            Command::KeyPress(Key::Backspace) | Command::KeyClick(Key::Backspace) => {
+                "!backspace".to_string()
+            }
+            _ => "".to_string(),
+        }
+    }
+}

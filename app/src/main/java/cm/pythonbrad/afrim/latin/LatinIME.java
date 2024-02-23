@@ -48,6 +48,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import cm.pythonbrad.afrim.R;
+import cm.pythonbrad.afrim.core.Afrim;
 import cm.pythonbrad.afrim.compat.EditorInfoCompatUtils;
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils;
@@ -297,6 +298,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mRichImm.setSubtypeChangeHandler(this);
         KeyboardSwitcher.init(this);
         AudioAndHapticFeedbackManager.init(this);
+        Afrim.init();
+
         super.onCreate();
 
         mHandler.onCreate();
@@ -897,6 +900,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     @Override
     public void onPressKey(final int primaryCode, final int repeatCount,
             final boolean isSinglePointer) {
+        Afrim.processKey(Constants.printableCode(primaryCode), "on_press");
         mKeyboardSwitcher.onPressKey(primaryCode, isSinglePointer, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
         hapticAndAudioFeedback(primaryCode, repeatCount);
