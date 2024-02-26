@@ -14,13 +14,13 @@ public final class Afrim {
     // Native functions implemented in Rust.
     // Singleton.
     private static native boolean nativeUpdateConfig(String filename);
-    private static native int nativeInit();
+    private static native void nativeInit();
     private static native boolean nativeStatus();
     private static native void nativeDrop();
     // Preprocessor.
     private static native boolean[] nativeProcessKey(String key, String state);
     private static native void nativeCommitText(String text);
-    private static native void nativePopStack();
+    private static native String nativePopStack();
     private static native void nativeClear();
     private static native String nativeGetInput();
     // Translator.
@@ -28,8 +28,8 @@ public final class Afrim {
 
     // Native function implemented in Java.
     // Singleton.
-    public static int init() {
-        return nativeInit();
+    public static void init() {
+        nativeInit();
     }
     public static void drop() {
         nativeDrop();
@@ -40,6 +40,9 @@ public final class Afrim {
     // Preprocessor.
     public static boolean[] processKey(String key, String state) {
         return nativeProcessKey(key, state);
+    }
+    public static String popStack() {
+        return nativePopStack();
     }
     // Translator.
     public static String getInput() {

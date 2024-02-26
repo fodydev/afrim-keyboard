@@ -7,7 +7,7 @@ mod android {
     use crate::utils::AndroidLogger;
     use jni::{
         objects::{JClass, JObject, JString},
-        sys::{jboolean, jintArray, jobjectArray, jstring},
+        sys::{jboolean, jintArray, jobjectArray, jstring, jbooleanArray},
         JNIEnv,
     };
 
@@ -84,7 +84,7 @@ mod android {
         _class: JClass,
         key: JString,
         state: JString,
-    ) -> jobjectArray {
+    ) -> jbooleanArray {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
 
         let key = env.get_string(&key).unwrap().into();

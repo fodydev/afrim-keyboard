@@ -905,15 +905,23 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 getCurrentRecapitalizeState());
         hapticAndAudioFeedback(primaryCode, repeatCount);
 
-        boolean[] status = Afrim.processKey(Constants.printableCode(primaryCode), "keydown");
-
-        if (/*hasChanged = */status[0]) {
-            // TODO: update the text input
+        final boolean[] status = Afrim.processKey(Constants.printableCode(primaryCode), "keydown");
+        if (status != null && /*hasChanged = */status[0]) {
+            // TODO: update the text input display
             final String input = Afrim.getInput();
             Log.d(TAG, "Native input got: " + input);
 
+            while (true) {
+                String cmd = Afrim.popStack();
+
+                if (cmd == null) break;
+                // TODO: execute command
+                throw new RuntimeException("unimplemented!");
+            }
+
             if (/*shouldCommit = */status[1]) {
                 // TODO: commit
+                throw new RuntimeException("unimplemented!");
             }
         }
     }
