@@ -1,9 +1,8 @@
 package cm.pythonbrad.afrim.core;
 
-import android.util.Log;
-
-import java.util.Arrays;
-
+/**
+ * Afrim Input method wrapper.
+ */
 public final class Afrim {
     static final String TAG = Afrim.class.getSimpleName();
 
@@ -13,25 +12,37 @@ public final class Afrim {
     } 
 
     // Native functions implemented in Rust.
+    // Singleton.
+    private static native boolean nativeUpdateConfig(String filename);
     private static native int nativeInit();
     private static native boolean nativeStatus();
-    private static native boolean nativeUpdateConfig(String filename);
     private static native void nativeDrop();
-    private static native Boolean[] nativeProcessKey(String key, String state);
+    // Preprocessor.
+    private static native boolean[] nativeProcessKey(String key, String state);
     private static native void nativeCommitText(String text);
     private static native void nativePopStack();
     private static native void nativeClear();
     private static native String nativeGetInput();
+    // Translator.
     private static native String[] nativeTranslate();
 
+    // Native function implemented in Java.
+    // Singleton.
     public static int init() {
         return nativeInit();
     }
-    public static  boolean check() {
+    public static void drop() {
+        nativeDrop();
+    }
+    public static boolean check() {
         return nativeStatus();
     }
-    public static void processKey(String key, String state) {
-        final Boolean[] status = nativeProcessKey(key, state);
-        Log.d("libafrim_jni", "processKey: " + Arrays.toString(status));
+    // Preprocessor.
+    public static boolean[] processKey(String key, String state) {
+        return nativeProcessKey(key, state);
+    }
+    // Translator.
+    public static String getInput() {
+        return nativeGetInput();
     }
 }

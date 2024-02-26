@@ -140,8 +140,22 @@ mod android {
     pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativePopStack(
         env: JNIEnv,
         _class: JClass,
-    ) {
-        todo!()
+    ) -> jstring {
+        let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
+        log.d("Getting the afrim command.");
+
+        let afrim_ptr = Singleton::get_afrim();
+        if let Some(afrim) = (*afrim_ptr).as_mut() {
+            let cmd = afrim.preprocessor.pop_stack();
+            let cmd = env.new_string(&cmd).unwrap();
+            log.i("Afrim command got!");
+
+            cmd.into_raw()
+        } else {
+            log.e("Afrim singleton is not yet configured.");
+
+            JObject::null().into_raw()
+        }
     }
 
     #[no_mangle]

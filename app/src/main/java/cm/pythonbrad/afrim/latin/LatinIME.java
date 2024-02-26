@@ -327,6 +327,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     public void onDestroy() {
         mSettings.onDestroy();
         unregisterReceiver(mRingerModeChangeReceiver);
+        Afrim.drop();
         super.onDestroy();
     }
 
@@ -900,10 +901,21 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     @Override
     public void onPressKey(final int primaryCode, final int repeatCount,
             final boolean isSinglePointer) {
-        Afrim.processKey(Constants.printableCode(primaryCode), "on_press");
         mKeyboardSwitcher.onPressKey(primaryCode, isSinglePointer, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
         hapticAndAudioFeedback(primaryCode, repeatCount);
+
+        boolean[] status = Afrim.processKey(Constants.printableCode(primaryCode), "keydown");
+
+        if (/*hasChanged = */status[0]) {
+            // TODO: update the text input
+            final String input = Afrim.getInput();
+            Log.d(TAG, "Native input got: " + input);
+
+            if (/*shouldCommit = */status[1]) {
+                // TODO: commit
+            }
+        }
     }
 
     // Callback of the {@link KeyboardActionListener}. This is called when a key is released;
@@ -912,6 +924,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     public void onReleaseKey(final int primaryCode, final boolean withSliding) {
         mKeyboardSwitcher.onReleaseKey(primaryCode, withSliding, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
+        Afrim.processKey(Constants.printableCode(primaryCode), "keyup");
     }
 
     // receive ringer mode change.
