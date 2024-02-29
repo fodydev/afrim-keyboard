@@ -28,6 +28,7 @@ import android.inputmethodservice.InputMethodService;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Debug;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.InputType;
@@ -53,6 +54,7 @@ import cm.pythonbrad.afrim.compat.EditorInfoCompatUtils;
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils.InsetsUpdater;
+import cm.pythonbrad.afrim.data.DataManager;
 import cm.pythonbrad.afrim.event.Event;
 import cm.pythonbrad.afrim.event.InputTransaction;
 import cm.pythonbrad.afrim.keyboard.Keyboard;
@@ -298,7 +300,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mRichImm.setSubtypeChangeHandler(this);
         KeyboardSwitcher.init(this);
         AudioAndHapticFeedbackManager.init(this);
+        DataManager.deployAssets(this);
         Afrim.init();
+        Afrim.updateConfig(DataManager.buildPath(new String[]{"nufi", "nufi.toml"}));
 
         super.onCreate();
 
@@ -905,7 +909,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 getCurrentRecapitalizeState());
         hapticAndAudioFeedback(primaryCode, repeatCount);
 
-        final boolean[] status = Afrim.processKey(Constants.printableCode(primaryCode), "keydown");
+        final boolean[] status = Afrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_DOWN);
         if (status != null && /*hasChanged = */status[0]) {
             // TODO: update the text input display
             final String input = Afrim.getInput();
@@ -913,15 +917,20 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
             while (true) {
                 String cmd = Afrim.popStack();
+                Log.d(TAG, "Native cmd got: " + cmd);
+                if (cmd.startsWith("!")) {
+                    // TODO
+                } else if (cmd.startsWith("?")) {
+                    // TODO
+                } else {}
 
-                if (cmd == null) break;
+
+                if (cmd.equals(".")) break;
                 // TODO: execute command
-                throw new RuntimeException("unimplemented!");
             }
 
             if (/*shouldCommit = */status[1]) {
                 // TODO: commit
-                throw new RuntimeException("unimplemented!");
             }
         }
     }
@@ -932,7 +941,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     public void onReleaseKey(final int primaryCode, final boolean withSliding) {
         mKeyboardSwitcher.onReleaseKey(primaryCode, withSliding, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
-        Afrim.processKey(Constants.printableCode(primaryCode), "keyup");
+        Afrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_UP);
     }
 
     // receive ringer mode change.

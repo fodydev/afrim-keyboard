@@ -13,7 +13,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Corrosion)
 
 # Import targets defined in a package or workspace manifest `Cargo.toml` file
-corrosion_import_crate(MANIFEST_PATH afrim_jni/Cargo.toml)
+corrosion_import_crate(
+		MANIFEST_PATH afrim_jni/Cargo.toml
+		# FEATURES inhibit
+)
 
 # In this example the the `Cargo.toml` file passed to `corrosion_import_crate` is assumed to have
 # defined a static (`staticlib`) or shared (`cdylib`) rust library with the name "rust-lib".

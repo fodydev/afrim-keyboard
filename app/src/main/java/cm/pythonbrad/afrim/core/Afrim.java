@@ -37,9 +37,15 @@ public final class Afrim {
     public static boolean check() {
         return nativeStatus();
     }
+    public static boolean updateConfig(String filename) {
+        return nativeUpdateConfig(filename);
+    }
     // Preprocessor.
-    public static boolean[] processKey(String key, String state) {
-        return nativeProcessKey(key, state);
+    public static boolean[] processKey(String key, int state) {
+        String _key = serializeKey(key);
+        String _state = serializeState(state);
+
+        return nativeProcessKey(_key, _state);
     }
     public static String popStack() {
         return nativePopStack();
@@ -47,5 +53,21 @@ public final class Afrim {
     // Translator.
     public static String getInput() {
         return nativeGetInput();
+    }
+    private static String serializeKey(String key) {
+        if (key.length() > 1) {
+            key = key.substring(0, 1).toUpperCase()+key.substring(1);
+        }
+
+        switch (key) {
+            case "Space": return " ";
+            case "Delete": return "Backspace";
+            case "Symbol": return "Shift";
+            default: return key;
+        }
+    }
+    private static String serializeState(int state) {
+        if (state == 0) return "\"Down\"";
+        return "\"Up\"";
     }
 }

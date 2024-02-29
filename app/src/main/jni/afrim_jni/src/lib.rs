@@ -87,14 +87,14 @@ mod android {
     ) -> jbooleanArray {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
 
-        let key = env.get_string(&key).unwrap().into();
-        let state = env.get_string(&state).unwrap().into();
+        let key: String = env.get_string(&key).unwrap().into();
+        let state: String = env.get_string(&state).unwrap().into();
         log.d(&format!("Processing key={key} state={state}."));
 
         let afrim_ptr = Singleton::get_afrim();
 
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            let status = afrim.preprocessor.process_key(key, state);
+            let status = afrim.preprocessor.process_key(&key, &state);
 
             match status {
                 Ok((changed, committed)) => {

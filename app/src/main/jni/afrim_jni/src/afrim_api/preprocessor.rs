@@ -23,7 +23,7 @@ impl Preprocessor {
     }
 
     /// Process the keyboard event.
-    pub fn process_key(&mut self, key: String, state: String) -> Result<(bool, bool), String> {
+    pub fn process_key(&mut self, key: &str, state: &str) -> Result<(bool, bool), String> {
         let key_event = utils::parse_event(key, state)?;
         let status = self.native.process(key_event);
 
@@ -58,18 +58,15 @@ mod utils {
     pub use afrim_preprocessor::utils::*;
     use afrim_preprocessor::{Command, Key, KeyState, KeyboardEvent};
     use std::str::FromStr;
+    use serde_json;
 
     /// Deserializes the KeyboardEvent.
-    pub fn parse_event(key: String, state: String) -> Result<KeyboardEvent, String> {
+    pub fn parse_event(key: &str, state: &str) -> Result<KeyboardEvent, String> {
         let event = KeyboardEvent {
-            key: Key::from_str(&key).map_err(|err| {
+            key: Key::from_str(key).map_err(|err| {
                 format!("[preprocessor] Unrecognized key `{key}`.\nCaused by:\n\t{err}.")
             })?,
-            state: match state.as_str() {
-                "keydown" => KeyState::Down,
-                "keyup" => KeyState::Up,
-                _ => Default::default(),
-            },
+            state: serde_json::from_str(state).map_err(|err| format!("[preprocessor] Unrecognized state `{state}`.\nCaused by:\n\t{err}."))?,
             ..Default::default()
         };
 
@@ -78,14 +75,6 @@ mod utils {
 
     /// Converts a preprocessor command to speudo code.
     pub fn parse_command(command: Command) -> String {
-        match command {
-            Command::CommitText(text) => text,
-            Command::Pause => "!pause".to_string(),
-            Command::Resume => "!resume".to_string(),
-            Command::KeyPress(Key::Backspace) | Command::KeyClick(Key::Backspace) => {
-                "!backspace".to_string()
-            }
-            _ => "".to_string(),
-        }
+        format!("{command:#?}")
     }
 }
