@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     defaultConfig {
-        applicationId "com.afrimkeyboard.inputmethod"
+        applicationId "cm.pythonbrad.afrim"
         compileSdk 34
         minSdkVersion 21
         targetSdkVersion 34
@@ -15,7 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.afrimkeyboard.inputmethod'
+    namespace 'cm.pythonbrad.afrim'
 }
 
 dependencies {

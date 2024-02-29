@@ -3,7 +3,7 @@ Afrim IME for Android
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub release](https://img.shields.io/github/release/pythonbrad/afrim-keyboard.svg)](https://github.com/pythonbrad/afrim-keyboard/releases)
-[![F-Droid release](https://img.shields.io/f-droid/v/com.pythonbrad.afrimkeyboard.svg)](https://f-droid.org/packages/com.pythonbrad.afrimkeyboard)
+[![F-Droid release](https://img.shields.io/f-droid/v/cm.pythonbrad.afrim.svg)](https://f-droid.org/packages/cm.pythonbrad.afrimkeyboard)
 [![Latest build](https://img.shields.io/github/last-commit/pythonbrad/afrim-keyboard.svg)](http://pythonbrad.github.io/afrim-keyboard/)
 
 <img src="images/screenshot-0.png"
@@ -37,7 +37,7 @@ Feature it doesn't have and probably will never have:
 ## Downloads
 
 - Stable Channel <br>
-  [<img alt='Get it on F-Droid' src='https://fdroid.gitlab.io/artwork/badge/get-it-on.png' height='80px'/>](https://f-droid.org/packages/com.pythonbrad.afrim)
+  [<img alt='Get it on F-Droid' src='https://fdroid.gitlab.io/artwork/badge/get-it-on.png' height='80px'/>](https://f-droid.org/packages/cm.pythonbrad.afrim)
 
 - Canary Channel [Download](https://github.com/pythonbrad/afrim-keyboard/actions)
 

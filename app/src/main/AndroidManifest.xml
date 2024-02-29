@@ -26,7 +26,7 @@
         android:supportsRtl="true">
 
         <service
-            android:name="com.afrimkeyboard.inputmethod.latin.LatinIME"
+            android:name="cm.pythonbrad.afrim.latin.LatinIME"
             android:label="@string/english_ime_name"
             android:directBootAware="true"
             android:exported="false"
@@ -41,7 +41,7 @@
         </service>
 
         <activity
-            android:name="com.afrimkeyboard.inputmethod.latin.settings.SettingsActivity"
+            android:name="cm.pythonbrad.afrim.latin.settings.SettingsActivity"
             android:label="@string/english_ime_name"
             android:exported="true"
             android:theme="@style/platformSettingsTheme">
@@ -52,7 +52,7 @@
         </activity>
 
         <receiver
-            android:name="com.afrimkeyboard.inputmethod.latin.SystemBroadcastReceiver"
+            android:name="cm.pythonbrad.afrim.latin.SystemBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.LOCALE_CHANGED" />

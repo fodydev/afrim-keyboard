@@ -17,15 +17,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="english_ime_settings">
     <PreferenceScreen
-        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.PreferencesSettingsFragment"
+        android:fragment="cm.pythonbrad.afrim.latin.settings.PreferencesSettingsFragment"
         android:title="@string/settings_screen_preferences"
         android:key="screen_preferences" />
     <PreferenceScreen
-        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.KeyPressSettingsFragment"
+        android:fragment="cm.pythonbrad.afrim.latin.settings.KeyPressSettingsFragment"
         android:title="@string/settings_screen_key_press"
         android:key="screen_key_press" />
     <PreferenceScreen
-        android:fragment="com.afrimkeyboard.inputmethod.latin.settings.AppearanceSettingsFragment"
+        android:fragment="cm.pythonbrad.afrim.latin.settings.AppearanceSettingsFragment"
         android:title="@string/settings_screen_appearance"
         android:key="screen_appearance" />
     <Preference

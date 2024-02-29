@@ -16,7 +16,7 @@
 #   public *;
 #}
 
--keep class com.afrimkeyboard.inputmethod.R
--keep class com.afrimkeyboard.inputmethod.latin.settings.SettingsFragment
--keep class com.afrimkeyboard.inputmethod.latin.settings.LanguagesSettingsFragment
--keep class com.afrimkeyboard.inputmethod.latin.settings.SingleLanguageSettingsFragment
+-keep class cm.pythonbrad.afrim.R
+-keep class cm.pythonbrad.afrim.latin.settings.SettingsFragment
+-keep class cm.pythonbrad.afrim.latin.settings.LanguagesSettingsFragment
+-keep class cm.pythonbrad.afrim.latin.settings.SingleLanguageSettingsFragment
