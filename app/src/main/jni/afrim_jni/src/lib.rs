@@ -13,7 +13,7 @@ mod android {
 
     // Singleton
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeInit(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeInit(
         env: JNIEnv,
         _class: JClass,
     ) {
@@ -25,7 +25,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeStatus(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeStatus(
         env: JNIEnv,
         _class: JClass,
     ) -> jboolean {
@@ -36,7 +36,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeUpdateConfig(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeUpdateConfig(
         mut env: JNIEnv,
         _class: JClass,
         filename: JString,
@@ -66,7 +66,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeDrop(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeDrop(
         env: JNIEnv,
         _class: JClass,
     ) {
@@ -79,7 +79,7 @@ mod android {
 
     // Preprocessor
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeProcessKey(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeProcessKey(
         mut env: JNIEnv,
         _class: JClass,
         key: JString,
@@ -117,7 +117,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeCommitText(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeCommitText(
         mut env: JNIEnv,
         _class: JClass,
         text: JString,
@@ -137,7 +137,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativePopStack(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativePopStack(
         env: JNIEnv,
         _class: JClass,
     ) -> jstring {
@@ -159,7 +159,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeClear(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeClear(
         env: JNIEnv,
         _class: JClass,
     ) {
@@ -176,7 +176,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeGetInput(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeGetInput(
         env: JNIEnv,
         _class: JClass,
     ) -> jstring {
@@ -199,7 +199,7 @@ mod android {
 
     // Translator
     #[no_mangle]
-    pub unsafe extern "C" fn Java_com_afrimkeyboard_inputmethod_afrim_Afrim_nativeTranslate(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeTranslate(
         env: JNIEnv,
         _class: JClass,
     ) -> jobjectArray {

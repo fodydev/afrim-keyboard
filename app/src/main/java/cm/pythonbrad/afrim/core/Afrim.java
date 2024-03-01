@@ -1,5 +1,11 @@
 package cm.pythonbrad.afrim.core;
 
+import static cm.pythonbrad.afrim.core.Serializer.*;
+
+import android.view.KeyEvent;
+
+import cm.pythonbrad.afrim.latin.common.Constants;
+
 /**
  * Afrim Input method wrapper.
  */
@@ -34,7 +40,7 @@ public final class Afrim {
     public static void drop() {
         nativeDrop();
     }
-    public static boolean check() {
+    public static boolean status() {
         return nativeStatus();
     }
     public static boolean updateConfig(String filename) {
@@ -54,20 +60,5 @@ public final class Afrim {
     public static String getInput() {
         return nativeGetInput();
     }
-    private static String serializeKey(String key) {
-        if (key.length() > 1) {
-            key = key.substring(0, 1).toUpperCase()+key.substring(1);
-        }
 
-        switch (key) {
-            case "Space": return " ";
-            case "Delete": return "Backspace";
-            case "Symbol": return "Shift";
-            default: return key;
-        }
-    }
-    private static String serializeState(int state) {
-        if (state == 0) return "\"Down\"";
-        return "\"Up\"";
-    }
 }

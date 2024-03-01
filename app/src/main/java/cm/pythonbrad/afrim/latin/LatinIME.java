@@ -28,7 +28,6 @@ import android.inputmethodservice.InputMethodService;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Debug;
-import android.os.Environment;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.InputType;
@@ -908,6 +907,14 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mKeyboardSwitcher.onPressKey(primaryCode, isSinglePointer, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
         hapticAndAudioFeedback(primaryCode, repeatCount);
+    }
+
+    // Callback of the {@link KeyboardActionListener}. This is called when a key is released;
+    // press matching call is {@link #onPressKey(int,int,boolean)} above.
+    @Override
+    public void onReleaseKey(final int primaryCode, final boolean withSliding) {
+        mKeyboardSwitcher.onReleaseKey(primaryCode, withSliding, getCurrentAutoCapsState(),
+                getCurrentRecapitalizeState());
 
         final boolean[] status = Afrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_DOWN);
         if (status != null && /*hasChanged = */status[0]) {
@@ -917,31 +924,42 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
             while (true) {
                 String cmd = Afrim.popStack();
-                Log.d(TAG, "Native cmd got: " + cmd);
-                if (cmd.startsWith("!")) {
-                    // TODO
-                } else if (cmd.startsWith("?")) {
-                    // TODO
-                } else {}
-
-
-                if (cmd.equals(".")) break;
-                // TODO: execute command
-            }
-
-            if (/*shouldCommit = */status[1]) {
-                // TODO: commit
+                // TODO: think about deserialize it in java object.
+                switch (cmd.charAt(0)) {
+                    case '-':
+                        // Do nothing!
+                        break;
+                    case '+':
+                        break;
+                    case '!':
+                        // TODO
+                        switch (cmd.substring(1)) {
+                            case "pause":
+                                mInputLogic.mConnection.beginBatchEdit();
+                                break;
+                            case "backspace":
+                                final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
+                                final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
+                                mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
+                                mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
+                                final int diff = selectionEnd - selectionStart;
+                                mInputLogic.mConnection.setSelection(selectionStart-diff, selectionStart-diff+1);
+                                onMoveDeletePointer(1);
+                                // OK
+                                break;
+                            case "resume":
+                                mInputLogic.mConnection.endBatchEdit();
+                                break;
+                        }
+                        break;
+                    case '.':
+                        return;
+                    default:
+                        onTextInput(cmd);
+                        break;
+                }
             }
         }
-    }
-
-    // Callback of the {@link KeyboardActionListener}. This is called when a key is released;
-    // press matching call is {@link #onPressKey(int,int,boolean)} above.
-    @Override
-    public void onReleaseKey(final int primaryCode, final boolean withSliding) {
-        mKeyboardSwitcher.onReleaseKey(primaryCode, withSliding, getCurrentAutoCapsState(),
-                getCurrentRecapitalizeState());
-        Afrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_UP);
     }
 
     // receive ringer mode change.

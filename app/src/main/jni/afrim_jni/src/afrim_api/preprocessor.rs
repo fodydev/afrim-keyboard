@@ -75,6 +75,20 @@ mod utils {
 
     /// Converts a preprocessor command to speudo code.
     pub fn parse_command(command: Command) -> String {
-        format!("{command:#?}")
+        match command {
+            Command::CommitText(text) => text,
+            Command::Pause => "!pause".to_owned(),
+            Command::Resume => "!resume".to_owned(),
+            Command::KeyClick(Key::Backspace) => {
+                "!backspace".to_owned()
+            }
+            Command::KeyPress(Key::Backspace) | Command::KeyClick(Key::Backspace) => {
+                "+backspace".to_owned()
+            }
+            Command::KeyRelease(Key::Backspace) => {
+                "-backspace".to_owned()
+            }
+            _ => ".".to_owned()
+        }
     }
 }
