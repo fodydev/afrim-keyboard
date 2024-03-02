@@ -3,4 +3,4 @@ mod preprocessor;
 mod service;
 mod translator;
 
-pub use crate::afrim_api::service::{Afrim, Singleton};
+pub use service::{Afrim, Singleton};

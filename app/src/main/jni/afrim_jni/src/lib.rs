@@ -7,7 +7,7 @@ mod android {
     use crate::utils::AndroidLogger;
     use jni::{
         objects::{JClass, JObject, JString},
-        sys::{jboolean, jintArray, jobjectArray, jstring, jbooleanArray},
+        sys::{jboolean, jbooleanArray, jintArray, jobjectArray, jstring},
         JNIEnv,
     };
 
@@ -137,7 +137,7 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativePopStack(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativePopQueue(
         env: JNIEnv,
         _class: JClass,
     ) -> jstring {
@@ -146,7 +146,7 @@ mod android {
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            let cmd = afrim.preprocessor.pop_stack();
+            let cmd = afrim.preprocessor.pop_queue();
             let cmd = env.new_string(&cmd).unwrap();
             log.i("Afrim command got!");
 
@@ -168,7 +168,7 @@ mod android {
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            afrim.preprocessor.clear_stack();
+            afrim.preprocessor.clear_queue();
             log.i("Afrim memory cleared!");
         } else {
             log.e("Afrim singleton is not yet configured.");

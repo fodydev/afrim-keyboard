@@ -18,16 +18,6 @@ impl Translator {
         }
     }
 
-    /// Registers a translator from source code.
-    pub fn register(&mut self, name: String, ast: AST) {
-        self.native.register(name, ast);
-    }
-
-    /// Unregisters a translator.
-    pub fn unregister(&mut self, name: &str) {
-        self.native.unregister(name);
-    }
-
     /// Generates predicates based on the input.
     pub fn translate(&self, input: &str) -> Vec<Vec<String>> {
         self.native

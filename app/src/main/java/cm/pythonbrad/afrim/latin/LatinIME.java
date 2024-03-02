@@ -924,7 +924,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             Log.d(TAG, "Native input got: " + input);
 
             while (true) {
-                Command cmd = Afrim.popStack();
+                Command cmd = Afrim.getCommand();
                 Log.d(TAG, "onReleaseKey: "+cmd.getCode());
                 switch (cmd.getCode()) {
                     case Command.PAUSE:

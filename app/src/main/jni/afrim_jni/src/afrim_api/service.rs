@@ -1,8 +1,8 @@
 #![deny(missing_docs)]
 /// Binding of the afrim api.
 ///
-use crate::afrim_api::preprocessor::Preprocessor;
-use crate::afrim_api::translator::Translator;
+use super::preprocessor::Preprocessor;
+use super::translator::Translator;
 use afrim_config::Config;
 use once_cell::sync::Lazy;
 use std::path::Path;
@@ -30,15 +30,9 @@ impl Afrim {
             .unwrap_or(64);
         let data = config.extract_data();
         let translation = config.extract_translation();
-        let translators = config
-            .extract_translators()
-            .map_err(|err| err.to_string())?;
 
         let preprocessor = Preprocessor::new(data, buffer_size)?;
         let mut translator = Translator::new(translation, auto_commit);
-        translators
-            .into_iter()
-            .for_each(|(name, code)| translator.register(name, code));
 
         Ok(Self {
             preprocessor,

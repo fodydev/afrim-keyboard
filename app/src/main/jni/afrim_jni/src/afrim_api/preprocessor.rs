@@ -18,7 +18,7 @@ impl Preprocessor {
         let map = utils::build_map(data);
 
         Ok(Self {
-            native: NativePreprocessor::new(map, buffer_size),
+            native: NativePreprocessor::new(map.into(), buffer_size),
         })
     }
 
@@ -36,11 +36,11 @@ impl Preprocessor {
     }
 
     /// Returns the next command to be executed.
-    pub fn pop_stack(&mut self) -> String {
+    pub fn pop_queue(&mut self) -> String {
         self.native
-            .pop_stack()
+            .pop_queue()
             .map(utils::parse_command)
-            .unwrap_or(".".to_owned())
+            .unwrap_or("\"NOP\"".to_owned())
     }
 
     /// Returns the input from the memory.
@@ -49,16 +49,16 @@ impl Preprocessor {
     }
 
     /// Clears the preprocessor commands from the stack.
-    pub fn clear_stack(&mut self) {
-        self.native.clear_stack();
+    pub fn clear_queue(&mut self) {
+        self.native.clear_queue();
     }
 }
 
 mod utils {
     pub use afrim_preprocessor::utils::*;
-    use afrim_preprocessor::{Command, Key, KeyState, KeyboardEvent};
+    use afrim_preprocessor::{Command, Key, KeyboardEvent};
+    use serde_json::{self};
     use std::str::FromStr;
-    use serde_json;
 
     /// Deserializes the KeyboardEvent.
     pub fn parse_event(key: &str, state: &str) -> Result<KeyboardEvent, String> {
@@ -66,7 +66,9 @@ mod utils {
             key: Key::from_str(key).map_err(|err| {
                 format!("[preprocessor] Unrecognized key `{key}`.\nCaused by:\n\t{err}.")
             })?,
-            state: serde_json::from_str(state).map_err(|err| format!("[preprocessor] Unrecognized state `{state}`.\nCaused by:\n\t{err}."))?,
+            state: serde_json::from_str(state).map_err(|err| {
+                format!("[preprocessor] Unrecognized state `{state}`.\nCaused by:\n\t{err}.")
+            })?,
             ..Default::default()
         };
 
@@ -75,20 +77,6 @@ mod utils {
 
     /// Converts a preprocessor command to speudo code.
     pub fn parse_command(command: Command) -> String {
-        match command {
-            Command::CommitText(text) => text,
-            Command::Pause => "!pause".to_owned(),
-            Command::Resume => "!resume".to_owned(),
-            Command::KeyClick(Key::Backspace) => {
-                "!backspace".to_owned()
-            }
-            Command::KeyPress(Key::Backspace) | Command::KeyClick(Key::Backspace) => {
-                "+backspace".to_owned()
-            }
-            Command::KeyRelease(Key::Backspace) => {
-                "-backspace".to_owned()
-            }
-            _ => ".".to_owned()
-        }
+        serde_json::to_string(&command).unwrap()
     }
 }

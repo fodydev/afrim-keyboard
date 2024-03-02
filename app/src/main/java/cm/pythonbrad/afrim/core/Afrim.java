@@ -20,7 +20,7 @@ public final class Afrim {
     // Preprocessor.
     private static native boolean[] nativeProcessKey(String key, String state);
     private static native void nativeCommitText(String text);
-    private static native String nativePopStack();
+    private static native String nativePopQueue();
     private static native void nativeClear();
     private static native String nativeGetInput();
     // Translator.
@@ -47,8 +47,8 @@ public final class Afrim {
 
         return nativeProcessKey(_key, _state);
     }
-    public static Command popStack() {
-        final String cmd = nativePopStack();
+    public static Command getCommand() {
+        final String cmd = nativePopQueue();
         return Deserializer.fromCommand(cmd);
     }
     // Translator.

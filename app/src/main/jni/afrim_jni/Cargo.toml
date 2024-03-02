@@ -14,9 +14,9 @@ default = []
 inhibit = ["afrim-preprocessor/inhibit"]
 
 [dependencies]
-afrim-config = "0.4.3"
-afrim-preprocessor = { version = "0.5.1", default-features = false }
-afrim-translator = "0.1.3"
+afrim-config = { version = "0.4.3", git = "https://github.com/pythonbrad/afrim" }
+afrim-preprocessor = { version = "0.5.1", default-features = false, git = "https://github.com/pythonbrad/afrim", features = ["serde"]  }
+afrim-translator = { version = "0.1.3", git = "https://github.com/pythonbrad/afrim", features = ["serde"] }
 indexmap = "2.2.3"
 jni = "0.21.1"
 once_cell = "1.19.0"
