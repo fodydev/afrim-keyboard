@@ -53,6 +53,7 @@ import cm.pythonbrad.afrim.compat.EditorInfoCompatUtils;
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils.InsetsUpdater;
+import cm.pythonbrad.afrim.core.Command;
 import cm.pythonbrad.afrim.data.DataManager;
 import cm.pythonbrad.afrim.event.Event;
 import cm.pythonbrad.afrim.event.InputTransaction;
@@ -923,39 +924,30 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             Log.d(TAG, "Native input got: " + input);
 
             while (true) {
-                String cmd = Afrim.popStack();
-                // TODO: think about deserialize it in java object.
-                switch (cmd.charAt(0)) {
-                    case '-':
-                        // Do nothing!
+                Command cmd = Afrim.popStack();
+                Log.d(TAG, "onReleaseKey: "+cmd.getCode());
+                switch (cmd.getCode()) {
+                    case Command.PAUSE:
+                        mInputLogic.mConnection.beginBatchEdit();
                         break;
-                    case '+':
+                    case Command.DELETE:
+                        final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
+                        final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
+                        mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
+                        mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
+                        final int diff = selectionEnd - selectionStart;
+                        mInputLogic.mConnection.setSelection(selectionStart-diff, selectionStart-diff+1);
+                        onMoveDeletePointer(1);
                         break;
-                    case '!':
-                        // TODO
-                        switch (cmd.substring(1)) {
-                            case "pause":
-                                mInputLogic.mConnection.beginBatchEdit();
-                                break;
-                            case "backspace":
-                                final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
-                                final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
-                                mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
-                                mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
-                                final int diff = selectionEnd - selectionStart;
-                                mInputLogic.mConnection.setSelection(selectionStart-diff, selectionStart-diff+1);
-                                onMoveDeletePointer(1);
-                                // OK
-                                break;
-                            case "resume":
-                                mInputLogic.mConnection.endBatchEdit();
-                                break;
-                        }
+                    case Command.RESUME:
+                        mInputLogic.mConnection.endBatchEdit();
                         break;
-                    case '.':
+                    case Command.UNKNOWN:
+                        break;
+                    case Command.NOP:
                         return;
-                    default:
-                        onTextInput(cmd);
+                    case Command.COMMIT:
+                        onTextInput(cmd.getData());
                         break;
                 }
             }

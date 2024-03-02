@@ -1,8 +1,7 @@
 package cm.pythonbrad.afrim.core;
 
-// TODO: Finalize the serializer.
 public class Serializer {
-    public static String serializeKey(String key) {
+    public static String keyToString(String key) {
         if (key.length() > 1) {
             key = key.substring(0, 1).toUpperCase()+key.substring(1);
         }
@@ -14,7 +13,7 @@ public class Serializer {
             default: return key;
         }
     }
-    public static String serializeState(int state) {
+    public static String stateToString(int state) {
         if (state == 0) return "\"Down\"";
         return "\"Up\"";
     }

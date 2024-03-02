@@ -1,11 +1,5 @@
 package cm.pythonbrad.afrim.core;
 
-import static cm.pythonbrad.afrim.core.Serializer.*;
-
-import android.view.KeyEvent;
-
-import cm.pythonbrad.afrim.latin.common.Constants;
-
 /**
  * Afrim Input method wrapper.
  */
@@ -48,13 +42,14 @@ public final class Afrim {
     }
     // Preprocessor.
     public static boolean[] processKey(String key, int state) {
-        String _key = serializeKey(key);
-        String _state = serializeState(state);
+        String _key = Serializer.keyToString(key);
+        String _state = Serializer.stateToString(state);
 
         return nativeProcessKey(_key, _state);
     }
-    public static String popStack() {
-        return nativePopStack();
+    public static Command popStack() {
+        final String cmd = nativePopStack();
+        return Deserializer.fromCommand(cmd);
     }
     // Translator.
     public static String getInput() {
