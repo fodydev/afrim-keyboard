@@ -6,6 +6,7 @@ public class Command {
     public static final int RESUME = 2;
     public static final int DELETE = 3;
     public static final int COMMIT = 4;
+    public static final int CLEAN_DELETE = 5;
     public static final int UNKNOWN = -1;
     private final int code;
     private final String data;

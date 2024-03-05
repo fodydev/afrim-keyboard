@@ -38,6 +38,12 @@ public final class SubtypeLocaleUtils {
     }
 
     private static final String LOCALE_AFRIKAANS = "af";
+    // Based on https://www.loc.gov/standards/iso639-2/php/code_list.php
+    private static final String LOCALE_AFRIM = "afrim";
+    private static final String LOCALE_AFRIM_AMHARIC = "am_ET_afrim";
+    private static final String LOCALE_AFRIM_CLAFRICA = "clafrica_CM_afrim";
+    private static final String LOCALE_AFRIM_GEEZ = "gez_ET_afrim";
+    private static final String LOCALE_AFRIM_NUFI = "fmp_CM_afrim";
     private static final String LOCALE_ARABIC = "ar";
     private static final String LOCALE_AZERBAIJANI_AZERBAIJAN = "az_AZ";
     private static final String LOCALE_BELARUSIAN_BELARUS = "be_BY";
@@ -120,6 +126,11 @@ public final class SubtypeLocaleUtils {
             LOCALE_ENGLISH_UNITED_STATES,
             LOCALE_ENGLISH_GREAT_BRITAIN,
             LOCALE_AFRIKAANS,
+            LOCALE_AFRIM,
+            LOCALE_AFRIM_AMHARIC,
+            LOCALE_AFRIM_CLAFRICA,
+            LOCALE_AFRIM_GEEZ,
+            LOCALE_AFRIM_NUFI,
             LOCALE_ARABIC,
             LOCALE_AZERBAIJANI_AZERBAIJAN,
             LOCALE_BELARUSIAN_BELARUS,
@@ -366,6 +377,11 @@ public final class SubtypeLocaleUtils {
             // considered the default.
             switch (mLocale) {
                 case LOCALE_AFRIKAANS:
+                case LOCALE_AFRIM:
+                case LOCALE_AFRIM_AMHARIC:
+                case LOCALE_AFRIM_CLAFRICA:
+                case LOCALE_AFRIM_GEEZ:
+                case LOCALE_AFRIM_NUFI:
                 case LOCALE_AZERBAIJANI_AZERBAIJAN:
                 case LOCALE_ENGLISH_INDIA:
                 case LOCALE_ENGLISH_GREAT_BRITAIN:

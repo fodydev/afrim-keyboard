@@ -42,8 +42,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -301,8 +303,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         KeyboardSwitcher.init(this);
         AudioAndHapticFeedbackManager.init(this);
         DataManager.deployAssets(this);
+
+        // Initialize the afrim instance.
         Afrim.init();
-        Afrim.updateConfig(DataManager.buildPath(new String[]{"nufi", "nufi.toml"}));
 
         super.onCreate();
 
@@ -325,6 +328,25 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mSettings.loadSettings(inputAttributes);
         final SettingsValues currentSettingsValues = mSettings.getCurrent();
         AudioAndHapticFeedbackManager.getInstance().onSettingsChanged(currentSettingsValues);
+
+        // Whether the afrim can operate.
+        final boolean canOperate = !inputAttributes.mIsPasswordField;
+        Afrim.setState(canOperate);
+
+        // Update the keyboard language.
+        if (!mLocale.getVariant().equals("afrim") && !mLocale.getLanguage().equals("afrim")) {
+            return;
+        }
+        final String lang = mLocale.getLanguage();
+        final String configFileName = DataManager.buildPath(new String[]{lang, lang+".toml"});
+
+        File configFile = new File(configFileName);
+        if (!configFile.exists()) {
+            Log.e(TAG, "loadSettings: Config file `"+configFileName+"` not found!");
+            mRichImm.setCurrentSubtype(Locale.getDefault());
+            return;
+        }
+        Afrim.updateConfig(configFileName);
     }
 
     @Override
@@ -404,6 +426,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
     void onStartInputInternal(final EditorInfo editorInfo, final boolean restarting) {
         super.onStartInput(editorInfo, restarting);
+
+        // We clear the afrim memory.
+        Afrim.clear();
 
         // If the primary hint language does not match the current subtype language, then try
         // to switch to the primary hint language.
@@ -921,16 +946,25 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         if (status != null && /*hasChanged = */status[0]) {
             // TODO: update the text input display
             final String input = Afrim.getInput();
+            final String[] suggestions = Afrim.getSuggestion();
             Log.d(TAG, "Native input got: " + input);
+            Log.d(TAG, "Suggestions: " + Arrays.toString(suggestions));
+
+            // Afrim should work only on afrim layout.
+            // It will permit to disable/enable the afrim in switching between layout.
+            if (!Afrim.check() || !Afrim.getState()) {
+                return;
+            }
 
             while (true) {
                 Command cmd = Afrim.getCommand();
-                Log.d(TAG, "onReleaseKey: "+cmd.getCode());
+                Log.d(TAG, "onCommand: "+cmd.getCode());
                 switch (cmd.getCode()) {
                     case Command.PAUSE:
                         mInputLogic.mConnection.beginBatchEdit();
                         break;
                     case Command.DELETE:
+                        // TODO: refactor handle_backspace
                         final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
                         final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
                         mInputLogic.mConnection.setSelection(selectionStart, selectionStart);

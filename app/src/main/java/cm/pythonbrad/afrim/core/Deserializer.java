@@ -12,6 +12,8 @@ public class Deserializer {
                 return new Command(Command.RESUME);
             case "\"Delete\"":
                 return new Command(Command.DELETE);
+            case "\"CleanDelete\"":
+                return new Command(Command.CLEAN_DELETE);
             case "\"NOP\"":
                 return new Command((Command.NOP));
             default:

@@ -25,12 +25,12 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeStatus(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeCheck(
         env: JNIEnv,
         _class: JClass,
     ) -> jboolean {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
-        log.d("Getting the afrim singleton status.");
+        log.d("Checking the presence of the afrim instance...");
 
         (*Singleton::get_afrim()).is_some().into()
     }
@@ -203,6 +203,21 @@ mod android {
         env: JNIEnv,
         _class: JClass,
     ) -> jobjectArray {
-        todo!()
+        let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
+        log.d("Getting of the afrim suggestions!");
+
+        let afrim_ptr = Singleton::get_afrim();
+        if let Some(afrim) = (*afrim_ptr).as_mut() {
+            let input = afrim.preprocessor.get_input();
+            let predicates = afrim.translator.translate(&input);
+            log.i("Afrim input suggestions got!");
+
+            // TODO: implement it
+            JObject::null().into_raw()
+        } else {
+            log.e("Afrim singleton is not yet configured.");
+
+            JObject::null().into_raw()
+        }
     }
 }

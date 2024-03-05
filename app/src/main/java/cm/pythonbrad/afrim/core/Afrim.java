@@ -4,7 +4,9 @@ package cm.pythonbrad.afrim.core;
  * Afrim Input method wrapper.
  */
 public final class Afrim {
-    static final String TAG = Afrim.class.getSimpleName();
+    private static final String TAG = Afrim.class.getSimpleName();
+    private static String currentConfigFile = "";
+    private static boolean state;
 
     // Load the native library "libafrim_jni.so".
     static {
@@ -15,7 +17,7 @@ public final class Afrim {
     // Singleton.
     private static native boolean nativeUpdateConfig(String filename);
     private static native void nativeInit();
-    private static native boolean nativeStatus();
+    private static native boolean nativeCheck();
     private static native void nativeDrop();
     // Preprocessor.
     private static native boolean[] nativeProcessKey(String key, String state);
@@ -34,13 +36,23 @@ public final class Afrim {
     public static void drop() {
         nativeDrop();
     }
-    public static boolean status() {
-        return nativeStatus();
+    public static boolean check() {
+        return nativeCheck();
     }
-    public static boolean updateConfig(String filename) {
-        return nativeUpdateConfig(filename);
+    public static boolean updateConfig(String configFile) {
+        if (currentConfigFile.equals(configFile)) {
+            return false;
+        }
+
+        currentConfigFile = configFile;
+        return nativeUpdateConfig(configFile);
     }
     // Preprocessor.
+    public static void clear() {
+        nativeClear();
+        // Currently, the afrim don't clean it internally.
+        if (check()) while (getCommand().getCode() != Command.NOP);
+    }
     public static boolean[] processKey(String key, int state) {
         String _key = Serializer.keyToString(key);
         String _state = Serializer.stateToString(state);
@@ -51,9 +63,18 @@ public final class Afrim {
         final String cmd = nativePopQueue();
         return Deserializer.fromCommand(cmd);
     }
-    // Translator.
     public static String getInput() {
         return nativeGetInput();
     }
-
+    // Translator.
+    public static String[] getSuggestion() {
+        return nativeTranslate();
+    }
+    // Custom
+    public static void setState(boolean value) {
+        state = value;
+    }
+    public static boolean getState() {
+        return state;
+    }
 }
