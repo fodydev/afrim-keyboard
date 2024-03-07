@@ -28,7 +28,12 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
+
+import com.hjq.toast.Toaster;
+import com.hjq.toast.style.WhiteToastStyle;
+
 import cm.pythonbrad.afrim.R;
+import cm.pythonbrad.afrim.data.DataManager;
 import cm.pythonbrad.afrim.latin.utils.FragmentUtils;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -50,13 +55,12 @@ public class SettingsActivity extends PreferenceActivity {
             final Context context = this;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.setup_message);
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                    dialog.dismiss();
-                }
+            builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                Intent intent = new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+                dialog.dismiss();
             });
             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

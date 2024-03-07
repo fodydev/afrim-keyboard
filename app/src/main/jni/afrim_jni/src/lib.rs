@@ -30,7 +30,7 @@ mod android {
         _class: JClass,
     ) -> jboolean {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
-        log.d("Checking the presence of the afrim instance...");
+        log.d("Checking the presence of the afrim singleton...");
 
         (*Singleton::get_afrim()).is_some().into()
     }
@@ -110,7 +110,7 @@ mod android {
                 }
             }
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.e("Afrim singleton is not yet configured.");
         };
 
         JObject::null().into_raw()
@@ -200,7 +200,7 @@ mod android {
     // Translator
     #[no_mangle]
     pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeTranslate(
-        env: JNIEnv,
+        mut env: JNIEnv,
         _class: JClass,
     ) -> jobjectArray {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
@@ -212,8 +212,23 @@ mod android {
             let predicates = afrim.translator.translate(&input);
             log.i("Afrim input suggestions got!");
 
-            // TODO: implement it
-            JObject::null().into_raw()
+            let class = env.find_class("android/util/Array").unwrap();
+            let length = predicates.len() as i32;
+            let array = env.new_object_array(length, &class, JObject::null()).unwrap();
+
+            predicates.iter().enumerate().for_each(|(id, predicate)| {
+                let length = predicate.len() as i32;
+                let subarray = env.new_object_array(length, &class, &JObject::null()).unwrap();
+
+                predicate.iter().enumerate().for_each(|(id, data)| {
+                    let data = env.new_string(&data).unwrap();
+
+                    env.set_object_array_element(&subarray, id as i32, &data).unwrap();
+                });
+                env.set_object_array_element(&array, id as i32, &subarray).unwrap();
+            });
+
+            array.into_raw()
         } else {
             log.e("Afrim singleton is not yet configured.");
 

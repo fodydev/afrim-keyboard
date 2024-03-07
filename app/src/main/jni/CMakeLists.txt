@@ -19,7 +19,7 @@ corrosion_import_crate(
 		# TODO: Removed it.
 		# Follows the make profile by default.
 		# I enable it for test purpose
-		PROFILE release
+		# PROFILE release
 )
 
 # In this example the the `Cargo.toml` file passed to `corrosion_import_crate` is assumed to have

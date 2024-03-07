@@ -7,11 +7,28 @@ public final class Afrim {
     private static final String TAG = Afrim.class.getSimpleName();
     private static String currentConfigFile = "";
     private static boolean state;
+    private static final Afrim sInstance = new Afrim();
 
     // Load the native library "libafrim_jni.so".
     static {
         System.loadLibrary("afrim_jni");
-    } 
+    }
+
+    private Afrim() {
+        // Intentional empty constructor for singleton.
+    }
+
+    public static void init() {
+        sInstance.initInternal();
+    }
+
+    private void initInternal() {
+        nativeInit();
+    }
+
+    public static Afrim getInstance() {
+        return sInstance;
+    }
 
     // Native functions implemented in Rust.
     // Singleton.
@@ -30,16 +47,13 @@ public final class Afrim {
 
     // Native function implemented in Java.
     // Singleton.
-    public static void init() {
-        nativeInit();
-    }
-    public static void drop() {
+    public void drop() {
         nativeDrop();
     }
-    public static boolean check() {
+    public boolean check() {
         return nativeCheck();
     }
-    public static boolean updateConfig(String configFile) {
+    public boolean updateConfig(String configFile) {
         if (currentConfigFile.equals(configFile)) {
             return false;
         }
@@ -48,33 +62,33 @@ public final class Afrim {
         return nativeUpdateConfig(configFile);
     }
     // Preprocessor.
-    public static void clear() {
+    public void clear() {
         nativeClear();
         // Currently, the afrim don't clean it internally.
         if (check()) while (getCommand().getCode() != Command.NOP);
     }
-    public static boolean[] processKey(String key, int state) {
+    public boolean[] processKey(String key, int state) {
         String _key = Serializer.keyToString(key);
         String _state = Serializer.stateToString(state);
 
         return nativeProcessKey(_key, _state);
     }
-    public static Command getCommand() {
+    public Command getCommand() {
         final String cmd = nativePopQueue();
         return Deserializer.fromCommand(cmd);
     }
-    public static String getInput() {
+    public String getInput() {
         return nativeGetInput();
     }
     // Translator.
-    public static String[] getSuggestion() {
+    public String[] getSuggestion() {
         return nativeTranslate();
     }
     // Custom
-    public static void setState(boolean value) {
+    public void setState(boolean value) {
         state = value;
     }
-    public static boolean getState() {
+    public boolean getState() {
         return state;
     }
 }

@@ -1,1 +1,8 @@
 include ':app'
+
+dependencyResolutionManagement {
+    repositories {
+        // JitPack remote repository：https://jitpack.io
+        maven { url 'https://jitpack.io' }
+    }
+}

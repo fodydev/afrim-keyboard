@@ -1,33 +1,85 @@
 package cm.pythonbrad.afrim.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.hjq.permissions.OnPermissionCallback;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
+import com.hjq.toast.Toaster;
+
 import java.io.*;
+import java.util.List;
+
+import cm.pythonbrad.afrim.R;
 
 public class DataManager {
     final static String TAG = DataManager.class.getSimpleName();
     final static String sharedDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath();
-    Context context;
     final static String dataFolder = "afrim-data";
     final static String sharedDataDir = addTrailingSlash(sharedDir) + dataFolder;
-    DataManager(Context context) {
-        this.context = context;
+    private static final DataManager sInstance = new DataManager();
+
+    private DataManager() {
+        // Intentional empty constructor for singleton.
     }
 
-    public static void deployAssets(Context context) {
-        final DataManager dataManager = (new DataManager(context));
+    public static void init(final Context context) {
+        sInstance.initInternal(context);
+    }
 
+    private void initInternal(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            Toaster.show(R.string.android_11_storage_permission_hint);
+        }
+
+        XXPermissions.with((Activity) context)
+                // Request multiple permission
+                .permission(Permission.MANAGE_EXTERNAL_STORAGE)
+                // Set permission request interceptor (local setting)
+                //.interceptor(new PermissionInterceptor())
+                // Setting does not trigger error detection mechanism (local setting)
+                //.unchecked()
+                .request(new OnPermissionCallback() {
+
+                    @Override
+                    public void onGranted(@NonNull List<String> permissions, boolean allGranted) {
+                        if (!allGranted) {
+                            Toaster.show(R.string.external_storage_permission_partially_granted);
+                        } else {
+                            Toaster.show(R.string.external_storage_permission_granted);
+                        }
+                        sInstance.deployAssets(context);
+                    }
+
+                    @Override
+                    public void onDenied(@NonNull List<String> permissions, boolean doNotAskAgain) {
+                        if (doNotAskAgain) {
+                            Toaster.show(R.string.external_storage_permission_permanently_denied);
+                            // If it is permanently denied, jump to the application permission system settings page
+                            XXPermissions.startPermissionActivity(context, permissions);
+                        } else {
+                            Toaster.show(R.string.external_storage_permission_denied);
+                        }
+                    }
+                });
+    }
+
+    private void deployAssets(Context context) {
         try {
-            dataManager.copyDirorfileFromAssetManager(dataFolder, dataFolder);
+            copyDirorfileFromAssetManager(context, dataFolder, dataFolder);
         } catch (IOException ex) {
             Log.e(TAG, "I/O Exception", ex);
         }
     }
 
-    public void copyDirorfileFromAssetManager(String arg_assetDir, String arg_destinationDir) throws IOException
+    private void copyDirorfileFromAssetManager(Context context, String arg_assetDir, String arg_destinationDir) throws IOException
     {
         String dest_dir_path = sharedDir + addLeadingSlash(arg_destinationDir);
         File dest_dir = new File(dest_dir_path);
@@ -35,7 +87,7 @@ public class DataManager {
         if (dest_dir.exists()) {
             Log.i(TAG, "Assets deployment skipped!");
             return;
-        };
+        }
         Log.d(TAG, "Starts assets deployment...");
         createDir(dest_dir);
         AssetManager asset_manager = context.getAssets();
@@ -48,16 +100,16 @@ public class DataManager {
             if (sub_files.length == 0) {
                 // It is a file
                 String dest_file_path = addTrailingSlash(dest_dir_path) + file;
-                copyAssetFile(abs_asset_file_path, dest_file_path);
+                copyAssetFile(context, abs_asset_file_path, dest_file_path);
             } else {
                 // It is a sub directory
-                copyDirorfileFromAssetManager(abs_asset_file_path, addTrailingSlash(arg_destinationDir) + file);
+                copyDirorfileFromAssetManager(context, abs_asset_file_path, addTrailingSlash(arg_destinationDir) + file);
             }
         }
 
         Log.i(TAG, "Assets deployed!");
     }
-    public void copyAssetFile(String assetFilePath, String destinationFilePath) throws IOException
+    private void copyAssetFile(Context context, String assetFilePath, String destinationFilePath) throws IOException
     {
         Log.d(TAG, "copyAssetFile from " + assetFilePath + " to " + destinationFilePath);
         InputStream in = context.getAssets().open(assetFilePath);
@@ -79,7 +131,7 @@ public class DataManager {
         }
         return path;
     }
-    static String addLeadingSlash(String path)
+    private String addLeadingSlash(String path)
     {
         if (path.charAt(0) != '/')
         {
@@ -87,7 +139,7 @@ public class DataManager {
         }
         return path;
     }
-    static void createDir(File dir) throws IOException
+    private void createDir(File dir) throws IOException
     {
         Log.d(TAG, "createDir " + dir.getPath());
         if (dir.exists())

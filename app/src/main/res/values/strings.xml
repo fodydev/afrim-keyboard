@@ -119,4 +119,9 @@
     <string name="change_keyboard">Change keyboard</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="license">License</string>
+    <string name="external_storage_permission_permanently_denied">Authorization denied permanently, please grant storage permissions manually</string>
+    <string name="external_storage_permission_granted">Failed to get storage permissions</string>
+    <string name="external_storage_permission_partially_granted">Some permissions were obtained successfully, but some permissions were not granted normally</string>
+    <string name="external_storage_permission_denied">Failed to get storage permissions</string>
+    <string name="android_11_storage_permission_hint">The current version is not Android 11 and above, it will automatically change to the old version of the request method</string>
 </resources>
