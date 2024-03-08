@@ -31,6 +31,7 @@ impl<'a> AndroidLogger<'a> {
                 level,
                 "(Ljava/lang/String;Ljava/lang/String;)I",
                 &[
+                    // TODO: It's already an object
                     JValue::Object(&JObject::from_raw(self.tag.as_raw())),
                     JValue::Object(&JObject::from(self.env.new_string(message).unwrap())),
                 ],

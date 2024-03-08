@@ -21,6 +21,8 @@ import cm.pythonbrad.afrim.R;
 
 public class DataManager {
     final static String TAG = DataManager.class.getSimpleName();
+    // In using public directory, even if we don't have external storage access
+    // we will still able to deploy the data.
     final static String sharedDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath();
     final static String dataFolder = "afrim-data";
     final static String sharedDataDir = addTrailingSlash(sharedDir) + dataFolder;
@@ -53,7 +55,7 @@ public class DataManager {
                         if (!allGranted) {
                             Toaster.show(R.string.external_storage_permission_partially_granted);
                         } else {
-                            Toaster.show(R.string.external_storage_permission_granted);
+                            Toaster.showShort(R.string.external_storage_permission_granted);
                         }
                         sInstance.deployAssets(context);
                     }
@@ -65,17 +67,27 @@ public class DataManager {
                             // If it is permanently denied, jump to the application permission system settings page
                             XXPermissions.startPermissionActivity(context, permissions);
                         } else {
-                            Toaster.show(R.string.external_storage_permission_denied);
+                            Toaster.showShort(R.string.external_storage_permission_denied);
                         }
                     }
                 });
     }
 
-    private void deployAssets(Context context) {
+    public static DataManager getInstance() {
+        return sInstance;
+    }
+
+    public void deployAssets(Context context) {
         try {
+            // We don't want overwrite if the data inside the afrim dataset folder.
+            // Note that the user can customize it.
+            if (new File(sharedDataDir).exists()) return;
+            Toaster.showShort(R.string.dataset_deploy_progress);
             copyDirorfileFromAssetManager(context, dataFolder, dataFolder);
+            Toaster.showShort(R.string.dataset_deploy_success);
         } catch (IOException ex) {
             Log.e(TAG, "I/O Exception", ex);
+            Toaster.showShort(R.string.dataset_deploy_failed);
         }
     }
 

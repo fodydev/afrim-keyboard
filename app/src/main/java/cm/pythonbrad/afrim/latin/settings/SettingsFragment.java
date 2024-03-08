@@ -17,6 +17,7 @@
 package cm.pythonbrad.afrim.latin.settings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 
@@ -30,7 +31,6 @@ public final class SettingsFragment extends InputMethodSettingsFragment {
         setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.prefs);
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
-        final Activity activity = getActivity();
         preferenceScreen.setTitle(
                 ApplicationUtils.getActivityTitleResId(getActivity(), SettingsActivity.class));
     }

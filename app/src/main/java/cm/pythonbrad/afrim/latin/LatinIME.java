@@ -44,6 +44,8 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 
+import com.hjq.toast.Toaster;
+
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -305,6 +307,10 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         KeyboardSwitcher.init(this);
         AudioAndHapticFeedbackManager.init(this);
 
+        // Deploy the afrim dataset
+        // We assume that the user don't have give storage access
+        DataManager.getInstance().deployAssets(this);
+
         // Initialize the afrim instance.
         Afrim.init();
         mAfrim = Afrim.getInstance();
@@ -343,12 +349,13 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             File configFile = new File(configFileName);
             if (!configFile.exists()) {
                 Log.e(TAG, "loadSettings: Config file `" + configFileName + "` not found!");
-                mRichImm.setCurrentSubtype(Locale.getDefault());
+                Toaster.showShort(R.string.layout_config_not_found);
                 return;
             }
             final boolean status = mAfrim.updateConfig(configFileName);
             if (!status) {
                 Log.w(TAG, "loadSettings: Afrim `" + configFileName + "` not updated!");
+                Toaster.showShort(R.string.layout_config_invalid);
             }
 
         }
@@ -946,6 +953,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mKeyboardSwitcher.onReleaseKey(primaryCode, withSliding, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
 
+        // We verify the state of the afrim internal instance.
+        if (!mAfrim.isInit()) return;
+
         final boolean[] status = mAfrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_DOWN);
         if (status != null && /*hasChanged = */status[0]) {
             // TODO: update the text input display
@@ -956,13 +966,13 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
             // Afrim should work only on afrim layout.
             // It will permit to disable/enable the afrim in switching between layout.
-            if (!mAfrim.check() || !mAfrim.getState() || !/*hasCommit = */status[1]) {
+            if (!/*canOperate = */mAfrim.getState() || !/*hasCommit = */status[1]) {
                 return;
             }
 
             while (true) {
                 Command cmd = mAfrim.getCommand();
-                Log.d(TAG, "processCommand: "+cmd);
+                Log.d(TAG, "processCommand: "+ cmd);
                 switch (cmd.getCode()) {
                     case Command.PAUSE:
                         mInputLogic.mConnection.beginBatchEdit();

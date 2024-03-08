@@ -15,11 +15,11 @@ FetchContent_MakeAvailable(Corrosion)
 # Import targets defined in a package or workspace manifest `Cargo.toml` file
 corrosion_import_crate(
 		MANIFEST_PATH afrim_jni/Cargo.toml
-		# FEATURES inhibit
+		FEATURES rhai # inhibit
 		# TODO: Removed it.
 		# Follows the make profile by default.
 		# I enable it for test purpose
-		# PROFILE release
+		PROFILE release
 )
 
 # In this example the the `Cargo.toml` file passed to `corrosion_import_crate` is assumed to have

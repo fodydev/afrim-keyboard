@@ -124,4 +124,9 @@
     <string name="external_storage_permission_partially_granted">Some permissions were obtained successfully, but some permissions were not granted normally</string>
     <string name="external_storage_permission_denied">Failed to get storage permissions</string>
     <string name="android_11_storage_permission_hint">The current version is not Android 11 and above, it will automatically change to the old version of the request method</string>
+    <string name="layout_config_invalid">Failed to load the layout configuration</string>
+    <string name="layout_config_not_found">Layout config file not found</string>
+    <string name="dataset_deploy_progress">Deployment of the afrim dataset...</string>
+    <string name="dataset_deploy_success">Afrim dataset deployed!</string>
+    <string name="dataset_deploy_failed">Failed to deploy the afrim dataset!</string>
 </resources>

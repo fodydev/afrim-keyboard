@@ -25,12 +25,12 @@ mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeCheck(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeIsInit(
         env: JNIEnv,
         _class: JClass,
     ) -> jboolean {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
-        log.d("Checking the presence of the afrim singleton...");
+        log.d("Checking the presence of the afrim singleton.");
 
         (*Singleton::get_afrim()).is_some().into()
     }
@@ -39,16 +39,16 @@ mod android {
     pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeUpdateConfig(
         mut env: JNIEnv,
         _class: JClass,
-        filename: JString,
+        config_file: JString,
     ) -> jboolean {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
 
-        let filename: String = env.get_string(&filename).unwrap().into();
+        let config_file: String = env.get_string(&config_file).unwrap().into();
         log.d(&format!(
-            "Updating the afrim singleton with filename={filename}."
+            "Updating the afrim singleton using config_file={config_file}."
         ));
 
-        match Afrim::from_file(&filename) {
+        match Afrim::from_config(&config_file) {
             Ok(new_afrim) => {
                 Singleton::update_afrim(new_afrim);
                 log.i("Afrim singleton updated!");
@@ -92,9 +92,8 @@ mod android {
         log.d(&format!("Processing key={key} state={state}."));
 
         let afrim_ptr = Singleton::get_afrim();
-
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            let status = afrim.preprocessor.process_key(&key, &state);
+            let status = afrim.process_key(&key, &state);
 
             match status {
                 Ok((changed, committed)) => {
@@ -110,7 +109,7 @@ mod android {
                 }
             }
         } else {
-            log.e("Afrim singleton is not yet configured.");
+            log.w("Afrim singleton is not yet configured.");
         };
 
         JObject::null().into_raw()
@@ -129,15 +128,15 @@ mod android {
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            afrim.preprocessor.commit_text(text);
+            afrim.commit_text(text);
             log.i("Text committed!");
         } else {
-            log.e("Afrim singleton is not yet configured.");
+            log.w("Afrim singleton is not yet configured.");
         }
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativePopQueue(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeNextCommand(
         env: JNIEnv,
         _class: JClass,
     ) -> jstring {
@@ -146,13 +145,13 @@ mod android {
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            let cmd = afrim.preprocessor.pop_queue();
+            let cmd = afrim.next_command();
             let cmd = env.new_string(&cmd).unwrap();
             log.i("Afrim command got!");
 
             cmd.into_raw()
         } else {
-            log.e("Afrim singleton is not yet configured.");
+            log.w("Afrim singleton is not yet configured.");
 
             JObject::null().into_raw()
         }
@@ -168,10 +167,10 @@ mod android {
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            afrim.preprocessor.clear_queue();
+            afrim.clear();
             log.i("Afrim memory cleared!");
         } else {
-            log.e("Afrim singleton is not yet configured.");
+            log.w("Afrim singleton is not yet configured.");
         }
     }
 
@@ -181,17 +180,17 @@ mod android {
         _class: JClass,
     ) -> jstring {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
-        log.d("Getting of the afrim input text!");
+        log.d("Getting of the afrim input text.");
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            let input = afrim.preprocessor.get_input();
+            let input = afrim.get_input();
             let input = env.new_string(input).unwrap();
             log.i("Afrim input text got!");
 
             input.into_raw()
         } else {
-            log.e("Afrim singleton is not yet configured.");
+            log.w("Afrim singleton is not yet configured.");
 
             JObject::null().into_raw()
         }
@@ -204,33 +203,42 @@ mod android {
         _class: JClass,
     ) -> jobjectArray {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
-        log.d("Getting of the afrim suggestions!");
+        log.d("Getting of the afrim suggestions.");
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
-            let input = afrim.preprocessor.get_input();
-            let predicates = afrim.translator.translate(&input);
-            log.i("Afrim input suggestions got!");
+            let input = afrim.get_input();
+            let predicates = afrim.translate_text(&input);
 
-            let class = env.find_class("android/util/Array").unwrap();
+            let array_class = env.find_class("java/lang/Object").unwrap();
+            let subarray_class = env.find_class("java/lang/String").unwrap();
+
             let length = predicates.len() as i32;
-            let array = env.new_object_array(length, &class, JObject::null()).unwrap();
+            let array = env
+                .new_object_array(length, &array_class, JObject::null())
+                .unwrap();
 
             predicates.iter().enumerate().for_each(|(id, predicate)| {
                 let length = predicate.len() as i32;
-                let subarray = env.new_object_array(length, &class, &JObject::null()).unwrap();
+                let subarray = env
+                    .new_object_array(length, &subarray_class, &JObject::null())
+                    .unwrap();
 
                 predicate.iter().enumerate().for_each(|(id, data)| {
-                    let data = env.new_string(&data).unwrap();
+                    let data = env.new_string(data).unwrap();
 
-                    env.set_object_array_element(&subarray, id as i32, &data).unwrap();
+                    env.set_object_array_element(&subarray, id as i32, data)
+                        .unwrap();
                 });
-                env.set_object_array_element(&array, id as i32, &subarray).unwrap();
+
+                env.set_object_array_element(&array, id as i32, subarray)
+                    .unwrap();
             });
+            log.i("Afrim input suggestions got!");
 
             array.into_raw()
         } else {
-            log.e("Afrim singleton is not yet configured.");
+            log.w("Afrim singleton is not yet configured.");
 
             JObject::null().into_raw()
         }

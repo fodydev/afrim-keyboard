@@ -21,7 +21,7 @@ public class Deserializer {
                     final String text = new JSONObject(cmd).getString("CommitText");
                     return new Command(Command.COMMIT, text);
                 } catch (JSONException e) {
-                    throw new RuntimeException("UNKNOW COMMAND: " + cmd);
+                    return new Command(Command.UNKNOWN);
                 }
         }
     }

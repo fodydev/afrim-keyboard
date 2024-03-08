@@ -37,11 +37,11 @@ public abstract class InputMethodSettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Activity activity = getActivity();
+        Toaster.init(activity.getApplication(), new WhiteToastStyle());
+        DataManager.init(activity);
         setPreferenceScreen(getPreferenceManager().createPreferenceScreen(
                 PreferenceManagerCompat.getDeviceContext(activity)));
         mSettings.init(activity, getPreferenceScreen());
-        Toaster.init(activity.getApplication(), new WhiteToastStyle());
-        DataManager.init(activity);
     }
 
     /**

@@ -1,5 +1,7 @@
 package cm.pythonbrad.afrim.core;
 
+import androidx.annotation.NonNull;
+
 public class Command {
     public static final int NOP = 0;
     public static final int PAUSE = 1;
@@ -27,5 +29,19 @@ public class Command {
 
     public String getData() {
         return data;
+    }
+
+    @NonNull
+    public String toString() {
+        switch (this.code) {
+            case NOP: return "NOP";
+            case PAUSE: return "PAUSE";
+            case RESUME: return "RESUME";
+            case DELETE: return  "DELETE";
+            case COMMIT: return "COMMIT";
+            case CLEAN_DELETE: return "CLEAN_DELETE";
+            default: return "UNKNOWN";
+
+        }
     }
 }
