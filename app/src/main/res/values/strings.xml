@@ -63,6 +63,10 @@
     <!-- Description for Serbian (Latin) keyboard subtype [CHAR LIMIT=25]
          (Latin) can be an abbreviation to fit in the CHAR LIMIT. -->
     <string name="locale_name_sr_ZZ">Serbian (Latin)</string>
+    <!-- Description for Custom (Afrim) keyboard subtype [CHAR LIMIT=25] -->
+    <string name="locale_name_afrim">Custom</string>
+    <!-- Description for Nufi (Afrim) keyboard subtype [CHAR LIMIT=25] -->
+    <string name="locale_name_fmp_CM_afrim">Nufi (Cameroon,AFRIM)</string>
     <!-- Description for a keyboard layout listing the language and layout name. -->
     <string name="subtype_generic_layout"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> (<xliff:g id="LAYOUT" example="QWERTY">%s</xliff:g>)</string>
     <!-- Description for a traditional keyboard layout, such as Nepali (Traditional). -->
@@ -77,6 +81,8 @@
     <string name="subtype_f">F</string>
     <!-- Description for Bengali (Akkhor) keyboard layout. -->
     <string name="subtype_akkhor">Akkhor</string>
+    <!-- Description for X (Afrim) keyboard layout. -->
+    <string name="subtype_afrim">Afrim</string>
 
     <string name="keyboard_theme_dark_border" translatable="false">Material Dark Border</string>
     <string name="keyboard_theme_light_border" translatable="false">Material Light Border</string>

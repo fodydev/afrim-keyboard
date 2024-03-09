@@ -439,7 +439,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     void onStartInputInternal(final EditorInfo editorInfo, final boolean restarting) {
         super.onStartInput(editorInfo, restarting);
 
-        // We clear the afrim memory.
+        // Since are in a new text field, we clear the afrim memory.
         mAfrim.clear();
 
         // If the primary hint language does not match the current subtype language, then try
@@ -954,25 +954,28 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 getCurrentRecapitalizeState());
 
         // We verify the state of the afrim internal instance.
-        if (!mAfrim.isInit()) return;
+        if (!mAfrim.isInit() || !mAfrim.canOperate()) return;
 
         final boolean[] status = mAfrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_DOWN);
-        if (status != null && /*hasChanged = */status[0]) {
-            // TODO: update the text input display
+        if (status != null && /*hasChanged=*/status[0]) {
+            // TODO: display the input text
             final String input = mAfrim.getInput();
-            final String[] suggestions = mAfrim.getSuggestion();
-            Log.d(TAG, "Native input got: " + input);
-            Log.d(TAG, "Suggestions: " + Arrays.toString(suggestions));
+            final String suggestion = mAfrim.getSuggestion();
 
-            // Afrim should work only on afrim layout.
-            // It will permit to disable/enable the afrim in switching between layout.
-            if (!/*canOperate = */mAfrim.getState() || !/*hasCommit = */status[1]) {
+            // TODO: display suggestions
+            // For the moment, we just manage the fully matched predicate
+            //
+            // No commit, no matched suggestion, we can skip
+            if (!/*hasCommit=*/status[1] && suggestion == null) {
                 return;
             }
+            mAfrim.commitText(suggestion);
 
             while (true) {
                 Command cmd = mAfrim.getCommand();
-                Log.d(TAG, "processCommand: "+ cmd);
+                if (DebugFlags.DEBUG_ENABLED) {
+                    Log.d(TAG, "processCommand: " + cmd);
+                }
                 switch (cmd.getCode()) {
                     case Command.PAUSE:
                         mInputLogic.mConnection.beginBatchEdit();
@@ -1014,7 +1017,6 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     };
 
     public void launchSettings() {
-        Log.d(TAG, "launchSettings: SEEE MEEEEE");
         requestHideSelf(0);
         final MainKeyboardView mainKeyboardView = mKeyboardSwitcher.getMainKeyboardView();
         if (mainKeyboardView != null) {

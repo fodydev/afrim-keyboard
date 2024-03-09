@@ -47,7 +47,7 @@ public final class Afrim {
     private static native void nativeClear();
     private static native String nativeGetInput();
     // Translator.
-    private static native Object[] nativeTranslate();
+    private static native Object[] nativeTranslateText();
 
     // Native function implemented in Java.
     // Singleton.
@@ -65,12 +65,10 @@ public final class Afrim {
         currentConfigFile = configFile;
         return nativeUpdateConfig(configFile);
     }
+
     // Preprocessor.
     public void clear() {
         nativeClear();
-
-        // We trigger the cleaning of the cursor.
-        processKey("Escape", 0);
     }
     public boolean[] processKey(String key, int state) {
         String _key = Serializer.keyToString(key);
@@ -85,23 +83,25 @@ public final class Afrim {
     public String getInput() {
         return nativeGetInput();
     }
+    public void commitText(String text) {
+        nativeCommitText(text);
+    }
+
     // Translator.
-    public String[] getSuggestion() {
-        Object[] predicates = nativeTranslate();
-        // TODO: Convert to array of array of string
-        // ArrayList<ArrayList<String>>
-        Log.d(TAG, "Get "+predicates.length+" suggestions.");
-        if (predicates.length > 0) {
-            String[] a = (String[]) predicates[0];
-            Log.d(TAG, "getSuggestion: "+ Arrays.toString(a));
-        }
-        return null;
+    public String getSuggestion() {
+        Object[] predicates = nativeTranslateText();
+
+        if (predicates.length == 0) return null;
+        String[] predicate = (String[]) predicates[0];
+
+        if (!predicate[3].equals("true")) return null;
+        return predicate[2];
     }
     // Custom
     public void setState(boolean value) {
         state = value;
     }
-    public boolean getState() {
+    public boolean canOperate() {
         return state;
     }
 }

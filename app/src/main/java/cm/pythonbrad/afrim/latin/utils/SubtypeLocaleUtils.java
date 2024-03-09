@@ -377,11 +377,6 @@ public final class SubtypeLocaleUtils {
             // considered the default.
             switch (mLocale) {
                 case LOCALE_AFRIKAANS:
-                case LOCALE_AFRIM:
-                case LOCALE_AFRIM_AMHARIC:
-                case LOCALE_AFRIM_CLAFRICA:
-                case LOCALE_AFRIM_GEEZ:
-                case LOCALE_AFRIM_NUFI:
                 case LOCALE_AZERBAIJANI_AZERBAIJAN:
                 case LOCALE_ENGLISH_INDIA:
                 case LOCALE_ENGLISH_GREAT_BRITAIN:
@@ -403,6 +398,14 @@ public final class SubtypeLocaleUtils {
                 case LOCALE_VIETNAMESE:
                 case LOCALE_ZULU:
                     addLayout(LAYOUT_QWERTY);
+                    addGenericLayouts();
+                    break;
+                case LOCALE_AFRIM:
+                case LOCALE_AFRIM_AMHARIC:
+                case LOCALE_AFRIM_CLAFRICA:
+                case LOCALE_AFRIM_GEEZ:
+                case LOCALE_AFRIM_NUFI:
+                    addLayout(LAYOUT_QWERTY, R.string.subtype_afrim);
                     addGenericLayouts();
                     break;
                 case LOCALE_CZECH:

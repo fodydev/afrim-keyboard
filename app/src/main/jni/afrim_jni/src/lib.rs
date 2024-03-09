@@ -198,7 +198,7 @@ mod android {
 
     // Translator
     #[no_mangle]
-    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeTranslate(
+    pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeTranslateText(
         mut env: JNIEnv,
         _class: JClass,
     ) -> jobjectArray {
