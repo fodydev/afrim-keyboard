@@ -6,13 +6,13 @@ import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
-import com.hjq.toast.Toaster;
 
 import java.io.*;
 import java.util.List;
@@ -38,7 +38,7 @@ public class DataManager {
 
     private void initInternal(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            Toaster.show(R.string.android_11_storage_permission_hint);
+            Toast.makeText(context, R.string.android_11_storage_permission_hint, Toast.LENGTH_LONG).show();
         }
 
         XXPermissions.with((Activity) context)
@@ -53,9 +53,9 @@ public class DataManager {
                     @Override
                     public void onGranted(@NonNull List<String> permissions, boolean allGranted) {
                         if (!allGranted) {
-                            Toaster.show(R.string.external_storage_permission_partially_granted);
+                            Toast.makeText(context, R.string.external_storage_permission_partially_granted, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toaster.showShort(R.string.external_storage_permission_granted);
+                            Toast.makeText(context, R.string.external_storage_permission_partially_granted, Toast.LENGTH_SHORT).show();
                         }
                         sInstance.deployAssets(context);
                     }
@@ -63,11 +63,11 @@ public class DataManager {
                     @Override
                     public void onDenied(@NonNull List<String> permissions, boolean doNotAskAgain) {
                         if (doNotAskAgain) {
-                            Toaster.show(R.string.external_storage_permission_permanently_denied);
+                            Toast.makeText(context, R.string.external_storage_permission_permanently_denied, Toast.LENGTH_LONG).show();
                             // If it is permanently denied, jump to the application permission system settings page
                             XXPermissions.startPermissionActivity(context, permissions);
                         } else {
-                            Toaster.showShort(R.string.external_storage_permission_denied);
+                            Toast.makeText(context, R.string.external_storage_permission_denied, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -82,12 +82,12 @@ public class DataManager {
             // We don't want overwrite if the data inside the afrim dataset folder.
             // Note that the user can customize it.
             if (new File(sharedDataDir).exists()) return;
-            Toaster.showShort(R.string.dataset_deploy_progress);
+            Toast.makeText(context, R.string.dataset_deploy_progress, Toast.LENGTH_SHORT).show();
             copyDirorfileFromAssetManager(context, dataFolder, dataFolder);
-            Toaster.showShort(R.string.dataset_deploy_success);
+            Toast.makeText(context, R.string.dataset_deploy_success, Toast.LENGTH_SHORT).show();
         } catch (IOException ex) {
             Log.e(TAG, "I/O Exception", ex);
-            Toaster.showShort(R.string.dataset_deploy_failed);
+            Toast.makeText(context, R.string.dataset_deploy_failed, Toast.LENGTH_LONG).show();
         }
     }
 

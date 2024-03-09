@@ -208,6 +208,7 @@ mod android {
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
             let input = afrim.get_input();
+            log.d(format!("input={input}"));
             let predicates = afrim.translate_text(&input);
 
             let array_class = env.find_class("java/lang/Object").unwrap();

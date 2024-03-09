@@ -41,15 +41,13 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import com.hjq.toast.Toaster;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -342,22 +340,24 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mAfrim.setState(canOperate);
 
         // Update the keyboard language.
-        if (mLocale.getVariant().equals("afrim") || mLocale.getLanguage().equals("afrim")) {
-            final String lang = mLocale.getLanguage();
-            final String configFileName = DataManager.buildPath(new String[]{lang, lang + ".toml"});
+        // Disable the afrim if not related.
+        if (!mLocale.getVariant().equals("afrim") && !mLocale.getLanguage().equals("afrim")) {
+            mAfrim.setState(false);
+            return;
+        }
+        final String lang = mLocale.getLanguage();
+        final String configFileName = DataManager.buildPath(new String[]{lang, lang + ".toml"});
 
-            File configFile = new File(configFileName);
-            if (!configFile.exists()) {
-                Log.e(TAG, "loadSettings: Config file `" + configFileName + "` not found!");
-                Toaster.showShort(R.string.layout_config_not_found);
-                return;
-            }
-            final boolean status = mAfrim.updateConfig(configFileName);
-            if (!status) {
-                Log.w(TAG, "loadSettings: Afrim `" + configFileName + "` not updated!");
-                Toaster.showShort(R.string.layout_config_invalid);
-            }
-
+        File configFile = new File(configFileName);
+        if (!configFile.exists()) {
+            Log.e(TAG, "loadSettings: Config file `" + configFileName + "` not found!");
+            Toast.makeText(this.getApplicationContext(), R.string.layout_config_not_found, Toast.LENGTH_LONG).show();
+            return;
+        }
+        final boolean status = mAfrim.updateConfig(configFileName);
+        if (!status) {
+            Log.w(TAG, "loadSettings: Afrim `" + configFileName + "` not updated!");
+            Toast.makeText(this.getApplicationContext(), R.string.layout_config_invalid, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -954,53 +954,49 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 getCurrentRecapitalizeState());
 
         // We verify the state of the afrim internal instance.
-        if (!mAfrim.isInit() || !mAfrim.canOperate()) return;
+        if (!mAfrim.canOperate() || !mAfrim.isInit()) return;
 
         final boolean[] status = mAfrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_DOWN);
-        if (status != null && /*hasChanged=*/status[0]) {
-            // TODO: display the input text
-            final String input = mAfrim.getInput();
-            final String suggestion = mAfrim.getSuggestion();
+        if (status == null || !/*hasChanged=*/status[0]) return;
 
-            // TODO: display suggestions
-            // For the moment, we just manage the fully matched predicate
-            //
-            // No commit, no matched suggestion, we can skip
-            if (!/*hasCommit=*/status[1] && suggestion == null) {
-                return;
+        // TODO: display the input text
+        // final String input = mAfrim.getInput();
+        final String suggestion = mAfrim.getSuggestion();
+        if (suggestion != null) mAfrim.commitText(suggestion);
+
+        // No commit, no matched suggestion, we can skip
+        if (!/*hasCommit=*/status[1] && suggestion == null) {
+            return;
+        }
+        while (true) {
+            Command cmd = mAfrim.getCommand();
+            if (DebugFlags.DEBUG_ENABLED) {
+                Log.d(TAG, "processCommand: " + cmd);
             }
-            mAfrim.commitText(suggestion);
-
-            while (true) {
-                Command cmd = mAfrim.getCommand();
-                if (DebugFlags.DEBUG_ENABLED) {
-                    Log.d(TAG, "processCommand: " + cmd);
-                }
-                switch (cmd.getCode()) {
-                    case Command.PAUSE:
-                        mInputLogic.mConnection.beginBatchEdit();
-                        break;
-                    case Command.DELETE:
-                        // TODO: refactor handle_backspace
-                        final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
-                        final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
-                        mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
-                        mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
-                        final int diff = selectionEnd - selectionStart;
-                        mInputLogic.mConnection.setSelection(selectionStart-diff, selectionStart-diff+1);
-                        onMoveDeletePointer(1);
-                        break;
-                    case Command.RESUME:
-                        mInputLogic.mConnection.endBatchEdit();
-                        break;
-                    case Command.UNKNOWN:
-                        break;
-                    case Command.NOP:
-                        return;
-                    case Command.COMMIT:
-                        onTextInput(cmd.getData());
-                        break;
-                }
+            switch (cmd.getCode()) {
+                case Command.PAUSE:
+                    mInputLogic.mConnection.beginBatchEdit();
+                    break;
+                case Command.DELETE:
+                    // TODO: refactor handle_backspace
+                    final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
+                    final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
+                    mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
+                    mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
+                    final int diff = selectionEnd - selectionStart;
+                    mInputLogic.mConnection.setSelection(selectionStart-diff, selectionStart-diff+1);
+                    onMoveDeletePointer(1);
+                    break;
+                case Command.RESUME:
+                    mInputLogic.mConnection.endBatchEdit();
+                    break;
+                case Command.UNKNOWN:
+                    break;
+                case Command.NOP:
+                    return;
+                case Command.COMMIT:
+                    onTextInput(cmd.getData());
+                    break;
             }
         }
     }

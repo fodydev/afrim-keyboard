@@ -16,12 +16,8 @@
 package cm.pythonbrad.afrim.latin.settings;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-
-import com.hjq.toast.Toaster;
-import com.hjq.toast.style.WhiteToastStyle;
 
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.data.DataManager;
@@ -37,7 +33,6 @@ public abstract class InputMethodSettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Activity activity = getActivity();
-        Toaster.init(activity.getApplication(), new WhiteToastStyle());
         DataManager.init(activity);
         setPreferenceScreen(getPreferenceManager().createPreferenceScreen(
                 PreferenceManagerCompat.getDeviceContext(activity)));

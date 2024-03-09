@@ -13,9 +13,9 @@ cbindgen: ## Generates the c binding header of the afrim_jni library.
 	echo '#include "./afrim_jni/bootstrap.h"' >> ${jniDir}/init.cc
 	( \
 		cd ${jniDir} && cbindgen afrim_jni | \
-		sed 's/^\(\w*\) \(Java\)/JNIEXPORT \1 JNICALL\n\2/g' | \
-		sed 's/JNIEnv/&*/g' | \
-		sed 's/)/) {\n\/\/ For more details about the implementation, consult the rust code.\n}/g' | \
+		sed 's/^\(\w*\) \(Java\)/JNIEXPORT \1 JNICALL\n\2/' | \
+		sed 's/JNIEnv/&*/' | \
+		sed 's/);$$/) {\n\/\/ For more details about the implementation, consult the rust code.\n}/' | \
 		cat >> init.cc \
 	)
 	clang-format -i -style 'file' ${jniDir}/init.cc

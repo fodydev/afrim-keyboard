@@ -1,8 +1,6 @@
 package cm.pythonbrad.afrim.core;
 
-import android.util.Log;
-
-import java.util.Arrays;
+import androidx.annotation.NonNull;
 
 /**
  * Afrim Input method wrapper.
@@ -36,13 +34,13 @@ public final class Afrim {
 
     // Native functions implemented in Rust.
     // Singleton.
-    private static native boolean nativeUpdateConfig(String filename);
+    private static native boolean nativeUpdateConfig(@NonNull String filename);
     private static native void nativeInit();
     private static native boolean nativeIsInit();
     private static native void nativeDrop();
     // Preprocessor.
-    private static native boolean[] nativeProcessKey(String key, String state);
-    private static native void nativeCommitText(String text);
+    private static native boolean[] nativeProcessKey(@NonNull String key, @NonNull String state);
+    private static native void nativeCommitText(@NonNull String text);
     private static native String nativeNextCommand();
     private static native void nativeClear();
     private static native String nativeGetInput();
@@ -88,6 +86,8 @@ public final class Afrim {
     }
 
     // Translator.
+    // TODO: display suggestions
+    // For the moment, we just manage the fully matched predicate
     public String getSuggestion() {
         Object[] predicates = nativeTranslateText();
 

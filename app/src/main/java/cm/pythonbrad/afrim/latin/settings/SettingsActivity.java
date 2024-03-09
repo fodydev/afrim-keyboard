@@ -29,11 +29,7 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
 
-import com.hjq.toast.Toaster;
-import com.hjq.toast.style.WhiteToastStyle;
-
 import cm.pythonbrad.afrim.R;
-import cm.pythonbrad.afrim.data.DataManager;
 import cm.pythonbrad.afrim.latin.utils.FragmentUtils;
 
 public class SettingsActivity extends PreferenceActivity {
