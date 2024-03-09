@@ -1,4 +1,5 @@
 # Afrim Keyboard
+
 Afrim IME for Android
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -6,33 +7,30 @@ Afrim IME for Android
 [![F-Droid release](https://img.shields.io/f-droid/v/cm.pythonbrad.afrim.svg)](https://f-droid.org/packages/cm.pythonbrad.afrimkeyboard)
 [![Latest build](https://img.shields.io/github/last-commit/pythonbrad/afrim-keyboard.svg)](http://pythonbrad.github.io/afrim-keyboard/)
 
-<img src="images/screenshot-0.png"
-      alt="closeup"
-      width="500"/>
+<center>
+<video alt="afrim-keyboard-preview-03-2024" src="https://github.com/pythonbrad/afrim-keyboard/assets/45305909/20a22677-a628-479d-8068-3f34d5ff8149"></video>
+</center>
 
-## In development ⚠️ 
+## In development ⚠️
+
 The project is in development and not ready to use.
 
 ## About
 
-Afrim is a frontend of open-source [Afrim](https://github.com/pythonbrad/afrim) input method framework and written in Java with JNI.
- It is designed to protect the native language of various local dialects of Africa and is a universal phonetic-based input method platform.
+Afrim Keyboard is an android IME based on the [Afrim](https://github.com/pythonbrad/afrim) rust library. It is designed to protect the native language of various local dialects of Africa and is a universal phonetic-based input method engine.
 
 Features:
-- Small size (<1MB)
-- Adjustable keyboard height for more screen space
-- Number row
-- Swipe space to move pointer
-- Delete swipe
-- Custom theme colors
-- Minimal permissions (only Vibrate)
-- Ads-free
-
-Feature it doesn't have and probably will never have:
-- Emojis
-- GIFs
-- Spell checker
-- Swipe typing
+- [x] Easy to use interface
+- [x] Adjustable keyboard height for more screen space
+- [x] Number row
+- [x] Swipe space to move pointer
+- [x] Delete swipe
+- [x] Custom theme colors
+- [x] Ads-free
+- [ ] Emojis
+- [ ] GIFs
+- [ ] Spell checker
+- [ ] Swipe typing
 
 ## Downloads
 
@@ -58,9 +56,9 @@ Symbolic links will be created according to current build configurations, develo
 
 - Enable symlink support for `git`:
 
-    ```powershell
-    git config --global core.symlinks true
-    ```
+  ```powershell
+  git config --global core.symlinks true
+  ```
 
 If you cannot or wouldn't like to enable anything, it doesn't matter. Copying will be used instead when error on creating symbolic links.
 
@@ -113,6 +111,7 @@ On Windows, run:
 Run `make clean` on Linux or macOS, or run `.\gradlew clean` on Windows.
 
 Other issues:
+
 1. Try `make clean`
 2. Make sure your repo is up-to-date. If one or more submodules are modified, also make sure they are compatible with the current version.
 3. If the problem still exists(very unlikely), try to make a new clone.
@@ -127,5 +126,4 @@ Your [contribution](CONTRIBUTING.md) are welcome ~ ! :tada:
 
 Licensed under Apache License Version 2
 
-This keyboard is based on Simple keyboard. You can get the original source code in https://github.com/rkkr/simple-keyboard
-
+This keyboard is based on Simple keyboard. You can get the original source code from https://github.com/rkkr/simple-keyboard
