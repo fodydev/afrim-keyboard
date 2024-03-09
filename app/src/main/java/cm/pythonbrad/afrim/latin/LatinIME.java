@@ -41,17 +41,24 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import cm.pythonbrad.afrim.R;
+import cm.pythonbrad.afrim.core.Afrim;
 import cm.pythonbrad.afrim.compat.EditorInfoCompatUtils;
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils;
 import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils.InsetsUpdater;
+import cm.pythonbrad.afrim.core.Command;
+import cm.pythonbrad.afrim.data.DataManager;
 import cm.pythonbrad.afrim.event.Event;
 import cm.pythonbrad.afrim.event.InputTransaction;
 import cm.pythonbrad.afrim.keyboard.Keyboard;
@@ -88,6 +95,7 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     private int mOriginalNavBarColor = 0;
     private int mOriginalNavBarFlags = 0;
     final InputLogic mInputLogic = new InputLogic(this /* LatinIME */);
+    private Afrim mAfrim;
 
     // TODO: Move these {@link View}s to {@link KeyboardSwitcher}.
     private View mInputView;
@@ -126,15 +134,14 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         }
 
         @Override
-        public void handleMessage(final Message msg) {
+        public void handleMessage(@NonNull final Message msg) {
             final LatinIME latinIme = getOwnerInstance();
             if (latinIme == null) {
                 return;
             }
-            final KeyboardSwitcher switcher = latinIme.mKeyboardSwitcher;
             switch (msg.what) {
             case MSG_UPDATE_SHIFT_STATE:
-                switcher.requestUpdatingShiftState(latinIme.getCurrentAutoCapsState(),
+                latinIme.mKeyboardSwitcher.requestUpdatingShiftState(latinIme.getCurrentAutoCapsState(),
                         latinIme.getCurrentRecapitalizeState());
                 break;
             case MSG_RESET_CACHES:
@@ -297,6 +304,15 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mRichImm.setSubtypeChangeHandler(this);
         KeyboardSwitcher.init(this);
         AudioAndHapticFeedbackManager.init(this);
+
+        // Deploy the afrim dataset
+        // We assume that the user don't have give storage access
+        DataManager.getInstance().deployAssets(this);
+
+        // Initialize the afrim instance.
+        Afrim.init();
+        mAfrim = Afrim.getInstance();
+
         super.onCreate();
 
         mHandler.onCreate();
@@ -318,12 +334,38 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         mSettings.loadSettings(inputAttributes);
         final SettingsValues currentSettingsValues = mSettings.getCurrent();
         AudioAndHapticFeedbackManager.getInstance().onSettingsChanged(currentSettingsValues);
+
+        // Whether the afrim can operate.
+        final boolean canOperate = !inputAttributes.mIsPasswordField;
+        mAfrim.setState(canOperate);
+
+        // Update the keyboard language.
+        // Disable the afrim if not related.
+        if (!mLocale.getVariant().equals("afrim") && !mLocale.getLanguage().equals("afrim")) {
+            mAfrim.setState(false);
+            return;
+        }
+        final String lang = mLocale.getLanguage();
+        final String configFileName = DataManager.buildPath(new String[]{lang, lang + ".toml"});
+
+        File configFile = new File(configFileName);
+        if (!configFile.exists()) {
+            Log.e(TAG, "loadSettings: Config file `" + configFileName + "` not found!");
+            Toast.makeText(this.getApplicationContext(), R.string.layout_config_not_found, Toast.LENGTH_LONG).show();
+            return;
+        }
+        final boolean status = mAfrim.updateConfig(configFileName);
+        if (!status) {
+            Log.w(TAG, "loadSettings: Afrim `" + configFileName + "` not updated!");
+            Toast.makeText(this.getApplicationContext(), R.string.layout_config_invalid, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onDestroy() {
         mSettings.onDestroy();
         unregisterReceiver(mRingerModeChangeReceiver);
+        mAfrim.drop();
         super.onDestroy();
     }
 
@@ -396,6 +438,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
     void onStartInputInternal(final EditorInfo editorInfo, final boolean restarting) {
         super.onStartInput(editorInfo, restarting);
+
+        // Since are in a new text field, we clear the afrim memory.
+        mAfrim.clear();
 
         // If the primary hint language does not match the current subtype language, then try
         // to switch to the primary hint language.
@@ -689,9 +734,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
     @Override
     public boolean onCustomRequest(final int requestCode) {
-        switch (requestCode) {
-            case Constants.CUSTOM_CODE_SHOW_INPUT_METHOD_PICKER:
-                return showInputMethodPicker();
+        if (requestCode == Constants.CUSTOM_CODE_SHOW_INPUT_METHOD_PICKER) {
+            return showInputMethodPicker();
         }
         return false;
     }
@@ -908,6 +952,53 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     public void onReleaseKey(final int primaryCode, final boolean withSliding) {
         mKeyboardSwitcher.onReleaseKey(primaryCode, withSliding, getCurrentAutoCapsState(),
                 getCurrentRecapitalizeState());
+
+        // We verify the state of the afrim internal instance.
+        if (!mAfrim.canOperate() || !mAfrim.isInit()) return;
+
+        final boolean[] status = mAfrim.processKey(Constants.printableCode(primaryCode), KeyEvent.ACTION_DOWN);
+        if (status == null || !/*hasChanged=*/status[0]) return;
+
+        // TODO: display the input text
+        // final String input = mAfrim.getInput();
+        final String suggestion = mAfrim.getSuggestion();
+        if (suggestion != null) mAfrim.commitText(suggestion);
+
+        // No commit, no matched suggestion, we can skip
+        if (!/*hasCommit=*/status[1] && suggestion == null) {
+            return;
+        }
+        while (true) {
+            Command cmd = mAfrim.getCommand();
+            if (DebugFlags.DEBUG_ENABLED) {
+                Log.d(TAG, "processCommand: " + cmd);
+            }
+            switch (cmd.getCode()) {
+                case Command.PAUSE:
+                    mInputLogic.mConnection.beginBatchEdit();
+                    break;
+                case Command.DELETE:
+                    // TODO: refactor handle_backspace
+                    final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart()-1;
+                    final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
+                    mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
+                    mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
+                    final int diff = selectionEnd - selectionStart;
+                    mInputLogic.mConnection.setSelection(selectionStart-diff, selectionStart-diff+1);
+                    onMoveDeletePointer(1);
+                    break;
+                case Command.RESUME:
+                    mInputLogic.mConnection.endBatchEdit();
+                    break;
+                case Command.UNKNOWN:
+                    break;
+                case Command.NOP:
+                    return;
+                case Command.COMMIT:
+                    onTextInput(cmd.getData());
+                    break;
+            }
+        }
     }
 
     // receive ringer mode change.
@@ -937,10 +1028,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
 
     public void debugDumpStateAndCrashWithException(final String context) {
         final SettingsValues settingsValues = mSettings.getCurrent();
-        final StringBuilder s = new StringBuilder(settingsValues.toString());
-        s.append("\nAttributes : ").append(settingsValues.mInputAttributes)
-                .append("\nContext : ").append(context);
-        throw new RuntimeException(s.toString());
+        String s = settingsValues.toString() + "\nAttributes : " + settingsValues.mInputAttributes +
+                "\nContext : " + context;
+        throw new RuntimeException(s);
     }
 
     @Override

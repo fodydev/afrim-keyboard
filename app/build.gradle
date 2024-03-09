@@ -9,6 +9,11 @@ android {
         versionCode 102
         versionName "5.16"
     }
+    // Support JDK 1.8
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
     buildTypes {
         release {
             minifyEnabled true
@@ -16,7 +21,33 @@ android {
         }
     }
     namespace 'cm.pythonbrad.afrim'
+    externalNativeBuild {
+        cmake {
+            version = "3.22.1"
+        }
+    }
+    splits {
+        // Configures multiple APKs based on ABI.
+        abi {
+            // By default all ABIs are included, so use reset() and include to specify that we only
+            // want APKs for x86 and x86_64.
+
+            // Resets the list of ABIs that Gradle should create APKs for to none.
+            reset()
+
+            // Specifies a list of ABIs that Gradle should create APKs for.
+            include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+        }
+    }
+    if (file("prebuilt").exists()) {
+        sourceSets.getByName("main").jniLibs.srcDirs(setOf("prebuilt"))
+    } else {
+        externalNativeBuild.cmake.path("src/main/jni/CMakeLists.txt")
+    }
 }
 
 dependencies {
+    // Permission request framework：https://github.com/getActivity/XXPermissions
+    implementation 'com.github.getActivity:XXPermissions:18.6'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 }

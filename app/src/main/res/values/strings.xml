@@ -63,6 +63,10 @@
     <!-- Description for Serbian (Latin) keyboard subtype [CHAR LIMIT=25]
          (Latin) can be an abbreviation to fit in the CHAR LIMIT. -->
     <string name="locale_name_sr_ZZ">Serbian (Latin)</string>
+    <!-- Description for Custom (Afrim) keyboard subtype [CHAR LIMIT=25] -->
+    <string name="locale_name_afrim">Custom</string>
+    <!-- Description for Nufi (Afrim) keyboard subtype [CHAR LIMIT=25] -->
+    <string name="locale_name_fmp_CM_afrim">Nufi (Cameroon,AFRIM)</string>
     <!-- Description for a keyboard layout listing the language and layout name. -->
     <string name="subtype_generic_layout"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> (<xliff:g id="LAYOUT" example="QWERTY">%s</xliff:g>)</string>
     <!-- Description for a traditional keyboard layout, such as Nepali (Traditional). -->
@@ -77,6 +81,8 @@
     <string name="subtype_f">F</string>
     <!-- Description for Bengali (Akkhor) keyboard layout. -->
     <string name="subtype_akkhor">Akkhor</string>
+    <!-- Description for X (Afrim) keyboard layout. -->
+    <string name="subtype_afrim">Afrim</string>
 
     <string name="keyboard_theme_dark_border" translatable="false">Material Dark Border</string>
     <string name="keyboard_theme_light_border" translatable="false">Material Light Border</string>
@@ -119,4 +125,14 @@
     <string name="change_keyboard">Change keyboard</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="license">License</string>
+    <string name="external_storage_permission_permanently_denied">Authorization denied permanently, please grant storage permissions manually</string>
+    <string name="external_storage_permission_granted">Failed to get storage permissions</string>
+    <string name="external_storage_permission_partially_granted">Some permissions were obtained successfully, but some permissions were not granted normally</string>
+    <string name="external_storage_permission_denied">Failed to get storage permissions</string>
+    <string name="android_11_storage_permission_hint">The current version is not Android 11 and above, it will automatically change to the old version of the request method</string>
+    <string name="layout_config_invalid">Failed to load the layout configuration</string>
+    <string name="layout_config_not_found">Layout config file not found</string>
+    <string name="dataset_deploy_progress">Deployment of the afrim dataset…</string>
+    <string name="dataset_deploy_success">Afrim dataset deployed!</string>
+    <string name="dataset_deploy_failed">Failed to deploy the afrim dataset!</string>
 </resources>

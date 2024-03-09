@@ -16,6 +16,8 @@
 
 package cm.pythonbrad.afrim.latin.settings;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 

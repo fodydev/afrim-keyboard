@@ -41,7 +41,13 @@ captures/
 # Keystore files
 *.jks
 
-.idea
+.idea 
 
+# Android Studio generated files and folders
 .cxx/
 target/
+
+# Ignore vim files:
+*~
+*.swp
+*.swo

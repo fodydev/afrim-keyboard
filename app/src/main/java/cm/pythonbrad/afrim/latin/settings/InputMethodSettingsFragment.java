@@ -15,11 +15,12 @@
  */
 package cm.pythonbrad.afrim.latin.settings;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
+import cm.pythonbrad.afrim.data.DataManager;
 
 /**
  * This is a helper class for an IME's settings preference fragment. It's recommended for every
@@ -27,13 +28,15 @@ import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
  */
 public abstract class InputMethodSettingsFragment extends PreferenceFragment {
     private final InputMethodSettingsImpl mSettings = new InputMethodSettingsImpl();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Context context = getActivity();
+        final Activity activity = getActivity();
+        DataManager.init(activity);
         setPreferenceScreen(getPreferenceManager().createPreferenceScreen(
-                PreferenceManagerCompat.getDeviceContext(context)));
-        mSettings.init(context, getPreferenceScreen());
+                PreferenceManagerCompat.getDeviceContext(activity)));
+        mSettings.init(activity, getPreferenceScreen());
     }
 
     /**

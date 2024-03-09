@@ -20,3 +20,4 @@
 -keep class cm.pythonbrad.afrim.latin.settings.SettingsFragment
 -keep class cm.pythonbrad.afrim.latin.settings.LanguagesSettingsFragment
 -keep class cm.pythonbrad.afrim.latin.settings.SingleLanguageSettingsFragment
+-keep class com.hjq.toast.** {*;}
