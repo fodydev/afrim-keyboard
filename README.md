@@ -7,9 +7,9 @@ Afrim IME for Android
 [![F-Droid release](https://img.shields.io/f-droid/v/cm.pythonbrad.afrim.svg)](https://f-droid.org/packages/cm.pythonbrad.afrimkeyboard)
 [![Latest build](https://img.shields.io/github/last-commit/pythonbrad/afrim-keyboard.svg)](http://pythonbrad.github.io/afrim-keyboard/)
 
-<img src="images/screenshot-0.png"
-      alt="closeup"
-      width="500"/>
+<center>
+<video alt="afrim-keyboard-preview-03-2024" src="https://github.com/pythonbrad/afrim-keyboard/assets/45305909/20a22677-a628-479d-8068-3f34d5ff8149"></video>
+</center>
 
 ## In development ⚠️
 
