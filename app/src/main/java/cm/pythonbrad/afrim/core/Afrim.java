@@ -108,7 +108,7 @@ public final class Afrim {
     String[] predicate = (String[]) predicates[0];
 
     if (!predicate[3].equals("true")) return null;
-    return predicate[2];
+    return predicate[2].split("\\|")[0];
   }
 
   // Custom
