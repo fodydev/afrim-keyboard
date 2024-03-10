@@ -1,21 +1,15 @@
-Features:
-* Small size (<1MB)
-* Adjustable keyboard height for more screen space
-* Number row
-* Swipe space to move pointer
-* Delete swipe
-* Custom theme colors
-* Minimal permissions (only Vibrate)
-* Ads-free
+Afrim Keyboard is an android IME based on the afrim rust library. It is designed to protect the native language of various local dialects of Africa and is a universal phonetic-based input method engine.
 
-Feature it doesn't have and probably will never have:
-* Emojis
-* GIFs
-* Spell checker
-* Swipe typing
+Features:
+* Easy to use interface
+* Adjustable keyboard height for more screen space
+* Custom theme colors
+* Ads-free
+* Support the afrim dataset
 
 To enable the keyboard:
 * Open "Afrim Keyboard" from your launcher
+* The storage permission is optional but it's recommended it you project modify the afrim dataset.
 * Enable the Afrim Keyboard (default system warning about tracking will be shown)
 * Switch to Afrim Keyboard from current Input Method (differs between keyboards, usually long-press space)
 * To edit Afrim Keyboard settings long-press "," or open system Settings, Languages & Input, Afrim Keyboard.
