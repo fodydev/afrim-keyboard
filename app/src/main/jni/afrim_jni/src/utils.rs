@@ -1,5 +1,5 @@
 use jni::{
-    objects::{JClass, JObject, JString, JValue},
+    objects::{JClass, JString, JValue},
     JNIEnv,
 };
 

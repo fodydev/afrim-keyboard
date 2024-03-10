@@ -7,7 +7,7 @@ mod android {
     use crate::utils::AndroidLogger;
     use jni::{
         objects::{JClass, JObject, JString},
-        sys::{jboolean, jbooleanArray, jintArray, jobjectArray, jstring},
+        sys::{jboolean, jbooleanArray, jobjectArray, jstring},
         JNIEnv,
     };
 
