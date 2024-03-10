@@ -25,59 +25,61 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
 public final class ApplicationUtils {
-    private static final String TAG = ApplicationUtils.class.getSimpleName();
+  private static final String TAG = ApplicationUtils.class.getSimpleName();
 
-    private ApplicationUtils() {
-        // This utility class is not publicly instantiable.
+  private ApplicationUtils() {
+    // This utility class is not publicly instantiable.
+  }
+
+  public static int getActivityTitleResId(
+      final Context context, final Class<? extends Activity> cls) {
+    final ComponentName cn = new ComponentName(context, cls);
+    try {
+      final ActivityInfo ai = context.getPackageManager().getActivityInfo(cn, 0);
+      if (ai != null) {
+        return ai.labelRes;
+      }
+    } catch (final NameNotFoundException e) {
+      Log.e(TAG, "Failed to get settings activity title res id.", e);
     }
+    return 0;
+  }
 
-    public static int getActivityTitleResId(final Context context,
-            final Class<? extends Activity> cls) {
-        final ComponentName cn = new ComponentName(context, cls);
-        try {
-            final ActivityInfo ai = context.getPackageManager().getActivityInfo(cn, 0);
-            if (ai != null) {
-                return ai.labelRes;
-            }
-        } catch (final NameNotFoundException e) {
-            Log.e(TAG, "Failed to get settings activity title res id.", e);
-        }
-        return 0;
-    }
-
-    /**
-     * A utility method to get the application's PackageInfo.versionName
-     * @return the application's PackageInfo.versionName
-     */
-    public static String getVersionName(final Context context) {
-        try {
-            if (context == null) {
-                return "";
-            }
-            final String packageName = context.getPackageName();
-            final PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
-            return info.versionName;
-        } catch (final NameNotFoundException e) {
-            Log.e(TAG, "Could not find version info.", e);
-        }
+  /**
+   * A utility method to get the application's PackageInfo.versionName
+   *
+   * @return the application's PackageInfo.versionName
+   */
+  public static String getVersionName(final Context context) {
+    try {
+      if (context == null) {
         return "";
+      }
+      final String packageName = context.getPackageName();
+      final PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+      return info.versionName;
+    } catch (final NameNotFoundException e) {
+      Log.e(TAG, "Could not find version info.", e);
     }
+    return "";
+  }
 
-    /**
-     * A utility method to get the application's PackageInfo.versionCode
-     * @return the application's PackageInfo.versionCode
-     */
-    public static int getVersionCode(final Context context) {
-        try {
-            if (context == null) {
-                return 0;
-            }
-            final String packageName = context.getPackageName();
-            final PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
-            return info.versionCode;
-        } catch (final NameNotFoundException e) {
-            Log.e(TAG, "Could not find version info.", e);
-        }
+  /**
+   * A utility method to get the application's PackageInfo.versionCode
+   *
+   * @return the application's PackageInfo.versionCode
+   */
+  public static int getVersionCode(final Context context) {
+    try {
+      if (context == null) {
         return 0;
+      }
+      final String packageName = context.getPackageName();
+      final PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+      return info.versionCode;
+    } catch (final NameNotFoundException e) {
+      Log.e(TAG, "Could not find version info.", e);
     }
+    return 0;
+  }
 }

@@ -18,33 +18,31 @@ package cm.pythonbrad.afrim.latin.settings;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.data.DataManager;
 
 /**
- * This is a helper class for an IME's settings preference fragment. It's recommended for every
- * IME to have its own settings preference fragment which inherits this class.
+ * This is a helper class for an IME's settings preference fragment. It's recommended for every IME
+ * to have its own settings preference fragment which inherits this class.
  */
 public abstract class InputMethodSettingsFragment extends PreferenceFragment {
-    private final InputMethodSettingsImpl mSettings = new InputMethodSettingsImpl();
+  private final InputMethodSettingsImpl mSettings = new InputMethodSettingsImpl();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        final Activity activity = getActivity();
-        DataManager.init(activity);
-        setPreferenceScreen(getPreferenceManager().createPreferenceScreen(
-                PreferenceManagerCompat.getDeviceContext(activity)));
-        mSettings.init(activity, getPreferenceScreen());
-    }
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    final Activity activity = getActivity();
+    DataManager.init(activity);
+    setPreferenceScreen(
+        getPreferenceManager()
+            .createPreferenceScreen(PreferenceManagerCompat.getDeviceContext(activity)));
+    mSettings.init(activity, getPreferenceScreen());
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSettings.updateEnabledSubtypeList();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public void onResume() {
+    super.onResume();
+    mSettings.updateEnabledSubtypeList();
+  }
 }

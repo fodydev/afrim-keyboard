@@ -16,8 +16,6 @@
 
 package cm.pythonbrad.afrim.latin.utils;
 
-import java.util.HashSet;
-
 import cm.pythonbrad.afrim.latin.settings.AppearanceSettingsFragment;
 import cm.pythonbrad.afrim.latin.settings.KeyPressSettingsFragment;
 import cm.pythonbrad.afrim.latin.settings.LanguagesSettingsFragment;
@@ -25,20 +23,22 @@ import cm.pythonbrad.afrim.latin.settings.PreferencesSettingsFragment;
 import cm.pythonbrad.afrim.latin.settings.SettingsFragment;
 import cm.pythonbrad.afrim.latin.settings.SingleLanguageSettingsFragment;
 import cm.pythonbrad.afrim.latin.settings.ThemeSettingsFragment;
+import java.util.HashSet;
 
 public class FragmentUtils {
-    private static final HashSet<String> sLatinImeFragments = new HashSet<>();
-    static {
-        sLatinImeFragments.add(PreferencesSettingsFragment.class.getName());
-        sLatinImeFragments.add(KeyPressSettingsFragment.class.getName());
-        sLatinImeFragments.add(AppearanceSettingsFragment.class.getName());
-        sLatinImeFragments.add(ThemeSettingsFragment.class.getName());
-        sLatinImeFragments.add(SettingsFragment.class.getName());
-        sLatinImeFragments.add(LanguagesSettingsFragment.class.getName());
-        sLatinImeFragments.add(SingleLanguageSettingsFragment.class.getName());
-    }
+  private static final HashSet<String> sLatinImeFragments = new HashSet<>();
 
-    public static boolean isValidFragment(String fragmentName) {
-        return sLatinImeFragments.contains(fragmentName);
-    }
+  static {
+    sLatinImeFragments.add(PreferencesSettingsFragment.class.getName());
+    sLatinImeFragments.add(KeyPressSettingsFragment.class.getName());
+    sLatinImeFragments.add(AppearanceSettingsFragment.class.getName());
+    sLatinImeFragments.add(ThemeSettingsFragment.class.getName());
+    sLatinImeFragments.add(SettingsFragment.class.getName());
+    sLatinImeFragments.add(LanguagesSettingsFragment.class.getName());
+    sLatinImeFragments.add(SingleLanguageSettingsFragment.class.getName());
+  }
+
+  public static boolean isValidFragment(String fragmentName) {
+    return sLatinImeFragments.contains(fragmentName);
+  }
 }

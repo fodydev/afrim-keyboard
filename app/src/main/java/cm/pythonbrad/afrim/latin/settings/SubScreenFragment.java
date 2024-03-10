@@ -26,86 +26,85 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.util.Log;
-
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 
 /**
- * A base abstract class for a {@link PreferenceFragment} that implements a nested
- * {@link PreferenceScreen} of the main preference screen.
+ * A base abstract class for a {@link PreferenceFragment} that implements a nested {@link
+ * PreferenceScreen} of the main preference screen.
  */
 public abstract class SubScreenFragment extends PreferenceFragment
-        implements OnSharedPreferenceChangeListener {
-    private OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
+    implements OnSharedPreferenceChangeListener {
+  private OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
 
-    static void setPreferenceEnabled(final String prefKey, final boolean enabled,
-            final PreferenceScreen screen) {
-        final Preference preference = screen.findPreference(prefKey);
-        if (preference != null) {
-            preference.setEnabled(enabled);
-        }
+  static void setPreferenceEnabled(
+      final String prefKey, final boolean enabled, final PreferenceScreen screen) {
+    final Preference preference = screen.findPreference(prefKey);
+    if (preference != null) {
+      preference.setEnabled(enabled);
     }
+  }
 
-    static void removePreference(final String prefKey, final PreferenceScreen screen) {
-        final Preference preference = screen.findPreference(prefKey);
-        if (preference != null) {
-            screen.removePreference(preference);
-        }
+  static void removePreference(final String prefKey, final PreferenceScreen screen) {
+    final Preference preference = screen.findPreference(prefKey);
+    if (preference != null) {
+      screen.removePreference(preference);
     }
+  }
 
-    final void setPreferenceEnabled(final String prefKey, final boolean enabled) {
-        setPreferenceEnabled(prefKey, enabled, getPreferenceScreen());
+  final void setPreferenceEnabled(final String prefKey, final boolean enabled) {
+    setPreferenceEnabled(prefKey, enabled, getPreferenceScreen());
+  }
+
+  final void removePreference(final String prefKey) {
+    removePreference(prefKey, getPreferenceScreen());
+  }
+
+  final SharedPreferences getSharedPreferences() {
+    return PreferenceManagerCompat.getDeviceSharedPreferences(getActivity());
+  }
+
+  @Override
+  public void addPreferencesFromResource(final int preferencesResId) {
+    super.addPreferencesFromResource(preferencesResId);
+    TwoStatePreferenceHelper.replaceCheckBoxPreferencesBySwitchPreferences(getPreferenceScreen());
+  }
+
+  @Override
+  public void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      super.getPreferenceManager().setStorageDeviceProtected();
     }
-
-    final void removePreference(final String prefKey) {
-        removePreference(prefKey, getPreferenceScreen());
-    }
-
-    final SharedPreferences getSharedPreferences() {
-        return PreferenceManagerCompat.getDeviceSharedPreferences(getActivity());
-    }
-
-    @Override
-    public void addPreferencesFromResource(final int preferencesResId) {
-        super.addPreferencesFromResource(preferencesResId);
-        TwoStatePreferenceHelper.replaceCheckBoxPreferencesBySwitchPreferences(
-                getPreferenceScreen());
-    }
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            super.getPreferenceManager().setStorageDeviceProtected();
-        }
-        mSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(final SharedPreferences prefs, final String key) {
-                final SubScreenFragment fragment = SubScreenFragment.this;
-                final Context context = fragment.getActivity();
-                if (context == null || fragment.getPreferenceScreen() == null) {
-                    final String tag = fragment.getClass().getSimpleName();
-                    // TODO: Introduce a static function to register this class and ensure that
-                    // onCreate must be called before "onSharedPreferenceChanged" is called.
-                    Log.w(tag, "onSharedPreferenceChanged called before activity starts.");
-                    return;
-                }
-                new BackupManager(context).dataChanged();
-                fragment.onSharedPreferenceChanged(prefs, key);
+    mSharedPreferenceChangeListener =
+        new OnSharedPreferenceChangeListener() {
+          @Override
+          public void onSharedPreferenceChanged(final SharedPreferences prefs, final String key) {
+            final SubScreenFragment fragment = SubScreenFragment.this;
+            final Context context = fragment.getActivity();
+            if (context == null || fragment.getPreferenceScreen() == null) {
+              final String tag = fragment.getClass().getSimpleName();
+              // TODO: Introduce a static function to register this class and ensure that
+              // onCreate must be called before "onSharedPreferenceChanged" is called.
+              Log.w(tag, "onSharedPreferenceChanged called before activity starts.");
+              return;
             }
+            new BackupManager(context).dataChanged();
+            fragment.onSharedPreferenceChanged(prefs, key);
+          }
         };
-        getSharedPreferences().registerOnSharedPreferenceChangeListener(
-                mSharedPreferenceChangeListener);
-    }
+    getSharedPreferences()
+        .registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+  }
 
-    @Override
-    public void onDestroy() {
-        getSharedPreferences().unregisterOnSharedPreferenceChangeListener(
-                mSharedPreferenceChangeListener);
-        super.onDestroy();
-    }
+  @Override
+  public void onDestroy() {
+    getSharedPreferences()
+        .unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+    super.onDestroy();
+  }
 
-    @Override
-    public void onSharedPreferenceChanged(final SharedPreferences prefs, final String key) {
-        // This method may be overridden by an extended class.
-    }
+  @Override
+  public void onSharedPreferenceChanged(final SharedPreferences prefs, final String key) {
+    // This method may be overridden by an extended class.
+  }
 }

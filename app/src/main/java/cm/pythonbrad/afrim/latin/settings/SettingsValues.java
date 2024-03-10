@@ -20,88 +20,87 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.view.inputmethod.EditorInfo;
-
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.latin.InputAttributes;
 
 // Non-final for testing via mock library.
 public class SettingsValues {
-    public static final float DEFAULT_SIZE_SCALE = 1.0f; // 100%
+  public static final float DEFAULT_SIZE_SCALE = 1.0f; // 100%
 
-    // From resources:
-    public final SpacingAndPunctuations mSpacingAndPunctuations;
-    // From configuration:
-    public final boolean mHasHardwareKeyboard;
-    public final int mDisplayOrientation;
-    // From preferences, in the same order as xml/prefs.xml:
-    public final boolean mAutoCap;
-    public final boolean mVibrateOn;
-    public final boolean mSoundOn;
-    public final boolean mKeyPreviewPopupOn;
-    public final boolean mShowsLanguageSwitchKey;
-    public final boolean mImeSwitchEnabled;
-    public final int mKeyLongpressTimeout;
-    public final boolean mHideSpecialChars;
-    public final boolean mShowNumberRow;
-    public final boolean mSpaceSwipeEnabled;
-    public final boolean mDeleteSwipeEnabled;
-    public final boolean mUseMatchingNavbarColor;
+  // From resources:
+  public final SpacingAndPunctuations mSpacingAndPunctuations;
+  // From configuration:
+  public final boolean mHasHardwareKeyboard;
+  public final int mDisplayOrientation;
+  // From preferences, in the same order as xml/prefs.xml:
+  public final boolean mAutoCap;
+  public final boolean mVibrateOn;
+  public final boolean mSoundOn;
+  public final boolean mKeyPreviewPopupOn;
+  public final boolean mShowsLanguageSwitchKey;
+  public final boolean mImeSwitchEnabled;
+  public final int mKeyLongpressTimeout;
+  public final boolean mHideSpecialChars;
+  public final boolean mShowNumberRow;
+  public final boolean mSpaceSwipeEnabled;
+  public final boolean mDeleteSwipeEnabled;
+  public final boolean mUseMatchingNavbarColor;
 
-    // From the input box
-    public final InputAttributes mInputAttributes;
+  // From the input box
+  public final InputAttributes mInputAttributes;
 
-    // Deduced settings
-    public final int mKeypressVibrationDuration;
-    public final float mKeypressSoundVolume;
-    public final int mKeyPreviewPopupDismissDelay;
+  // Deduced settings
+  public final int mKeypressVibrationDuration;
+  public final float mKeypressSoundVolume;
+  public final int mKeyPreviewPopupDismissDelay;
 
-    // Debug settings
-    public final float mKeyboardHeightScale;
+  // Debug settings
+  public final float mKeyboardHeightScale;
 
-    public SettingsValues(final SharedPreferences prefs, final Resources res,
-            final InputAttributes inputAttributes) {
-        // Get the resources
-        mSpacingAndPunctuations = new SpacingAndPunctuations(res);
+  public SettingsValues(
+      final SharedPreferences prefs, final Resources res, final InputAttributes inputAttributes) {
+    // Get the resources
+    mSpacingAndPunctuations = new SpacingAndPunctuations(res);
 
-        // Store the input attributes
-        mInputAttributes = inputAttributes;
+    // Store the input attributes
+    mInputAttributes = inputAttributes;
 
-        // Get the settings preferences
-        mAutoCap = prefs.getBoolean(Settings.PREF_AUTO_CAP, true);
-        mVibrateOn = Settings.readVibrationEnabled(prefs, res);
-        mSoundOn = Settings.readKeypressSoundEnabled(prefs, res);
-        mKeyPreviewPopupOn = Settings.readKeyPreviewPopupEnabled(prefs, res);
-        mShowsLanguageSwitchKey = Settings.readShowLanguageSwitchKey(prefs);
-        mImeSwitchEnabled = Settings.readEnableImeSwitch(prefs);
-        mHasHardwareKeyboard = Settings.readHasHardwareKeyboard(res.getConfiguration());
+    // Get the settings preferences
+    mAutoCap = prefs.getBoolean(Settings.PREF_AUTO_CAP, true);
+    mVibrateOn = Settings.readVibrationEnabled(prefs, res);
+    mSoundOn = Settings.readKeypressSoundEnabled(prefs, res);
+    mKeyPreviewPopupOn = Settings.readKeyPreviewPopupEnabled(prefs, res);
+    mShowsLanguageSwitchKey = Settings.readShowLanguageSwitchKey(prefs);
+    mImeSwitchEnabled = Settings.readEnableImeSwitch(prefs);
+    mHasHardwareKeyboard = Settings.readHasHardwareKeyboard(res.getConfiguration());
 
-        // Compute other readable settings
-        mKeyLongpressTimeout = Settings.readKeyLongpressTimeout(prefs, res);
-        mKeypressVibrationDuration = Settings.readKeypressVibrationDuration(prefs, res);
-        mKeypressSoundVolume = Settings.readKeypressSoundVolume(prefs, res);
-        mKeyPreviewPopupDismissDelay = res.getInteger(R.integer.config_key_preview_linger_timeout);
-        mKeyboardHeightScale = Settings.readKeyboardHeight(prefs, DEFAULT_SIZE_SCALE);
-        mDisplayOrientation = res.getConfiguration().orientation;
-        mHideSpecialChars = Settings.readHideSpecialChars(prefs);
-        mShowNumberRow = Settings.readShowNumberRow(prefs);
-        mSpaceSwipeEnabled = Settings.readSpaceSwipeEnabled(prefs);
-        mDeleteSwipeEnabled = Settings.readDeleteSwipeEnabled(prefs);
-        mUseMatchingNavbarColor = Settings.readUseMatchingNavbarColor(prefs);
-    }
+    // Compute other readable settings
+    mKeyLongpressTimeout = Settings.readKeyLongpressTimeout(prefs, res);
+    mKeypressVibrationDuration = Settings.readKeypressVibrationDuration(prefs, res);
+    mKeypressSoundVolume = Settings.readKeypressSoundVolume(prefs, res);
+    mKeyPreviewPopupDismissDelay = res.getInteger(R.integer.config_key_preview_linger_timeout);
+    mKeyboardHeightScale = Settings.readKeyboardHeight(prefs, DEFAULT_SIZE_SCALE);
+    mDisplayOrientation = res.getConfiguration().orientation;
+    mHideSpecialChars = Settings.readHideSpecialChars(prefs);
+    mShowNumberRow = Settings.readShowNumberRow(prefs);
+    mSpaceSwipeEnabled = Settings.readSpaceSwipeEnabled(prefs);
+    mDeleteSwipeEnabled = Settings.readDeleteSwipeEnabled(prefs);
+    mUseMatchingNavbarColor = Settings.readUseMatchingNavbarColor(prefs);
+  }
 
-    public boolean isWordSeparator(final int code) {
-        return mSpacingAndPunctuations.isWordSeparator(code);
-    }
+  public boolean isWordSeparator(final int code) {
+    return mSpacingAndPunctuations.isWordSeparator(code);
+  }
 
-    public boolean isLanguageSwitchKeyDisabled() {
-        return !mShowsLanguageSwitchKey;
-    }
+  public boolean isLanguageSwitchKeyDisabled() {
+    return !mShowsLanguageSwitchKey;
+  }
 
-    public boolean isSameInputType(final EditorInfo editorInfo) {
-        return mInputAttributes.isSameInputType(editorInfo);
-    }
+  public boolean isSameInputType(final EditorInfo editorInfo) {
+    return mInputAttributes.isSameInputType(editorInfo);
+  }
 
-    public boolean hasSameOrientation(final Configuration configuration) {
-        return mDisplayOrientation == configuration.orientation;
-    }
+  public boolean hasSameOrientation(final Configuration configuration) {
+    return mDisplayOrientation == configuration.orientation;
+  }
 }
