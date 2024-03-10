@@ -1,1 +1,0 @@
-* Workaround for invalid fromUser param in onProgressChanged
