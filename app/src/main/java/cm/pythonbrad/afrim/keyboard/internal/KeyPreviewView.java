@@ -25,89 +25,85 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
-
+import cm.pythonbrad.afrim.keyboard.Key;
 import java.util.HashSet;
 
-import cm.pythonbrad.afrim.keyboard.Key;
-
-/**
- * The pop up key preview view.
- */
+/** The pop up key preview view. */
 public class KeyPreviewView extends TextView {
-    private final Rect mBackgroundPadding = new Rect();
-    private static final HashSet<String> sNoScaleXTextSet = new HashSet<>();
+  private final Rect mBackgroundPadding = new Rect();
+  private static final HashSet<String> sNoScaleXTextSet = new HashSet<>();
 
-    public KeyPreviewView(final Context context, final AttributeSet attrs) {
-        this(context, attrs, 0);
+  public KeyPreviewView(final Context context, final AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
+
+  public KeyPreviewView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    setGravity(Gravity.CENTER);
+  }
+
+  public void setPreviewVisual(
+      final Key key, final KeyboardIconsSet iconsSet, final KeyDrawParams drawParams) {
+    // What we show as preview should match what we show on a key top in onDraw().
+    final int iconId = key.getIconId();
+    if (iconId != KeyboardIconsSet.ICON_UNDEFINED) {
+      setCompoundDrawables(null, null, null, key.getPreviewIcon(iconsSet));
+      setText(null);
+      return;
     }
 
-    public KeyPreviewView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        setGravity(Gravity.CENTER);
+    setCompoundDrawables(null, null, null, null);
+    setTextColor(drawParams.mPreviewTextColor);
+    setTextSize(TypedValue.COMPLEX_UNIT_PX, key.selectPreviewTextSize(drawParams));
+    setTypeface(key.selectPreviewTypeface(drawParams));
+    // TODO Should take care of temporaryShiftLabel here.
+    setTextAndScaleX(key.getPreviewLabel());
+  }
+
+  private void setTextAndScaleX(final String text) {
+    setTextScaleX(1.0f);
+    setText(text);
+    if (sNoScaleXTextSet.contains(text)) {
+      return;
     }
-
-    public void setPreviewVisual(final Key key, final KeyboardIconsSet iconsSet,
-            final KeyDrawParams drawParams) {
-        // What we show as preview should match what we show on a key top in onDraw().
-        final int iconId = key.getIconId();
-        if (iconId != KeyboardIconsSet.ICON_UNDEFINED) {
-            setCompoundDrawables(null, null, null, key.getPreviewIcon(iconsSet));
-            setText(null);
-            return;
-        }
-
-        setCompoundDrawables(null, null, null, null);
-        setTextColor(drawParams.mPreviewTextColor);
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, key.selectPreviewTextSize(drawParams));
-        setTypeface(key.selectPreviewTypeface(drawParams));
-        // TODO Should take care of temporaryShiftLabel here.
-        setTextAndScaleX(key.getPreviewLabel());
+    // TODO: Override {@link #setBackground(Drawable)} that is supported from API 16 and
+    // calculate maximum text width.
+    final Drawable background = getBackground();
+    if (background == null) {
+      return;
     }
-
-    private void setTextAndScaleX(final String text) {
-        setTextScaleX(1.0f);
-        setText(text);
-        if (sNoScaleXTextSet.contains(text)) {
-            return;
-        }
-        // TODO: Override {@link #setBackground(Drawable)} that is supported from API 16 and
-        // calculate maximum text width.
-        final Drawable background = getBackground();
-        if (background == null) {
-            return;
-        }
-        background.getPadding(mBackgroundPadding);
-        final int maxWidth = background.getIntrinsicWidth() - mBackgroundPadding.left
-                - mBackgroundPadding.right;
-        final float width = getTextWidth(text, getPaint());
-        if (width <= maxWidth) {
-            sNoScaleXTextSet.add(text);
-            return;
-        }
-        setTextScaleX(maxWidth / width);
+    background.getPadding(mBackgroundPadding);
+    final int maxWidth =
+        background.getIntrinsicWidth() - mBackgroundPadding.left - mBackgroundPadding.right;
+    final float width = getTextWidth(text, getPaint());
+    if (width <= maxWidth) {
+      sNoScaleXTextSet.add(text);
+      return;
     }
+    setTextScaleX(maxWidth / width);
+  }
 
-    public static void clearTextCache() {
-        sNoScaleXTextSet.clear();
+  public static void clearTextCache() {
+    sNoScaleXTextSet.clear();
+  }
+
+  private static float getTextWidth(final String text, final TextPaint paint) {
+    if (TextUtils.isEmpty(text)) {
+      return 0.0f;
     }
-
-    private static float getTextWidth(final String text, final TextPaint paint) {
-        if (TextUtils.isEmpty(text)) {
-            return 0.0f;
-        }
-        final int len = text.length();
-        final float[] widths = new float[len];
-        final int count = paint.getTextWidths(text, 0, len, widths);
-        float width = 0;
-        for (int i = 0; i < count; i++) {
-            width += widths[i];
-        }
-        return width;
+    final int len = text.length();
+    final float[] widths = new float[len];
+    final int count = paint.getTextWidths(text, 0, len, widths);
+    float width = 0;
+    for (int i = 0; i < count; i++) {
+      width += widths[i];
     }
+    return width;
+  }
 
-    /*public void setPreviewBackground(boolean customColorEnabled, int customColor) {
-        final Drawable background = getBackground();
-        if (customColorEnabled)
-            background.setColorFilter(customColor, PorterDuff.Mode.OVERLAY);
-    }*/
+  /*public void setPreviewBackground(boolean customColorEnabled, int customColor) {
+      final Drawable background = getBackground();
+      if (customColorEnabled)
+          background.setColorFilter(customColor, PorterDuff.Mode.OVERLAY);
+  }*/
 }

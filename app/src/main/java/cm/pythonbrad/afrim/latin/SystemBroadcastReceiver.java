@@ -20,22 +20,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import cm.pythonbrad.afrim.keyboard.KeyboardLayoutSet;
 
 /**
- * When the system locale has been changed, {@link Intent#ACTION_LOCALE_CHANGED} is received by
- * this receiver and the {@link KeyboardLayoutSet}'s cache is cleared.
+ * When the system locale has been changed, {@link Intent#ACTION_LOCALE_CHANGED} is received by this
+ * receiver and the {@link KeyboardLayoutSet}'s cache is cleared.
  */
 public final class SystemBroadcastReceiver extends BroadcastReceiver {
-    private static final String TAG = SystemBroadcastReceiver.class.getSimpleName();
+  private static final String TAG = SystemBroadcastReceiver.class.getSimpleName();
 
-    @Override
-    public void onReceive(final Context context, final Intent intent) {
-        final String intentAction = intent.getAction();
-        if (Intent.ACTION_LOCALE_CHANGED.equals(intentAction)) {
-            Log.i(TAG, "System locale changed");
-            KeyboardLayoutSet.onSystemLocaleChanged();
-        }
+  @Override
+  public void onReceive(final Context context, final Intent intent) {
+    final String intentAction = intent.getAction();
+    if (Intent.ACTION_LOCALE_CHANGED.equals(intentAction)) {
+      Log.i(TAG, "System locale changed");
+      KeyboardLayoutSet.onSystemLocaleChanged();
     }
+  }
 }

@@ -14,7 +14,21 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-    }
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.25.0"
+  }
+}
+
+apply plugin: "com.diffplug.spotless" 
+spotless {
+	java {
+            importOrder()
+            removeUnusedImports()
+            target 'app/src/*/java/**/*.java'
+	    // apply a specific flavor of google-java-format
+	    googleJavaFormat("1.19.2")
+	    // fix formatting of type annotations
+	    formatAnnotations()
+	  }
 }
 
 allprojects {
@@ -23,8 +37,4 @@ allprojects {
         google()
         maven { url 'https://jitpack.io' }
     }
-}
-
-tasks.register('clean', Delete) {
-    delete rootProject.buildDir
 }

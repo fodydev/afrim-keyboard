@@ -21,93 +21,90 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
-
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.keyboard.KeyboardTheme;
 import cm.pythonbrad.afrim.latin.settings.RadioButtonPreference.OnRadioButtonClickedListener;
 
-/**
- * "Keyboard theme" settings sub screen.
- */
+/** "Keyboard theme" settings sub screen. */
 public final class ThemeSettingsFragment extends SubScreenFragment
-        implements OnRadioButtonClickedListener {
-    private int mSelectedThemeId;
+    implements OnRadioButtonClickedListener {
+  private int mSelectedThemeId;
 
-    static class KeyboardThemePreference extends RadioButtonPreference {
-        final int mThemeId;
+  static class KeyboardThemePreference extends RadioButtonPreference {
+    final int mThemeId;
 
-        KeyboardThemePreference(final Context context, final String name, final int id) {
-            super(context);
-            setTitle(name);
-            mThemeId = id;
-        }
+    KeyboardThemePreference(final Context context, final String name, final int id) {
+      super(context);
+      setTitle(name);
+      mThemeId = id;
     }
+  }
 
-    static void updateKeyboardThemeSummary(final Preference pref) {
-        final Context context = pref.getContext();
-        final Resources res = context.getResources();
-        final KeyboardTheme keyboardTheme = KeyboardTheme.getKeyboardTheme(context);
-        final String[] keyboardThemeNames = res.getStringArray(R.array.keyboard_theme_names);
-        final int[] keyboardThemeIds = res.getIntArray(R.array.keyboard_theme_ids);
-        for (int index = 0; index < keyboardThemeIds.length; index++) {
-            if (keyboardTheme.mThemeId == keyboardThemeIds[index]) {
-                pref.setSummary(keyboardThemeNames[index]);
-                return;
-            }
-        }
+  static void updateKeyboardThemeSummary(final Preference pref) {
+    final Context context = pref.getContext();
+    final Resources res = context.getResources();
+    final KeyboardTheme keyboardTheme = KeyboardTheme.getKeyboardTheme(context);
+    final String[] keyboardThemeNames = res.getStringArray(R.array.keyboard_theme_names);
+    final int[] keyboardThemeIds = res.getIntArray(R.array.keyboard_theme_ids);
+    for (int index = 0; index < keyboardThemeIds.length; index++) {
+      if (keyboardTheme.mThemeId == keyboardThemeIds[index]) {
+        pref.setSummary(keyboardThemeNames[index]);
+        return;
+      }
     }
+  }
 
-    @Override
-    public void onCreate(final Bundle icicle) {
-        super.onCreate(icicle);
-        addPreferencesFromResource(R.xml.prefs_screen_theme);
-        final PreferenceScreen screen = getPreferenceScreen();
-        final Context context = getActivity();
-        final Resources res = getResources();
-        final String[] keyboardThemeNames = res.getStringArray(R.array.keyboard_theme_names);
-        final int[] keyboardThemeIds = res.getIntArray(R.array.keyboard_theme_ids);
-        for (int index = 0; index < keyboardThemeIds.length; index++) {
-            final KeyboardThemePreference pref = new KeyboardThemePreference(
-                    context, keyboardThemeNames[index], keyboardThemeIds[index]);
-            screen.addPreference(pref);
-            pref.setOnRadioButtonClickedListener(this);
-        }
-        final KeyboardTheme keyboardTheme = KeyboardTheme.getKeyboardTheme(context);
-        mSelectedThemeId = keyboardTheme.mThemeId;
+  @Override
+  public void onCreate(final Bundle icicle) {
+    super.onCreate(icicle);
+    addPreferencesFromResource(R.xml.prefs_screen_theme);
+    final PreferenceScreen screen = getPreferenceScreen();
+    final Context context = getActivity();
+    final Resources res = getResources();
+    final String[] keyboardThemeNames = res.getStringArray(R.array.keyboard_theme_names);
+    final int[] keyboardThemeIds = res.getIntArray(R.array.keyboard_theme_ids);
+    for (int index = 0; index < keyboardThemeIds.length; index++) {
+      final KeyboardThemePreference pref =
+          new KeyboardThemePreference(context, keyboardThemeNames[index], keyboardThemeIds[index]);
+      screen.addPreference(pref);
+      pref.setOnRadioButtonClickedListener(this);
     }
+    final KeyboardTheme keyboardTheme = KeyboardTheme.getKeyboardTheme(context);
+    mSelectedThemeId = keyboardTheme.mThemeId;
+  }
 
-    @Override
-    public void onRadioButtonClicked(final RadioButtonPreference preference) {
-        if (preference instanceof KeyboardThemePreference) {
-            final KeyboardThemePreference pref = (KeyboardThemePreference)preference;
-            mSelectedThemeId = pref.mThemeId;
-            updateSelected();
-        }
+  @Override
+  public void onRadioButtonClicked(final RadioButtonPreference preference) {
+    if (preference instanceof KeyboardThemePreference) {
+      final KeyboardThemePreference pref = (KeyboardThemePreference) preference;
+      mSelectedThemeId = pref.mThemeId;
+      updateSelected();
     }
+  }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateSelected();
-    }
+  @Override
+  public void onResume() {
+    super.onResume();
+    updateSelected();
+  }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        KeyboardTheme.saveKeyboardThemeId(mSelectedThemeId, getSharedPreferences());
-        Settings.removeKeyboardColor(getSharedPreferences());
-    }
+  @Override
+  public void onPause() {
+    super.onPause();
+    KeyboardTheme.saveKeyboardThemeId(mSelectedThemeId, getSharedPreferences());
+    Settings.removeKeyboardColor(getSharedPreferences());
+  }
 
-    private void updateSelected() {
-        final PreferenceScreen screen = getPreferenceScreen();
-        final int count = screen.getPreferenceCount();
-        for (int index = 0; index < count; index++) {
-            final Preference preference = screen.getPreference(index);
-            if (preference instanceof KeyboardThemePreference) {
-                final KeyboardThemePreference pref = (KeyboardThemePreference)preference;
-                final boolean selected = (mSelectedThemeId == pref.mThemeId);
-                pref.setSelected(selected);
-            }
-        }
+  private void updateSelected() {
+    final PreferenceScreen screen = getPreferenceScreen();
+    final int count = screen.getPreferenceCount();
+    for (int index = 0; index < count; index++) {
+      final Preference preference = screen.getPreference(index);
+      if (preference instanceof KeyboardThemePreference) {
+        final KeyboardThemePreference pref = (KeyboardThemePreference) preference;
+        final boolean selected = (mSelectedThemeId == pref.mThemeId);
+        pref.setSelected(selected);
+      }
     }
+  }
 }

@@ -16,22 +16,19 @@
 
 package cm.pythonbrad.afrim.latin.settings;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
-
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.latin.utils.ApplicationUtils;
 
 public final class SettingsFragment extends InputMethodSettingsFragment {
-    @Override
-    public void onCreate(final Bundle icicle) {
-        super.onCreate(icicle);
-        setHasOptionsMenu(true);
-        addPreferencesFromResource(R.xml.prefs);
-        final PreferenceScreen preferenceScreen = getPreferenceScreen();
-        preferenceScreen.setTitle(
-                ApplicationUtils.getActivityTitleResId(getActivity(), SettingsActivity.class));
-    }
+  @Override
+  public void onCreate(final Bundle icicle) {
+    super.onCreate(icicle);
+    setHasOptionsMenu(true);
+    addPreferencesFromResource(R.xml.prefs);
+    final PreferenceScreen preferenceScreen = getPreferenceScreen();
+    preferenceScreen.setTitle(
+        ApplicationUtils.getActivityTitleResId(getActivity(), SettingsActivity.class));
+  }
 }
