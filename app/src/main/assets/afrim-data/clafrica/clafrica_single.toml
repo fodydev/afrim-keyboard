@@ -1,0 +1,226 @@
+[info]
+name		=	"Clafrica single"
+description = 	"Clafrica code"
+authors		=	["Resulam <contact@resulam.com>"]
+website		=	"https://resulam.com"
+version		=	"2023-07-06"
+
+[core]
+auto_capitalize = true
+
+[data]
+"*n"		=		{ value = "ɲ", alias = ["_star_n"] }
+"..a"		=		"ä"
+"..af"		=		"ɑ̈"
+"..ai"		=		"ɛ̈"
+"..b"		=		"b̈"
+"..c"		=		"c̈"
+"..d"		=		"d̈"
+"..e"		=		"ë"
+"..eu"		=		"ə̈"
+"..f"		=		"f̈"
+"..g"		=		"g̈"
+"..h"		=		"ḧ"
+"..i"		=		"ï"
+"..j"		=		"j̈"
+"..k"		=		"k̈"
+"..l"		=		"l̈"
+"..m"		=		"m̈"
+"..n"		=		"n̈"
+"..o"		=		"ö"
+"..o*"		=		{ value = "ɔ̈", alias = ["..o_star_"] }
+"..p"		=		"p̈"
+"..q"		=		"q̈"
+"..r"		=		"r̈"
+"..s"		=		"s̈"
+"..t"		=		"ẗ"
+"..u"		=		"ü"
+"..uu"		=		"ʉ̈"
+"..v"		=		"v̈"
+"..w"		=		"ẅ"
+"..x"		=		"ẍ"
+"..y"		=		"ÿ"
+"..z"		=		"z̈"
+".?"		=		{ value = "ʔ", alias = ["?."] }
+".a"		=		"ȧ"
+".af"		=		"ɑ̇"
+".ai"		=		"ε̇"
+".b"		=		"ḃ"
+".c"		=		"ċ"
+".d"		=		"ḋ"
+".e"		=		"ė"
+".eu"		=		"ə̇"
+".f"		=		"ḟ"
+".g"		=		"ġ"
+".h"		=		"ḣ"
+".i"		=		"i̇"
+".j"		=		"j̇"
+".k"		=		"k̇"
+".l"		=		"l̇"
+".m"		=		"ṁ"
+".n"		=		"ṅ"
+".o"		=		"ȯ"
+".o*"		=		{ value = "ɔ̇", alias = [".o_star_"] }
+".p"		=		"ṗ"
+".q"		=		"q̇"
+".r"		=		"ṙ"
+".s"		=		"ṡ"
+".t"		=		"ṫ"
+".u"		=		"u̇"
+".uu"		=		"ʉ̇"
+".v"		=		"v̇"
+".w"		=		"ẇ"
+".x"		=		"ẋ"
+".y"		=		"ẏ"
+".z"		=		"ż"
+"12c"		=		"č"
+"12s"		=		"š"
+"1a_"		=		"à̠"
+"1af_"		=		"ɑ̠̀"
+"1ai_"		=		"ὲ̠"
+"1c"		=		"c̀"
+"1e_"		=		"è̠"
+"1eu_"		=		"ə̠̀"
+"1h"		=		"h̀"
+"1i_"		=		"ì̠"
+"1o*_"		=		{ value = "ɔ̠̀", alias = ["1o_star__"] }
+"1o_"		=		"ò̠"
+"1s"		=		"s̀"
+"1u_"		=		"ù̠"
+"1uu_"		=		"ʉ̠̀"
+"21c"		=		"ĉ"
+"21s"		=		"ŝ"
+"2a_"		=		"á̠"
+"2af_"		=		"ɑ̠́"
+"2ai_"		=		"έ̠"
+"a1"		=		"à"
+"a13"		=		"a᷅"
+"a2"		=		"á"
+"a23"		=		"a᷇"
+"a3"		=		"ā"
+"a32"		=		"a᷄"
+"a5"		=		{ value = "â", alias = ["5a", "a21", "21a"] }
+"a7"		=		{ value = "ǎ", alias = ["7a", "a12", "12a"] }
+"ae+"		=		"æ"
+"af"		=		"ɑ"
+"af1"		=		"ɑ̀"
+"af13"		=		"ɑ᷅"
+"af2"		=		"ɑ́"
+"af23"		=		"ɑ᷇"
+"af3"		=		"ɑ̄"
+"af32"		=		"ɑ᷄"
+"af5"		=		{ value = "ɑ̂", alias = ["5af", "21af", "af21"] }
+"af7"		=		{ value = "ɑ̌", alias = ["af12", "12af", "7af"] }
+"af~"		=		"ɑ̃"
+"ai"		=		"ε"
+"ai1"		=		"ɛ̀"
+"ai13"		=		"ɛ᷅"
+"ai2"		=		"έ"
+"ai23"		=		"ɛ᷇"
+"ai3"		=		"ɛ̄"
+"ai32"		=		"ɛ᷄"
+"ai5"		=		{ value = "ɛ̂", alias = ["5ai", "ai21", "21ai"] }
+"ai7"		=		{ value = "ɛ̌", alias = ["ai12", "12ai", "7ai"] }
+"ai~"		=		"ɛ̃"
+"a~"		=		"ã"
+"b*"		=		{ value = "ɓ", alias = ["b_star_"] }
+"c_"		=		{ value = "ç", alias = ["c_ced"] }
+"d*"		=		{ value = "ɗ", alias = ["d_star_"] }
+"e1"		=		"è"
+"e13"		=		"e᷅"
+"e2"		=		"é"
+"e23"		=		"e᷇"
+"e3"		=		"ē"
+"e32"		=		"e᷄"
+"e3_"		=		{ value = "ē̠", alias = ["e_3", "3e_"] }
+"e5"		=		{ value = "ê", alias = ["e21", "5e", "21e"] }
+"e7"		=		{ value = "ě", alias = ["12e", "7e", "e12"] }
+"e_"		=		"e̠"
+"eq."		=		"="
+"eu"		=		"ə"
+"eu1"		=		"ə̀"
+"eu13"		=		"ə᷅"
+"eu2"		=		"ə́"
+"eu23"		=		"ə᷇"
+"eu3"		=		"ə̄"
+"eu32"		=		"ə᷄"
+"eu5"		=		{ value = "ə̂", alias = ["5eu", "eu21", "21eu"] }
+"eu7"		=		{ value = "ə̌", alias = ["eu12", "7eu", "12eu"] }
+"e~"		=		"ẽ"
+"g+"		=		"ɣ"
+"i-"		=		"ɨ"
+"i-1"		=		{ value = "ɨ̀", alias = ["1i-"] }
+"i-2"		=		"ɨ́"
+"i-3"		=		"ɨ̄"
+"i-5"		=		{ value = "ɨ̂", alias = ["21i-"] }
+"i-7"		=		{ value = "ɨ̌", alias = ["12i-"] }
+"i1"		=		"ì"
+"i13"		=		"i᷅"
+"i2"		=		"í"
+"i23"		=		"i᷇"
+"i3"		=		"ī"
+"i32"		=		"i᷄"
+"i5"		=		{ value = "î", alias = ["i21", "21i", "5i"] }
+"i7"		=		{ value = "ǐ", alias = ["i12", "12i", "7i"] }
+"ia1"		=		{ value = "ìà", alias = ["1ia"] }
+"iaf"		=		"iɑ"
+"i~"		=		"ĩ"
+"m1"		=		{ value = "m̀", alias = ["1m"] }
+"m2"		=		"ḿ"
+"m3"		=		"m̄"
+"m5"		=		{ value = "m̂", alias = ["21m"] }
+"m7"		=		{ value = "m̌", alias = ["12m"] }
+"n*"		=		{ value = "ŋ", alias = ["n_star_"] }
+"n*1"		=		{ value = "ŋ̀", alias = ["n_star_1"] }
+"n*2"		=		{ value = "ŋ́", alias = ["n_star_2"] }
+"n*3"		=		{ value = "ŋ̄", alias = ["n_star_3"] }
+"n*5"		=		{ value = "ŋ̂", alias = ["n_star_5"] }
+"n*7"		=		{ value = "ŋ̌", alias = ["n_star_7"] }
+"n1"		=		{ value = "ǹ", alias = ["1n"] }
+"n2"		=		{ value = "ń", alias = ["2n"] }
+"n3"		=		{ value = "n̄", alias = ["3n"] }
+"n5"		=		{ value = "n̂", alias = ["21n"] }
+"n7"		=		{ value = "ň", alias = ["12n"] }
+"o*"		=		{ value = "ɔ", alias = ["o_star_"] }
+"o*1"		=		{ value = "ɔ̀", alias = ["o_star_1"] }
+"o*12"		=		{ value = "ɔ̌", alias = ["12o*", "o_star_7", "o*7", "o_star_12", "12o_star_"] }
+"o*13"		=		{ value = "ɔ᷅", alias = ["o_star_13"] }
+"o*2"		=		{ value = "ɔ́", alias = ["o_star_2"] }
+"o*23"		=		{ value = "ɔ᷇", alias = ["o_star_23"] }
+"o*3"		=		{ value = "ɔ̄", alias = ["o_star_3"] }
+"o*32"		=		{ value = "ɔ᷄", alias = ["o_star_32"] }
+"o*5"		=		{ value = "ɔ̂", alias = ["21o*", "o_star_5", "o*21", "o_star_21", "21o_star_"] }
+"o*7"		=		{ value = "ɔ̌", alias = ["12o*", "o_star_7", "o*12", "o_star_12", "12o_star_"] }
+"o*~"		=		"ɔ̃"
+"o/"		=		"ø"
+"o1"		=		"ò"
+"o13"		=		"o᷅"
+"o2"		=		"ó"
+"o23"		=		"o᷇"
+"o3"		=		"ō"
+"o32"		=		"o᷄"
+"o5"		=		{ value = "ô", alias = ["5o", "21o", "o21"] }
+"o7"		=		{ value = "ǒ", alias = ["o12", "7o", "12o"] }
+"oe+"		=		"œ"
+"o~"		=		"õ"
+"pluss"		=		"+"
+"sh+"		=		"ʃ"
+"u-"		=		{ value = "ʉ", alias = ["uu"] }
+"u-1"		=		{ value = "ʉ̀", alias = ["uu1"] }
+"u-2"		=		{ value = "ʉ́", alias = ["uu2"] }
+"u-3"		=		{ value = "ʉ̄", alias = ["uu3"] }
+"u-5"		=		{ value = "ʉ̂", alias = ["21uu", "uu5", "5uu", "uu21"] }
+"u-7"		=		{ value = "ʉ̌", alias = ["7uu", "uu12", "12uu", "uu7"] }
+"u1"		=		"ù"
+"u13"		=		"u᷅"
+"u2"		=		"ú"
+"u23"		=		"u᷇"
+"u3"		=		"ū"
+"u32"		=		"u᷄"
+"u5"		=		{ value = "û", alias = ["u21", "21u", "5u"] }
+"u7"		=		{ value = "ǔ", alias = ["12u", "u12", "7u"] }
+"ua1"		=		{ value = "ùà", alias = ["1ua"] }
+"uu13"		=		"ʉ᷅"
+"uu23"		=		"ʉ᷇"
+"uu32"		=		"ʉ᷄"
+"u~"		=		"ũ"

@@ -1,0 +1,20 @@
+[info]
+description = "Input Method for a QWERTY Keyboard Layout"
+source = "http://keyboards.ethiopic.org/specification/#mapping-punctuation"
+version = "2023-09-20"
+
+[core]
+auto_capitalize = false
+
+[data]
+":" = "፡"
+"::" = "።"
+"," = "፣"
+",," = "፥"
+";" = "፤"
+":-" = "፦"
+"'!" = "¡"
+":," = "፥"
+":#" = { value = "፨", alias = [":::"] }
+":?" = { value = "፧", alias = ["?"] }
+"." = "።"

@@ -1,0 +1,296 @@
+[info]
+description = "Amharic Input Method for a QWERTY Keyboard Layout"
+source = "http://keyboards.ethiopic.org/specification/#AppendixB"
+version = "2023-10-18"
+
+[core]
+auto_capitalize = false
+
+[data]
+"A" = "ዕ"
+"Aa" = { value = "ዓ", alias = ["AA"] }
+"Ae" = { value = "ዐ", alias = ["AE"] }
+"Ai" = { value = "ዒ", alias = ["AI"] }
+"Aie" = { value = "ዔ", alias = ["AiE", "AIe", "AIE"] }
+"Ao" = { value = "ዖ", alias = ["AO"] }
+"Au" = { value = "ዑ", alias = ["AU"] }
+"C" = "ጭ"
+"Ca" = { value = "ጫ", alias = ["CA"] }
+"Ce" = { value = "ጨ", alias = ["CE"] }
+"Ci" = { value = "ጪ", alias = ["CI"] }
+"Cie" = { value = "ጬ", alias = ["CiE", "CIe", "CIE"] }
+"Co" = { value = "ጮ", alias = ["CO"] }
+"Cu" = { value = "ጩ", alias = ["CU"] }
+"Cua" = { value = "ጯ", alias = ["CuA", "CUa", "CUA"] }
+"H" = "ሕ"
+"Ha" = { value = "ሓ", alias = ["HA"] }
+"He" = { value = "ሐ", alias = ["HE"] }
+"Hi" = { value = "ሒ", alias = ["HI"] }
+"Hie" = { value = "ሔ", alias = ["HiE", "HIe", "HIE"] }
+"Ho" = { value = "ሖ", alias = ["HO"] }
+"Hu" = { value = "ሑ", alias = ["HU"] }
+"Hua" = { value = "ሗ", alias = ["HuA", "HUa", "HUA"] }
+"K" = "ኽ"
+"Ka" = { value = "ኻ", alias = ["KA"] }
+"Ke" = { value = "ኸ", alias = ["KE"] }
+"Ki" = { value = "ኺ", alias = ["KI"] }
+"Kie" = { value = "ኼ", alias = ["KiE", "KIe", "KIE"] }
+"Ko" = { value = "ኾ", alias = ["KO"] }
+"Ku" = { value = "ኹ", alias = ["KU"] }
+"N" = "ኝ"
+"Na" = { value = "ኛ", alias = ["NA"] }
+"Ne" = { value = "ኘ", alias = ["NE"] }
+"Ni" = { value = "ኚ", alias = ["NI"] }
+"Nie" = { value = "ኜ", alias = ["NiE", "NIe", "NIE"] }
+"No" = { value = "ኞ", alias = ["NO"] }
+"Nu" = { value = "ኙ", alias = ["NU"] }
+"Nua" = { value = "ኟ", alias = ["NuA", "NUa", "NUA"] }
+"P" = "ጵ"
+"Pa" = { value = "ጳ", alias = ["PA"] }
+"Pe" = { value = "ጰ", alias = ["PE"] }
+"Pi" = { value = "ጲ", alias = ["PI"] }
+"Pie" = { value = "ጴ", alias = ["PiE", "PIe", "PIE"] }
+"Po" = { value = "ጶ", alias = ["PO"] }
+"Pu" = { value = "ጱ", alias = ["PU"] }
+"Pua" = { value = "ጷ", alias = ["PuA", "PUa", "PUA"] }
+"S" = "ጽ"
+"SS" = "ፅ"
+"SSa" = { value = "ፃ", alias = ["SSA"] }
+"SSe" = { value = "ፀ", alias = ["SSE"] }
+"SSi" = { value = "ፂ", alias = ["SSI"] }
+"SSie" = { value = "ፄ", alias = ["SSiE", "SSIe", "SSIE"] }
+"SSo" = { value = "ፆ", alias = ["SSO"] }
+"SSu" = { value = "ፁ", alias = ["SSU"] }
+"Sa" = { value = "ጻ", alias = ["SA"] }
+"Se" = { value = "ጸ", alias = ["SE"] }
+"Si" = { value = "ጺ", alias = ["SI"] }
+"Sie" = { value = "ጼ", alias = ["SiE", "SIe", "SIE"] }
+"So" = { value = "ጾ", alias = ["SO"] }
+"Su" = { value = "ጹ", alias = ["SU"] }
+"Sua" = { value = "ጿ", alias = ["SuA", "SUa", "SUA"] }
+"T" = "ጥ"
+"Ta" = { value = "ጣ", alias = ["TA"] }
+"Te" = { value = "ጠ", alias = ["TE"] }
+"Ti" = { value = "ጢ", alias = ["TI"] }
+"Tie" = { value = "ጤ", alias = ["TiE", "TIe", "TIE"] }
+"To" = { value = "ጦ", alias = ["TO"] }
+"Tu" = { value = "ጡ", alias = ["TU"] }
+"Tua" = { value = "ጧ", alias = ["TuA", "TUa", "TUA"] }
+"Z" = "ዥ"
+"Za" = { value = "ዣ", alias = ["ZA"] }
+"Ze" = { value = "ዠ", alias = ["ZE"] }
+"Zi" = { value = "ዢ", alias = ["ZI"] }
+"Zie" = { value = "ዤ", alias = ["ZiE", "ZIe", "ZIE"] }
+"Zo" = { value = "ዦ", alias = ["ZO"] }
+"Zu" = { value = "ዡ", alias = ["ZU"] }
+"Zua" = { value = "ዧ", alias = ["ZuA", "ZUa", "ZUA"] }
+"a" = "እ"
+"aa" = { value = "ኣ", alias = ["aA"] }
+"ae" = { value = "አ", alias = ["aE"] }
+"aeee" = { value = "ኧ", alias = ["aeeE", "aeEe", "aeEE", "aEee", "aEeE", "aEEe", "aEEE"] }
+"ai" = { value = "ኢ", alias = ["aI"] }
+"aie" = { value = "ኤ", alias = ["aiE", "aIe", "aIE"] }
+"ao" = { value = "ኦ", alias = ["aO"] }
+"au" = { value = "ኡ", alias = ["aU"] }
+"b" = { value = "ብ", alias = ["B"] }
+"ba" = { value = "ባ", alias = ["bA", "Ba", "BA"] }
+"be" = { value = "በ", alias = ["bE", "Be", "BE"] }
+"bi" = { value = "ቢ", alias = ["bI", "Bi", "BI"] }
+"bie" = { value = "ቤ", alias = ["biE", "bIe", "bIE", "Bie", "BiE", "BIe", "BIE"] }
+"bo" = { value = "ቦ", alias = ["bO", "Bo", "BO"] }
+"bu" = { value = "ቡ", alias = ["bU", "Bu", "BU"] }
+"bua" = { value = "ቧ", alias = ["buA", "bUa", "bUA", "Bua", "BuA", "BUa", "BUA"] }
+"c" = "ች"
+"ca" = { value = "ቻ", alias = ["cA"] }
+"ce" = { value = "ቸ", alias = ["cE"] }
+"ci" = { value = "ቺ", alias = ["cI"] }
+"cie" = { value = "ቼ", alias = ["ciE", "cIe", "cIE"] }
+"co" = { value = "ቾ", alias = ["cO"] }
+"cu" = { value = "ቹ", alias = ["cU"] }
+"cua" = { value = "ቿ", alias = ["cuA", "cUa", "cUA"] }
+"d" = { value = "ድ", alias = ["D"] }
+"da" = { value = "ዳ", alias = ["dA", "Da", "DA"] }
+"de" = { value = "ደ", alias = ["dE", "De", "DE"] }
+"di" = { value = "ዲ", alias = ["dI", "Di", "DI"] }
+"die" = { value = "ዴ", alias = ["diE", "dIe", "dIE", "Die", "DiE", "DIe", "DIE"] }
+"do" = { value = "ዶ", alias = ["dO", "Do", "DO"] }
+"du" = { value = "ዱ", alias = ["dU", "Du", "DU"] }
+"dua" = { value = "ዷ", alias = ["duA", "dUa", "dUA", "Dua", "DuA", "DUa", "DUA"] }
+"f" = { value = "ፍ", alias = ["F"] }
+"fa" = { value = "ፋ", alias = ["fA", "Fa", "FA"] }
+"fe" = { value = "ፈ", alias = ["fE", "Fe", "FE"] }
+"fi" = { value = "ፊ", alias = ["fI", "Fi", "FI"] }
+"fie" = { value = "ፌ", alias = ["fiE", "fIe", "fIE", "Fie", "FiE", "FIe", "FIE"] }
+"fo" = { value = "ፎ", alias = ["fO", "Fo", "FO"] }
+"fu" = { value = "ፉ", alias = ["fU", "Fu", "FU"] }
+"fua" = { value = "ፏ", alias = ["fuA", "fUa", "fUA", "Fua", "FuA", "FUa", "FUA"] }
+"g" = { value = "ግ", alias = ["G"] }
+"ga" = { value = "ጋ", alias = ["gA", "Ga", "GA"] }
+"ge" = { value = "ገ", alias = ["gE", "Ge", "GE"] }
+"gi" = { value = "ጊ", alias = ["gI", "Gi", "GI"] }
+"gie" = { value = "ጌ", alias = ["giE", "gIe", "gIE", "Gie", "GiE", "GIe", "GIE"] }
+"go" = { value = "ጎ", alias = ["gO", "Go", "GO"] }
+"gu" = { value = "ጉ", alias = ["gU", "Gu", "GU"] }
+"gua" = { value = "ጓ", alias = ["guA", "gUa", "gUA", "Gua", "GuA", "GUa", "GUA"] }
+"gue" = { value = "ጐ", alias = ["guE", "gUe", "gUE", "Gue", "GuE", "GUe", "GUE"] }
+"gui" = { value = "ጒ", alias = ["guI", "gUi", "gUI", "Gui", "GuI", "GUi", "GUI"] }
+"guie" = { value = "ጔ", alias = ["guiE", "guIe", "guIE", "gUie", "gUiE", "gUIe", "gUIE", "Guie", "GuiE", "GuIe", "GuIE", "GUie", "GUiE", "GUIe", "GUIE"] }
+"guu" = { value = "ጕ", alias = ["guU", "gUu", "gUU", "Guu", "GuU", "GUu", "GUU"] }
+"h" = "ህ"
+"ha" = { value = "ሃ", alias = ["hA"] }
+"he" = { value = "ሀ", alias = ["hE"] }
+"hh" = "ኅ"
+"hha" = { value = "ኃ", alias = ["hhA"] }
+"hhe" = { value = "ኀ", alias = ["hhE"] }
+"hhi" = { value = "ኂ", alias = ["hhI"] }
+"hhie" = { value = "ኄ", alias = ["hhiE", "hhIe", "hhIE"] }
+"hho" = { value = "ኆ", alias = ["hhO"] }
+"hhu" = { value = "ኁ", alias = ["hhU"] }
+"hhua" = { value = "ኋ", alias = ["hhuA", "hhUa", "hhUA"] }
+"hhue" = { value = "ኈ", alias = ["hhuE", "hhUe", "hhUE"] }
+"hhui" = { value = "ኊ", alias = ["hhuI", "hhUi", "hhUI"] }
+"hhuie" = { value = "ኌ", alias = ["hhuiE", "hhuIe", "hhuIE", "hhUie", "hhUiE", "hhUIe", "hhUIE"] }
+"hhuu" = { value = "ኍ", alias = ["hhuU", "hhUu", "hhUU"] }
+"hi" = { value = "ሂ", alias = ["hI"] }
+"hie" = { value = "ሄ", alias = ["hiE", "hIe", "hIE"] }
+"ho" = { value = "ሆ", alias = ["hO"] }
+"hu" = { value = "ሁ", alias = ["hU"] }
+"hua" = { value = "ኋ", alias = ["huA", "hUa", "hUA"] }
+"hue" = { value = "ኈ", alias = ["huE", "hUe", "hUE"] }
+"hui" = { value = "ኊ", alias = ["huI", "hUi", "hUI"] }
+"huie" = { value = "ኌ", alias = ["huiE", "huIe", "huIE", "hUie", "hUiE", "hUIe", "hUIE"] }
+"huu" = { value = "ኍ", alias = ["huU", "hUu", "hUU"] }
+"j" = { value = "ጅ", alias = ["J"] }
+"ja" = { value = "ጃ", alias = ["jA", "Ja", "JA"] }
+"je" = { value = "ጀ", alias = ["jE", "Je", "JE"] }
+"ji" = { value = "ጂ", alias = ["jI", "Ji", "JI"] }
+"jie" = { value = "ጄ", alias = ["jiE", "jIe", "jIE", "Jie", "JiE", "JIe", "JIE"] }
+"jo" = { value = "ጆ", alias = ["jO", "Jo", "JO"] }
+"ju" = { value = "ጁ", alias = ["jU", "Ju", "JU"] }
+"jua" = { value = "ጇ", alias = ["juA", "jUa", "jUA", "Jua", "JuA", "JUa", "JUA"] }
+"k" = "ክ"
+"ka" = { value = "ካ", alias = ["kA"] }
+"ke" = { value = "ከ", alias = ["kE"] }
+"ki" = { value = "ኪ", alias = ["kI"] }
+"kie" = { value = "ኬ", alias = ["kiE", "kIe", "kIE"] }
+"ko" = { value = "ኮ", alias = ["kO"] }
+"ku" = { value = "ኩ", alias = ["kU"] }
+"kua" = { value = "ኳ", alias = ["kuA", "kUa", "kUA"] }
+"kue" = { value = "ኰ", alias = ["kuE", "kUe", "kUE"] }
+"kui" = { value = "ኲ", alias = ["kuI", "kUi", "kUI"] }
+"kuie" = { value = "ኴ", alias = ["kuiE", "kuIe", "kuIE", "kUie", "kUiE", "kUIe", "kUIE"] }
+"kuu" = { value = "ኵ", alias = ["kuU", "kUu", "kUU"] }
+"l" = { value = "ል", alias = ["L"] }
+"la" = { value = "ላ", alias = ["lA", "La", "LA"] }
+"le" = { value = "ለ", alias = ["lE", "Le", "LE"] }
+"li" = { value = "ሊ", alias = ["lI", "Li", "LI"] }
+"lie" = { value = "ሌ", alias = ["liE", "lIe", "lIE", "Lie", "LiE", "LIe", "LIE"] }
+"lo" = { value = "ሎ", alias = ["lO", "Lo", "LO"] }
+"lu" = { value = "ሉ", alias = ["lU", "Lu", "LU"] }
+"lua" = { value = "ሏ", alias = ["luA", "lUa", "lUA", "Lua", "LuA", "LUa", "LUA"] }
+"m" = { value = "ም", alias = ["M"] }
+"ma" = { value = "ማ", alias = ["mA", "Ma", "MA"] }
+"me" = { value = "መ", alias = ["mE", "Me", "ME"] }
+"mi" = { value = "ሚ", alias = ["mI", "Mi", "MI"] }
+"mie" = { value = "ሜ", alias = ["miE", "mIe", "mIE", "Mie", "MiE", "MIe", "MIE"] }
+"mo" = { value = "ሞ", alias = ["mO", "Mo", "MO"] }
+"mu" = { value = "ሙ", alias = ["mU", "Mu", "MU"] }
+"mua" = { value = "ሟ", alias = ["muA", "mUa", "mUA", "Mua", "MuA", "MUa", "MUA"] }
+"n" = "ን"
+"na" = { value = "ና", alias = ["nA"] }
+"ne" = { value = "ነ", alias = ["nE"] }
+"ni" = { value = "ኒ", alias = ["nI"] }
+"nie" = { value = "ኔ", alias = ["niE", "nIe", "nIE"] }
+"no" = { value = "ኖ", alias = ["nO"] }
+"nu" = { value = "ኑ", alias = ["nU"] }
+"nua" = { value = "ኗ", alias = ["nuA", "nUa", "nUA"] }
+"p" = "ፕ"
+"pa" = { value = "ፓ", alias = ["pA"] }
+"pe" = { value = "ፐ", alias = ["pE"] }
+"pi" = { value = "ፒ", alias = ["pI"] }
+"pie" = { value = "ፔ", alias = ["piE", "pIe", "pIE"] }
+"po" = { value = "ፖ", alias = ["pO"] }
+"pu" = { value = "ፑ", alias = ["pU"] }
+"pua" = { value = "ፗ", alias = ["puA", "pUa", "pUA"] }
+"q" = { value = "ቅ", alias = ["Q"] }
+"qa" = { value = "ቃ", alias = ["qA", "Qa", "QA"] }
+"qe" = { value = "ቀ", alias = ["qE", "Qe", "QE"] }
+"qi" = { value = "ቂ", alias = ["qI", "Qi", "QI"] }
+"qie" = { value = "ቄ", alias = ["qiE", "qIe", "qIE", "Qie", "QiE", "QIe", "QIE"] }
+"qo" = { value = "ቆ", alias = ["qO", "Qo", "QO"] }
+"qu" = { value = "ቁ", alias = ["qU", "Qu", "QU"] }
+"qua" = { value = "ቋ", alias = ["quA", "qUa", "qUA", "Qua", "QuA", "QUa", "QUA"] }
+"que" = { value = "ቈ", alias = ["quE", "qUe", "qUE", "Que", "QuE", "QUe", "QUE"] }
+"qui" = { value = "ቊ", alias = ["quI", "qUi", "qUI", "Qui", "QuI", "QUi", "QUI"] }
+"quie" = { value = "ቌ", alias = ["quiE", "quIe", "quIE", "qUie", "qUiE", "qUIe", "qUIE", "Quie", "QuiE", "QuIe", "QuIE", "QUie", "QUiE", "QUIe", "QUIE"] }
+"quu" = { value = "ቍ", alias = ["quU", "qUu", "qUU", "Quu", "QuU", "QUu", "QUU"] }
+"r" = { value = "ር", alias = ["R"] }
+"ra" = { value = "ራ", alias = ["rA", "Ra", "RA"] }
+"re" = { value = "ረ", alias = ["rE", "Re", "RE"] }
+"ri" = { value = "ሪ", alias = ["rI", "Ri", "RI"] }
+"rie" = { value = "ሬ", alias = ["riE", "rIe", "rIE", "Rie", "RiE", "RIe", "RIE"] }
+"ro" = { value = "ሮ", alias = ["rO", "Ro", "RO"] }
+"ru" = { value = "ሩ", alias = ["rU", "Ru", "RU"] }
+"rua" = { value = "ሯ", alias = ["ruA", "rUa", "rUA", "Rua", "RuA", "RUa", "RUA"] }
+"s" = "ስ"
+"sa" = { value = "ሳ", alias = ["sA"] }
+"se" = { value = "ሰ", alias = ["sE"] }
+"si" = { value = "ሲ", alias = ["sI"] }
+"sie" = { value = "ሴ", alias = ["siE", "sIe", "sIE"] }
+"so" = { value = "ሶ", alias = ["sO"] }
+"ss" = "ሥ"
+"ssa" = { value = "ሣ", alias = ["ssA"] }
+"sse" = { value = "ሠ", alias = ["ssE"] }
+"ssi" = { value = "ሢ", alias = ["ssI"] }
+"ssie" = { value = "ሤ", alias = ["ssiE", "ssIe", "ssIE"] }
+"sso" = { value = "ሦ", alias = ["ssO"] }
+"ssu" = { value = "ሡ", alias = ["ssU"] }
+"ssua" = { value = "ሧ", alias = ["ssuA", "ssUa", "ssUA"] }
+"su" = { value = "ሱ", alias = ["sU"] }
+"sua" = { value = "ሷ", alias = ["suA", "sUa", "sUA"] }
+"t" = "ት"
+"ta" = { value = "ታ", alias = ["tA"] }
+"te" = { value = "ተ", alias = ["tE"] }
+"ti" = { value = "ቲ", alias = ["tI"] }
+"tie" = { value = "ቴ", alias = ["tiE", "tIe", "tIE"] }
+"to" = { value = "ቶ", alias = ["tO"] }
+"tu" = { value = "ቱ", alias = ["tU"] }
+"tua" = { value = "ቷ", alias = ["tuA", "tUa", "tUA"] }
+"v" = { value = "ቭ", alias = ["V"] }
+"va" = { value = "ቫ", alias = ["vA", "Va", "VA"] }
+"ve" = { value = "ቨ", alias = ["vE", "Ve", "VE"] }
+"vi" = { value = "ቪ", alias = ["vI", "Vi", "VI"] }
+"vie" = { value = "ቬ", alias = ["viE", "vIe", "vIE", "Vie", "ViE", "VIe", "VIE"] }
+"vo" = { value = "ቮ", alias = ["vO", "Vo", "VO"] }
+"vu" = { value = "ቩ", alias = ["vU", "Vu", "VU"] }
+"vua" = { value = "ቯ", alias = ["vuA", "vUa", "vUA", "Vua", "VuA", "VUa", "VUA"] }
+"w" = { value = "ው", alias = ["W"] }
+"wa" = { value = "ዋ", alias = ["wA", "Wa", "WA"] }
+"we" = { value = "ወ", alias = ["wE", "We", "WE"] }
+"wi" = { value = "ዊ", alias = ["wI", "Wi", "WI"] }
+"wie" = { value = "ዌ", alias = ["wiE", "wIe", "wIE", "Wie", "WiE", "WIe", "WIE"] }
+"wo" = { value = "ዎ", alias = ["wO", "Wo", "WO"] }
+"wu" = { value = "ዉ", alias = ["wU", "Wu", "WU"] }
+"x" = { value = "ሽ", alias = ["X"] }
+"xa" = { value = "ሻ", alias = ["xA", "Xa", "XA"] }
+"xe" = { value = "ሸ", alias = ["xE", "Xe", "XE"] }
+"xi" = { value = "ሺ", alias = ["xI", "Xi", "XI"] }
+"xie" = { value = "ሼ", alias = ["xiE", "xIe", "xIE", "Xie", "XiE", "XIe", "XIE"] }
+"xo" = { value = "ሾ", alias = ["xO", "Xo", "XO"] }
+"xu" = { value = "ሹ", alias = ["xU", "Xu", "XU"] }
+"xua" = { value = "ሿ", alias = ["xuA", "xUa", "xUA", "Xua", "XuA", "XUa", "XUA"] }
+"y" = { value = "ይ", alias = ["Y"] }
+"ya" = { value = "ያ", alias = ["yA", "Ya", "YA"] }
+"ye" = { value = "የ", alias = ["yE", "Ye", "YE"] }
+"yi" = { value = "ዪ", alias = ["yI", "Yi", "YI"] }
+"yie" = { value = "ዬ", alias = ["yiE", "yIe", "yIE", "Yie", "YiE", "YIe", "YIE"] }
+"yo" = { value = "ዮ", alias = ["yO", "Yo", "YO"] }
+"yu" = { value = "ዩ", alias = ["yU", "Yu", "YU"] }
+"z" = "ዝ"
+"za" = { value = "ዛ", alias = ["zA"] }
+"ze" = { value = "ዘ", alias = ["zE"] }
+"zi" = { value = "ዚ", alias = ["zI"] }
+"zie" = { value = "ዜ", alias = ["ziE", "zIe", "zIE"] }
+"zo" = { value = "ዞ", alias = ["zO"] }
+"zu" = { value = "ዙ", alias = ["zU"] }
+"zua" = { value = "ዟ", alias = ["zuA", "zUa", "zUA"] }

@@ -1,0 +1,15 @@
+[info]
+description = "Ge'ez Config File"
+version = "2023-10-02"
+
+[core]
+auto_capitalize = false
+buffer_size = 64
+auto_commit = true
+
+[data]
+geez = { path = "./code.toml" }
+punctuation = { path = "./punctuation.toml" }
+
+[translators]
+numerals = "scripts/numerals.rhai"

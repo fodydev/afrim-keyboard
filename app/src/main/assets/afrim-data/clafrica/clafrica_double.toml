@@ -1,0 +1,108 @@
+[info]
+name		=	"Clafrica double"
+description = 	"Clafrica code for speed typing of double characters"
+authors		=	["Resulam <contact@resulam.com>"]
+website		=	"https://resulam.com"
+version		=	"2023-07-06"
+
+[core]
+auto_capitalize = true
+
+[data]
+"a11"		=		{ value = "àà", alias = ["1aa", "aa1"] }
+"a22"		=		{ value = "áá", alias = ["2aa", "aa2"] }
+"a33"		=		{ value = "āā", alias = ["3aa", "aa3"] }
+"a55"		=		{ value = "ââ", alias = ["5aa", "aa5"] }
+"a77"		=		{ value = "ǎǎ", alias = ["7aa", "aa7"] }
+
+"aff"		=		"ɑɑ"
+"aff1"		=		{ value = "ɑ̀ɑ̀", alias = ["1aff", "af11"] }
+"aff2"		=		{ value = "ɑ́ɑ́", alias = ["2aff", "af22"] }
+"aff3"		=		{ value = "ɑ̄ɑ̄", alias = ["3aff", "af33"] }
+"aff5"		=		{ value = "ɑ̂ɑ̂", alias = ["5aff", "af55"] }
+"aff7"		=		{ value = "ɑ̌ɑ̌", alias = ["7aff", "af77"] }
+
+"ai11"		=		{ value = "ɛ̀ɛ̀", alias = ["1ai", "ai11"] }
+"ai22"		=		{ value = "έέ", alias = ["2ai", "ai22"] }
+"ai33"		=		{ value = "ɛ̄ɛ̄", alias = ["3ai", "ai33"] }
+"ai55"		=		{ value = "ɛ̂ɛ̂", alias = ["5ai", "ai55"] }
+"ai77"		=		{ value = "ɛ̌ɛ̌", alias = ["7ai", "ai77"] }
+
+"e11"		=		{ value = "èè", alias = ["1ee", "ee1"] }
+"e22"		=		{ value = "éé", alias = ["2ee", "ee2"] }
+"e33"		=		{ value = "ēē", alias = ["3ee", "ee3"] }
+"e55"		=		{ value = "êê", alias = ["5ee", "ee5"] }
+"e77"		=		{ value = "ěě", alias = ["7ee", "ee7"] }
+
+"eu11"		=		{ value = "ə̀ə̀", alias = ["1eu"] }
+"eu22"		=		{ value = "ə́ə́", alias = ["2eu"] }
+"eu33"		=		{ value = "ə̄ə̄", alias = ["3eu"] }
+"eu55"		=		{ value = "ə̂ə̂", alias = ["5eu"] }
+"eu77"		=		{ value = "ə̌ə̌", alias = ["7eu"] }
+
+"i11"		=		{ value = "ìì", alias = ["1ii", "ii1"] }
+"i22"		=		{ value = "íí", alias = ["2ii", "ii2"] }
+"i33"		=		{ value = "īī", alias = ["3ii", "ii3"] }
+"i55"		=		{ value = "îî", alias = ["5ii", "ii5"] }
+"i77"		=		{ value = "ǐǐ", alias = ["7ii", "ii7"] }
+
+"ia1"		=		{ value = "ìà", alias = ["1ia"] }
+"ia2"		=		{ value = "íá", alias = ["2ia"] }
+"ia3"		=		{ value = "īā", alias = ["3ia"] }
+"ia5"		=		{ value = "îâ", alias = ["5ia"] }
+"ia7"		=		{ value = "ǐǎ", alias = ["7ia"] }
+
+"iaf1"		=		{ value = "ìɑ̀", alias = ["1iaf"] }
+"iaf2"		=		{ value = "íɑ́", alias = ["2iaf"] }
+"iaf3"		=		{ value = "īɑ̄", alias = ["3iaf"] }
+"iaf5"		=		{ value = "îɑ̂", alias = ["5iaf"] }
+"iaf7"		=		{ value = "ǐɑ̌", alias = ["7iaf"] }
+
+"ie1"		=		{ value = "ìè", alias = ["1ie"] }
+"ie2"		=		{ value = "íé", alias = ["2ie"] }
+"ie3"		=		{ value = "īē", alias = ["3ie"] }
+"ie5"		=		{ value = "îê", alias = ["5ie"] }
+"ie7"		=		{ value = "ǐě", alias = ["7ie"] }
+
+"o*11"		=		{ value = "ɔ̀ɔ̀", alias = ["o_star_11"] }
+"o*22"		=		{ value = "ɔ́ɔ́", alias = ["o_star_22"] }
+"o*33"		=		{ value = "ɔ̄ɔ̄", alias = ["o_star_33"] }
+"o*55"		=		{ value = "ɔ̂ɔ̂", alias = ["o_star_55"] }
+"o*77"		=		{ value = "ɔ̌ɔ̌", alias = ["o_star_77"] }
+
+"o11"		=		{ value = "òò", alias = ["1oo", "oo1"] }
+"o22"		=		{ value = "óó", alias = ["2oo", "oo2"] }
+"o33"		=		{ value = "ōō", alias = ["3oo", "oo3"] }
+"o55"		=		{ value = "ôô", alias = ["5oo", "oo5"] }
+"o77"		=		{ value = "ǒǒ", alias = ["7oo", "oo7"] }
+
+"u-11"		=		{ value = "ʉ̀ʉ̀", alias = ["1uu", "uu11"] }
+"u-22"		=		{ value = "ʉ́ʉ́", alias = ["2uu", "uu22"] }
+"u-33"		=		{ value = "ʉ̄ʉ̄", alias = ["3uu", "uu33"] }
+"u-55"		=		{ value = "ʉ̂ʉ̂", alias = ["5uu", "uu55"] }
+"u-77"		=		{ value = "ʉ̌ʉ̌", alias = ["7uu", "uu77"] }
+
+"u11"		=		"ùù"
+"u22"		=		"úú"
+"u33"		=		"ūū"
+"u55"		=		"ûû"
+"u77"		=		"ǔǔ"
+
+"ua1"		=		{ value = "ùà", alias = ["1ua"] }
+"ua2"		=		{ value = "úá", alias = ["2ua"] }
+"ua3"		=		{ value = "ūā", alias = ["3ua"] }
+"ua5"		=		{ value = "ûâ", alias = ["5ua"] }
+"ua7"		=		{ value = "ǔǎ", alias = ["7ua"] }
+
+"uaf1"		=		{ value = "ùɑ̀", alias = ["1uaf"] }
+"uaf2"		=		{ value = "úɑ́", alias = ["2uaf"] }
+"uaf3"		=		{ value = "ūɑ̄", alias = ["3uaf"] }
+"uaf5"		=		{ value = "ûɑ̂", alias = ["5uaf"] }
+"uaf7"		=		{ value = "ǔɑ̌", alias = ["7uaf"] }
+
+"uuaf"		=		"ʉɑ"
+"uuaf1"		=		{ value = "ʉ̀ɑ̀", alias = ["1uuaf"] }
+"uuaf2"		=		{ value = "ʉ́ɑ́", alias = ["2uuaf"] }
+"uuaf3"		=		{ value = "ʉ̄ɑ̄", alias = ["3uuaf"] }
+"uuaf5"		=		{ value = "ʉ̂ɑ̂", alias = ["5uuaf"] }
+"uuaf7"		=		{ value = "ʉ̌ɑ̌", alias = ["7uuaf"] }

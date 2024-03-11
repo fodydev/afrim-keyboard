@@ -1,0 +1,21 @@
+[info]
+name		=	"nufi"
+description = 	"Nufi Config File"
+authors		=	["Resulam <contact@resulam.com>"]
+website		=	"https://resulam.com"
+version		=	"2023-10-02"
+
+[core]
+auto_capitalize = true
+auto_commit = true
+buffer_size = 64
+
+[translation]
+sms = { path = "./nufi_sms.toml" }
+
+[translators]
+date = "./scripts/datetime/date.rhai"
+numerals = "./scripts/numerals.rhai"
+
+[data]
+clafrica = { path = "../clafrica/clafrica.toml" }

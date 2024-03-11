@@ -1,0 +1,14 @@
+[info]
+name = "custom"
+description = "Custom Afrim Dataset"
+usage = "Reserved for dataset not take in account by default."
+
+[core]
+auto_commit = true
+
+[code]
+
+[translators]
+
+[translation]
+afrim = "Hello World!"

@@ -1,0 +1,15 @@
+[info]
+name		=	"Clafrica"
+description = 	"Clafrica Config File"
+authors		=	["Resulam <contact@resulam.com>"]
+website		=	"https://resulam.com"
+version = "2023-10-02"
+
+[core]
+auto_capitalize = true
+buffer_size = 64
+auto_commit = false
+
+[data]
+single = { path = "./clafrica_single.toml" }
+double = { path = "./clafrica_double.toml" }
