@@ -17,20 +17,33 @@ The project is in development and not ready to use.
 
 ## About
 
-Afrim Keyboard is an android IME based on the [Afrim](https://github.com/pythonbrad/afrim) rust library. It is designed to protect the native language of various local dialects of Africa and is a universal phonetic-based input method engine.
+Afrim Keyboard is a versatile keyboard for Android users who wish to use African languages to type messages, compose emails and generally prefer to use them in addition to English on their phone.
+ You can use this application to type anywhere in your phone that you would normally type in English
 
-Features:
-- [x] Easy to use interface
-- [x] Adjustable keyboard height for more screen space
-- [x] Number row
-- [x] Swipe space to move pointer
-- [x] Delete swipe
-- [x] Custom theme colors
-- [x] Ads-free
-- [ ] Emojis
+### Features:
+- [x] 📚 Customizable dictionary
+- [x] 🏠 Easy to use interface
+- [x] 🥎 Adjustable keyboard height for more screen space
+- [x] ⌨️ PC keyboard
+- [x] 🎨 Custom theme colors
+- [x] 📺 Ads-free
+- [ ] 😄 Emojis
 - [ ] GIFs
-- [ ] Spell checker
-- [ ] Swipe typing
+- [ ] ☑️ Auto-suggestion / Auto-correction / Auto-completion
+- [ ] ☁️ Full immersion mode for non-latin languages. (🚧 Experimental 🚧)
+
+### What african languages (and layouts) are supported ?
+
+- 🇪🇹 Amharic Keyboard - Transliteration
+- 🇨🇲 Clafrica Keyboard - Transliteration
+- 🇪🇹 Geez Keyboard - Transliteration
+- 🇨🇲 Nufi Keyboard (Fe'efe'e) - Transliteration
+
+### What is a keyboard layout ?
+Afrim keyboard provides multiple "keyboard layouts".
+ This means that you will have different ways to type in your native language.
+ Transliteration allows you to type out words using English characters, but will automatically transform the words to your native language.
+ For example, if you type "Afrim" in English while using Amharic transliteration keyboard, it will transform it to ዐፍሪም correctly.
 
 ## Downloads
 
@@ -41,9 +54,14 @@ Features:
 
 ## Getting Started for developer
 
+### About
+Afrim Keyboard is an android IME based on the [Afrim](https://github.com/pythonbrad/afrim) rust library.
+ It is designed to protect the native language of various local dialects of Africa and is a universal phonetic-based input method engine.
+
 ### Prepare
 
-Android SDK and Android NDK should be correctly installed and configured. If you are new to Android development, please install Android Studio.
+Android SDK and Android NDK should be correctly installed and configured.
+ If you are new to Android development, please install Android Studio.
 
 ### Build
 
@@ -60,7 +78,8 @@ Symbolic links will be created according to current build configurations, develo
   git config --global core.symlinks true
   ```
 
-If you cannot or wouldn't like to enable anything, it doesn't matter. Copying will be used instead when error on creating symbolic links.
+If you cannot or wouldn't like to enable anything, it doesn't matter.
+ Copying will be used instead when error on creating symbolic links.
 
 </details>
 
@@ -123,7 +142,5 @@ Other issues:
 Your [contribution](CONTRIBUTING.md) are welcome ~ ! :tada:
 
 ### Credits
-
-Licensed under Apache License Version 2
 
 This keyboard is based on Simple keyboard. You can get the original source code from https://github.com/rkkr/simple-keyboard
