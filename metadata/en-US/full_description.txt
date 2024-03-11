@@ -2,11 +2,14 @@ Afrim Keyboard is a versatile keyboard for Android users who wish to use African
 You can use this application to type anywhere in your phone that you would normally type in English
 
 Features:
-* Easy to use interface
-* Adjustable keyboard height for more screen space
-* Custom theme colors
-* Ads-free
-* Support the afrim dataset
+
+- 📚 Customizable dictionary
+- 🏠 Easy to use interface
+- 🥎 Adjustable keyboard height for more screen space
+- ⌨️ PC keyboard
+- 🎨 Custom theme colors
+- 📺 Ads-free
+- 😄 Emojis
 
 To enable the keyboard:
 * Open "Afrim Keyboard" from your launcher
