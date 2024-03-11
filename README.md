@@ -21,27 +21,23 @@ Afrim Keyboard is a versatile keyboard for Android users who wish to use African
  You can use this application to type anywhere in your phone that you would normally type in English
 
 ### Features:
-- [x] Customizable dictionary
-- [x] Easy to use interface
-- [x] Adjustable keyboard height for more screen space
-- [x] Number row
-- [x] Swipe space to move pointer
-- [x] Delete swipe
-- [x] Custom theme colors
-- [x] Ads-free
-- [ ] Emojis
+- [x] 📚 Customizable dictionary
+- [x] 🏠 Easy to use interface
+- [x] 🥎 Adjustable keyboard height for more screen space
+- [x] ⌨️ PC keyboard
+- [x] 🎨 Custom theme colors
+- [x] 📺 Ads-free
+- [ ] 😄 Emojis
 - [ ] GIFs
-- [ ] Spell checker
-- [ ] Swipe typing
-- [ ] Auto-suggestion / Auto-correction / Auto-completion
-- [ ] Full immersion mode for non-latin languages. (🚧 Experimental 🚧)
+- [ ] ☑️ Auto-suggestion / Auto-correction / Auto-completion
+- [ ] ☁️ Full immersion mode for non-latin languages. (🚧 Experimental 🚧)
 
 ### What african languages (and layouts) are supported ?
 
-- Amharic Keyboard - Transliteration
-- Clafrica Keyboard - Transliteration
-- Geez Keyboard - Transliteration
-- Nufi Keyboard (Fe'efe'e) - Transliteration
+- 🇪🇹 Amharic Keyboard - Transliteration
+- 🇨🇲 Clafrica Keyboard - Transliteration
+- 🇪🇹 Geez Keyboard - Transliteration
+- 🇨🇲 Nufi Keyboard (Fe'efe'e) - Transliteration
 
 ### What is a keyboard layout ?
 Afrim keyboard provides multiple "keyboard layouts".
