@@ -578,6 +578,8 @@ public class LatinIME extends InputMethodService
   public void onWindowShown() {
     super.onWindowShown();
     if (isInputViewShown()) setNavigationBarColor();
+    // We assume that the cursor has been moved and we clear the afrim.
+    mAfrim.clear();
   }
 
   @Override
