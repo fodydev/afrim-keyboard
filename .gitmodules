@@ -1,0 +1,3 @@
+[submodule "app/src/main/assets/afrim-data"]
+	path = app/src/main/assets/afrim-data
+	url = https://github.com/pythonbrad/afrim-data
