@@ -73,7 +73,7 @@ impl Afrim {
 
     /// Process the keyboard event.
     pub fn process_key(&mut self, key: &str, state: &str) -> Result<(bool, bool), String> {
-        let key_event = utils::parse_event(key, state)?;
+        let key_event = utils::deserialize_event(key, state)?;
         let status = self.preprocessor.process(key_event);
 
         Ok(status)
@@ -88,7 +88,8 @@ impl Afrim {
     pub fn next_command(&mut self) -> String {
         self.preprocessor
             .pop_queue()
-            .map(utils::parse_command)
+            .as_ref()
+            .map(utils::serialize_command)
             .unwrap_or("\"NOP\"".to_owned())
     }
 
@@ -152,7 +153,7 @@ mod utils {
     use std::str::FromStr;
 
     /// Deserializes the KeyboardEvent.
-    pub fn parse_event(key: &str, state: &str) -> Result<KeyboardEvent, String> {
+    pub fn deserialize_event(key: &str, state: &str) -> Result<KeyboardEvent, String> {
         let event = KeyboardEvent {
             key: Key::from_str(key).map_err(|err| {
                 format!("[preprocessor] Unrecognized key `{key}`.\nCaused by:\n\t{err}.")
@@ -167,7 +168,7 @@ mod utils {
     }
 
     /// Converts an afrim command to speudo code.
-    pub fn parse_command(command: Command) -> String {
-        serde_json::to_string(&command).unwrap()
+    pub fn serialize_command(command: &Command) -> String {
+        serde_json::to_string(command).unwrap()
     }
 }
