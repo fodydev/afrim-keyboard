@@ -11,6 +11,8 @@ mod android {
         JNIEnv,
     };
 
+    const AFRIM_NOT_CONFIGURED: &str = "Afrim singleton is not yet configured.";
+
     // Singleton
     #[no_mangle]
     pub unsafe extern "C" fn Java_cm_pythonbrad_afrim_core_Afrim_nativeInit(
@@ -57,7 +59,7 @@ mod android {
             }
             Err(err) => {
                 log.e(&format!(
-                    "Error while the updating of the afrim singleton: {err}",
+                    "Error while the updating of the afrim singleton: {err:?}",
                 ));
 
                 0
@@ -105,11 +107,11 @@ mod android {
                     return status.into_raw();
                 }
                 Err(err) => {
-                    log.e(format!("Error while key processing: {err}"));
+                    log.e(format!("Error while key processing: {err:?}"));
                 }
             }
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.w(AFRIM_NOT_CONFIGURED);
         };
 
         JObject::null().into_raw()
@@ -131,7 +133,7 @@ mod android {
             afrim.commit_text(text);
             log.i("Text committed!");
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.w(AFRIM_NOT_CONFIGURED);
         }
     }
 
@@ -151,7 +153,7 @@ mod android {
 
             cmd.into_raw()
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.w(AFRIM_NOT_CONFIGURED);
 
             JObject::null().into_raw()
         }
@@ -170,7 +172,7 @@ mod android {
             afrim.clear();
             log.i("Afrim memory cleared!");
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.w(AFRIM_NOT_CONFIGURED);
         }
     }
 
@@ -190,7 +192,7 @@ mod android {
 
             input.into_raw()
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.w(AFRIM_NOT_CONFIGURED);
 
             JObject::null().into_raw()
         }
@@ -239,7 +241,7 @@ mod android {
 
             array.into_raw()
         } else {
-            log.w("Afrim singleton is not yet configured.");
+            log.w(AFRIM_NOT_CONFIGURED);
 
             JObject::null().into_raw()
         }

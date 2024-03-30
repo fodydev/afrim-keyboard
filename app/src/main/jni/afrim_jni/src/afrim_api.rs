@@ -4,6 +4,7 @@
 use afrim_config::Config;
 use afrim_preprocessor::Preprocessor;
 use afrim_translator::Translator;
+use anyhow::Result;
 use once_cell::sync::Lazy;
 use std::path::Path;
 
@@ -14,9 +15,9 @@ pub struct Afrim {
 
 impl Afrim {
     /// Initializes an Afrim instance based on the provided configuration file.
-    pub fn from_config(config_file: &str) -> Result<Self, String> {
+    pub fn from_config(config_file: &str) -> Result<Self> {
         let config_file = Path::new(&config_file);
-        let config = Config::from_file(config_file).map_err(|err| err.to_string())?;
+        let config = Config::from_file(config_file)?;
 
         // Core
         let auto_commit = config
@@ -49,8 +50,7 @@ impl Afrim {
         // Translators
         #[cfg(feature = "rhai")]
         config
-            .extract_translators()
-            .map_err(|err| err.to_string())?
+            .extract_translators()?
             .into_iter()
             .for_each(|(name, ast)| {
                 translator.register(name, ast);
@@ -72,7 +72,7 @@ impl Afrim {
     }
 
     /// Process the keyboard event.
-    pub fn process_key(&mut self, key: &str, state: &str) -> Result<(bool, bool), String> {
+    pub fn process_key(&mut self, key: &str, state: &str) -> Result<(bool, bool)> {
         let key_event = utils::deserialize_event(key, state)?;
         let status = self.preprocessor.process(key_event);
 
@@ -149,18 +149,16 @@ impl Singleton {
 mod utils {
     pub use afrim_preprocessor::utils::*;
     use afrim_preprocessor::{Command, Key, KeyboardEvent};
+    use anyhow::{Context, Result};
     use serde_json::{self};
     use std::str::FromStr;
 
     /// Deserializes the KeyboardEvent.
-    pub fn deserialize_event(key: &str, state: &str) -> Result<KeyboardEvent, String> {
+    pub fn deserialize_event(key: &str, state: &str) -> Result<KeyboardEvent> {
         let event = KeyboardEvent {
-            key: Key::from_str(key).map_err(|err| {
-                format!("[preprocessor] Unrecognized key `{key}`.\nCaused by:\n\t{err}.")
-            })?,
-            state: serde_json::from_str(state).map_err(|err| {
-                format!("[preprocessor] Unrecognized state `{state}`.\nCaused by:\n\t{err}.")
-            })?,
+            key: Key::from_str(key).with_context(|| format!("Unrecognized key `{key}`."))?,
+            state: serde_json::from_str(state)
+                .with_context(|| format!("Unrecognized state `{state}`."))?,
             ..Default::default()
         };
 
