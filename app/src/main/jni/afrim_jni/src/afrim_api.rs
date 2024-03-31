@@ -81,7 +81,7 @@ impl Afrim {
 
     /// Commits the text.
     pub fn commit_text(&mut self, text: String) {
-        self.preprocessor.commit(&text);
+        self.preprocessor.commit(text);
     }
 
     /// Returns the next command to be executed.
@@ -99,7 +99,7 @@ impl Afrim {
 
     /// Clears the afrim.
     pub fn clear(&mut self) {
-        self.preprocessor.commit("");
+        self.preprocessor.commit("".to_owned());
         self.preprocessor.clear_queue();
     }
 }
