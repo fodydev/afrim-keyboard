@@ -15,9 +15,9 @@ inhibit = ["afrim-preprocessor/inhibit"]
 rhai = ["afrim-translator/rhai", "afrim-config/rhai"]
 
 [dependencies]
-afrim-config = { version = "0.4.4", default-features = false, git = "https://github.com/pythonbrad/afrim", rev = "4a814b1" }
-afrim-preprocessor = { version = "0.6.0", default-features = false, git = "https://github.com/pythonbrad/afrim", rev = "4a814b1", features = ["serde"] }
-afrim-translator = { version = "0.1.4", default-features = false, git = "https://github.com/pythonbrad/afrim", rev = "4a814b1" }
+afrim-config = { version = "0.4.4", default-features = false, git = "https://github.com/pythonbrad/afrim", rev = "81c8a2e" }
+afrim-preprocessor = { version = "0.6.0", default-features = false, git = "https://github.com/pythonbrad/afrim", rev = "81c8a2e", features = ["serde"] }
+afrim-translator = { version = "0.1.4", default-features = false, git = "https://github.com/pythonbrad/afrim", rev = "81c8a2e" }
 anyhow = "1.0.81"
 indexmap = "2.2.3"
 jni = "0.21.1"
