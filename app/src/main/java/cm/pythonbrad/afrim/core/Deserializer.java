@@ -10,18 +10,19 @@ public class Deserializer {
         return new Command(Command.PAUSE);
       case "\"Resume\"":
         return new Command(Command.RESUME);
-      case "\"Delete\"":
-        return new Command(Command.DELETE);
-      case "\"CleanDelete\"":
-        return new Command(Command.CLEAN_DELETE);
       case "\"NOP\"":
         return new Command((Command.NOP));
       default:
         try {
-          final String text = new JSONObject(cmd).getString("CommitText");
-          return new Command(Command.COMMIT, text);
-        } catch (JSONException e) {
-          return new Command(Command.UNKNOWN);
+          final String text = new JSONObject(cmd).getString("Delete");
+          return new Command(Command.DELETE, text);
+        } catch (JSONException e1) {
+          try {
+            final String text = new JSONObject(cmd).getString("CommitText");
+            return new Command(Command.COMMIT, text);
+          } catch (JSONException e2) {
+            return new Command(Command.UNKNOWN);
+          }
         }
     }
   }

@@ -16,6 +16,8 @@
 
 package cm.pythonbrad.afrim.latin;
 
+import static java.lang.Integer.max;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -1013,13 +1015,14 @@ public class LatinIME extends InputMethodService
           break;
         case Command.DELETE:
           // TODO: refactor handle_backspace
-          final int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart() - 1;
-          final int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
+          final boolean backspaceUsed = Constants.printableCode(primaryCode).equals("delete");
+          final int deletionStep = max(cmd.getData().length(), 1) - (backspaceUsed ? 1 : 0);
+
+          int selectionStart = mInputLogic.mConnection.getExpectedSelectionStart() - deletionStep;
+          int selectionEnd = mInputLogic.mConnection.getExpectedSelectionEnd();
+
           mInputLogic.mConnection.setSelection(selectionStart, selectionStart);
           mInputLogic.mConnection.replaceText(selectionStart, selectionEnd, "");
-          final int diff = selectionEnd - selectionStart;
-          mInputLogic.mConnection.setSelection(selectionStart - diff, selectionStart - diff + 1);
-          onMoveDeletePointer(1);
           break;
         case Command.RESUME:
           mInputLogic.mConnection.endBatchEdit();
