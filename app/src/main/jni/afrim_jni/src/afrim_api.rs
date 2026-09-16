@@ -43,9 +43,9 @@ impl Afrim {
         // Translation
         let translation = config.extract_translation();
         #[cfg(feature = "rhai")]
-        let mut translator = Translator::new(translation, auto_commit);
+        let mut translator = Translator::new(translation, auto_commit, 0.7);
         #[cfg(not(feature = "rhai"))]
-        let translator = Translator::new(translation, auto_commit);
+        let translator = Translator::new(translation, auto_commit, 0.7);
 
         // Translators
         #[cfg(feature = "rhai")]
@@ -67,7 +67,14 @@ impl Afrim {
         self.translator
             .translate(input)
             .into_iter()
-            .map(|e| [e.0, e.1, e.2.join("|"), e.3.to_string()])
+            .map(|e| {
+                [
+                    e.code,
+                    e.remaining_code,
+                    e.texts.join("|"),
+                    e.can_commit.to_string(),
+                ]
+            })
             .collect()
     }
 
@@ -156,7 +163,7 @@ mod utils {
     /// Deserializes the KeyboardEvent.
     pub fn deserialize_event(key: &str, state: &str) -> Result<KeyboardEvent> {
         let event = KeyboardEvent {
-            key: Key::from_str(key).with_context(|| format!("Unrecognized key `{key}`."))?,
+            key: Key::from_str(key).unwrap_or_default(),
             state: serde_json::from_str(state)
                 .with_context(|| format!("Unrecognized state `{state}`."))?,
             ..Default::default()
