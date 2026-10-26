@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2024 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,14 +82,4 @@ public interface TimerProxy {
    * @return true if detecting double tapped shift key is on going.
    */
   boolean isInDoubleTapShiftKeyTimeout();
-
-  /**
-   * Cancel a timer of firing updating batch input.
-   *
-   * @param tracker the {@link PointerTracker} that resumes moving or ends gesture input.
-   */
-  void cancelUpdateBatchInputTimer(PointerTracker tracker);
-
-  /** Cancel all timers of firing updating batch input. */
-  void cancelAllUpdateBatchInputTimers();
 }

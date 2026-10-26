@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,57 +48,10 @@ public final class KeyPressSettingsFragment extends SubScreenFragment {
 
     if (!AudioAndHapticFeedbackManager.getInstance().hasVibrator()) {
       removePreference(Settings.PREF_VIBRATE_ON);
-      removePreference(Settings.PREF_VIBRATION_DURATION_SETTINGS);
     }
 
-    setupKeypressVibrationDurationSettings();
     setupKeypressSoundVolumeSettings();
     setupKeyLongpressTimeoutSettings();
-  }
-
-  private void setupKeypressVibrationDurationSettings() {
-    final SeekBarDialogPreference pref =
-        (SeekBarDialogPreference) findPreference(Settings.PREF_VIBRATION_DURATION_SETTINGS);
-    if (pref == null) {
-      return;
-    }
-    final SharedPreferences prefs = getSharedPreferences();
-    final Resources res = getResources();
-    pref.setInterface(
-        new SeekBarDialogPreference.ValueProxy() {
-          @Override
-          public void writeValue(final int value, final String key) {
-            prefs.edit().putInt(key, value).apply();
-          }
-
-          @Override
-          public void writeDefaultValue(final String key) {
-            prefs.edit().remove(key).apply();
-          }
-
-          @Override
-          public int readValue(final String key) {
-            return Settings.readKeypressVibrationDuration(prefs, res);
-          }
-
-          @Override
-          public int readDefaultValue(final String key) {
-            return Settings.readDefaultKeypressVibrationDuration(res);
-          }
-
-          @Override
-          public void feedbackValue(final int value) {
-            AudioAndHapticFeedbackManager.getInstance().vibrate(value);
-          }
-
-          @Override
-          public String getValueText(final int value) {
-            if (value < 0) {
-              return res.getString(R.string.settings_system_default);
-            }
-            return res.getString(R.string.abbreviation_unit_milliseconds, value);
-          }
-        });
   }
 
   private void setupKeypressSoundVolumeSettings() {
@@ -107,7 +62,6 @@ public final class KeyPressSettingsFragment extends SubScreenFragment {
     }
     final SharedPreferences prefs = getSharedPreferences();
     final Resources res = getResources();
-    final AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
     pref.setInterface(
         new SeekBarDialogPreference.ValueProxy() {
           private static final float PERCENTAGE_FLOAT = 100.0f;
@@ -132,12 +86,12 @@ public final class KeyPressSettingsFragment extends SubScreenFragment {
 
           @Override
           public int readValue(final String key) {
-            return getPercentageFromValue(Settings.readKeypressSoundVolume(prefs, res));
+            return getPercentageFromValue(Settings.readKeypressSoundVolume(prefs));
           }
 
           @Override
           public int readDefaultValue(final String key) {
-            return getPercentageFromValue(Settings.readDefaultKeypressSoundVolume(res));
+            return getPercentageFromValue(Settings.readDefaultKeypressSoundVolume());
           }
 
           @Override
@@ -150,7 +104,8 @@ public final class KeyPressSettingsFragment extends SubScreenFragment {
 
           @Override
           public void feedbackValue(final int value) {
-            am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, getValueFromPercentage(value));
+            AudioAndHapticFeedbackManager.getInstance()
+                .playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, getValueFromPercentage(value));
           }
         });
   }

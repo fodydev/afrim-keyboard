@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2017 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +19,13 @@
 package cm.pythonbrad.afrim.latin.settings;
 
 import android.content.Context;
+import android.content.RestrictionsManager;
+import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import cm.pythonbrad.afrim.R;
+import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.latin.RichInputMethodManager;
 import cm.pythonbrad.afrim.latin.Subtype;
 import java.util.Set;
@@ -40,9 +45,15 @@ import java.util.Set;
     RichInputMethodManager.init(context);
     mRichImm = RichInputMethodManager.getInstance();
 
+    final SharedPreferences prefs = PreferenceManagerCompat.getDeviceSharedPreferences(context);
+    final RestrictionsManager restrictionsMgr =
+        (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE);
+    final Set<String> restrictionKeys = Settings.loadRestrictions(restrictionsMgr, prefs);
+
     mSubtypeEnablerPreference = new Preference(context);
     mSubtypeEnablerPreference.setTitle(R.string.select_language);
     mSubtypeEnablerPreference.setFragment(LanguagesSettingsFragment.class.getName());
+    mSubtypeEnablerPreference.setEnabled(!restrictionKeys.contains(Settings.PREF_ENABLED_SUBTYPES));
     prefScreen.addPreference(mSubtypeEnablerPreference);
     updateEnabledSubtypeList();
     return true;

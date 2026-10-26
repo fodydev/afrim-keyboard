@@ -1,5 +1,10 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2021 Maarten Trompper
+ * Copyright (C) 2019 Micha LaQua
+ * Copyright (C) 2019 Emmanuel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +30,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.inputmethodservice.InputMethodService;
 import android.media.AudioManager;
 import android.os.Build;
@@ -42,14 +46,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.WindowInsetsController;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.compat.EditorInfoCompatUtils;
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
-import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils;
-import cm.pythonbrad.afrim.compat.ViewOutlineProviderCompatUtils.InsetsUpdater;
 import cm.pythonbrad.afrim.core.Afrim;
 import cm.pythonbrad.afrim.core.Command;
 import cm.pythonbrad.afrim.data.DataManager;
@@ -89,14 +92,11 @@ public class LatinIME extends InputMethodService
 
   final Settings mSettings;
   private Locale mLocale;
-  private int mOriginalNavBarColor = 0;
-  private int mOriginalNavBarFlags = 0;
   final InputLogic mInputLogic = new InputLogic(this /* LatinIME */);
   private Afrim mAfrim;
 
   // TODO: Move these {@link View}s to {@link KeyboardSwitcher}.
   private View mInputView;
-  private InsetsUpdater mInsetsUpdater;
 
   private RichInputMethodManager mRichImm;
   final KeyboardSwitcher mKeyboardSwitcher;
@@ -108,26 +108,10 @@ public class LatinIME extends InputMethodService
   public static final class UIHandler extends LeakGuardHandlerWrapper<LatinIME> {
     private static final int MSG_UPDATE_SHIFT_STATE = 0;
     private static final int MSG_PENDING_IMS_CALLBACK = 1;
-    private static final int MSG_RESET_CACHES = 7;
-    private static final int MSG_WAIT_FOR_DICTIONARY_LOAD = 8;
     private static final int MSG_DEALLOCATE_MEMORY = 9;
-
-    private static final int ARG1_TRUE = 1;
-
-    private int mDelayInMillisecondsToUpdateShiftState;
 
     public UIHandler(final LatinIME ownerInstance) {
       super(ownerInstance);
-    }
-
-    public void onCreate() {
-      final LatinIME latinIme = getOwnerInstance();
-      if (latinIme == null) {
-        return;
-      }
-      final Resources res = latinIme.getResources();
-      mDelayInMillisecondsToUpdateShiftState =
-          res.getInteger(R.integer.config_delay_in_milliseconds_to_update_shift_state);
     }
 
     @Override
@@ -141,40 +125,15 @@ public class LatinIME extends InputMethodService
           latinIme.mKeyboardSwitcher.requestUpdatingShiftState(
               latinIme.getCurrentAutoCapsState(), latinIme.getCurrentRecapitalizeState());
           break;
-        case MSG_RESET_CACHES:
-          final SettingsValues settingsValues = latinIme.mSettings.getCurrent();
-          if (latinIme.mInputLogic.retryResetCachesAndReturnSuccess(
-              msg.arg1 == ARG1_TRUE /* tryResumeSuggestions */,
-              msg.arg2 /* remainingTries */,
-              this /* handler */)) {
-            // If we were able to reset the caches, then we can reload the keyboard.
-            // Otherwise, we'll do it when we can.
-            latinIme.mKeyboardSwitcher.loadKeyboard(
-                latinIme.getCurrentInputEditorInfo(),
-                settingsValues,
-                latinIme.getCurrentAutoCapsState(),
-                latinIme.getCurrentRecapitalizeState());
-          }
-          break;
-        case MSG_WAIT_FOR_DICTIONARY_LOAD:
-          Log.i(TAG, "Timeout waiting for dictionary load");
-          break;
         case MSG_DEALLOCATE_MEMORY:
           latinIme.deallocateMemory();
           break;
       }
     }
 
-    public void postResetCaches(final boolean tryResumeSuggestions, final int remainingTries) {
-      removeMessages(MSG_RESET_CACHES);
-      sendMessage(
-          obtainMessage(MSG_RESET_CACHES, tryResumeSuggestions ? 1 : 0, remainingTries, null));
-    }
-
     public void postUpdateShiftState() {
       removeMessages(MSG_UPDATE_SHIFT_STATE);
-      sendMessageDelayed(
-          obtainMessage(MSG_UPDATE_SHIFT_STATE), mDelayInMillisecondsToUpdateShiftState);
+      sendMessage(obtainMessage(MSG_UPDATE_SHIFT_STATE));
     }
 
     public void postDeallocateMemory() {
@@ -314,8 +273,6 @@ public class LatinIME extends InputMethodService
 
     super.onCreate();
 
-    mHandler.onCreate();
-
     // TODO: Resolve mutual dependencies of {@link #loadSettings()} and
     // {@link #resetDictionaryFacilitatorIfNecessary()}.
     loadSettings();
@@ -380,6 +337,16 @@ public class LatinIME extends InputMethodService
   }
 
   @Override
+  public boolean onEvaluateInputViewShown() {
+    final boolean useOnScreen = super.onEvaluateInputViewShown();
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+      return useOnScreen;
+    } else {
+      return useOnScreen || mSettings.getCurrent().mUseOnScreen;
+    }
+  }
+
+  @Override
   public void onConfigurationChanged(final Configuration conf) {
     SettingsValues settingsValues = mSettings.getCurrent();
     if (settingsValues.mHasHardwareKeyboard != Settings.readHasHardwareKeyboard(conf)) {
@@ -390,22 +357,22 @@ public class LatinIME extends InputMethodService
       loadSettings();
     }
 
-    mKeyboardSwitcher.updateKeyboardTheme(conf.uiMode);
+    mKeyboardSwitcher.onConfigurationChanged();
 
     super.onConfigurationChanged(conf);
   }
 
   @Override
   public View onCreateInputView() {
-    return mKeyboardSwitcher.onCreateInputView(getResources().getConfiguration().uiMode);
+    return mKeyboardSwitcher.onCreateInputView();
   }
 
   @Override
   public void setInputView(final View view) {
     super.setInputView(view);
     mInputView = view;
-    mInsetsUpdater = ViewOutlineProviderCompatUtils.setInsetsOutlineProvider(view);
     updateSoftInputWindowLayoutParameters();
+    view.requestApplyInsets();
   }
 
   @Override
@@ -425,6 +392,7 @@ public class LatinIME extends InputMethodService
 
   @Override
   public void onFinishInputView(final boolean finishingInput) {
+    mInputLogic.clearCaches();
     mRichImm.resetSubtypeCycleOrder();
     mHandler.onFinishInputView(finishingInput);
   }
@@ -462,7 +430,7 @@ public class LatinIME extends InputMethodService
     // Switch to the null consumer to handle cases leading to early exit below, for which we
     // also wouldn't be consuming gesture data.
     final KeyboardSwitcher switcher = mKeyboardSwitcher;
-    switcher.updateKeyboardTheme(getResources().getConfiguration().uiMode);
+    switcher.updateKeyboardTheme();
     final MainKeyboardView mainKeyboardView = switcher.getMainKeyboardView();
     // If we are starting input in a different text field from before, we'll have to reload
     // settings, so currentSettingsValues can't be final.
@@ -496,7 +464,9 @@ public class LatinIME extends InputMethodService
         "Starting input. Cursor position = "
             + editorInfo.initialSelStart
             + ","
-            + editorInfo.initialSelEnd);
+            + editorInfo.initialSelEnd
+            + " Restarting = "
+            + restarting);
 
     // In landscape mode, this method gets called without the input view being created.
     if (mainKeyboardView == null) {
@@ -517,7 +487,6 @@ public class LatinIME extends InputMethodService
     // In some cases the input connection has not been reset yet and we can't access it. In
     // this case we will need to call loadKeyboard() later, when it's accessible, so that we
     // can go into the correct mode, so we need to do some housekeeping here.
-    final boolean needToCallLoadKeyboardLater;
     if (!isImeSuppressedByHardwareKeyboard()) {
       // The app calling setText() has the effect of clearing the composing
       // span, so we should reset our state unconditionally, even if restarting is true.
@@ -525,22 +494,9 @@ public class LatinIME extends InputMethodService
       // it can adjust its combiners if needed.
       mInputLogic.startInput();
 
-      // TODO[IL]: Can the following be moved to InputLogic#startInput?
-      if (!mInputLogic.mConnection.resetCachesUponCursorMoveAndReturnSuccess(
-          editorInfo.initialSelStart, editorInfo.initialSelEnd)) {
-        // Sometimes, while rotating, for some reason the framework tells the app we are not
-        // connected to it and that means we can't refresh the cache. In this case, schedule
-        // a refresh later.
-        // We try resetting the caches up to 5 times before giving up.
-        mHandler.postResetCaches(isDifferentTextField, 5 /* remainingTries */);
-        // mLastSelection{Start,End} are reset later in this method, no need to do it here
-        needToCallLoadKeyboardLater = true;
-      } else {
-        needToCallLoadKeyboardLater = false;
-      }
-    } else {
-      // If we have a hardware keyboard we don't need to call loadKeyboard later anyway.
-      needToCallLoadKeyboardLater = false;
+      // Some applications call onStartInputView without updating EditorInfo. In these cases
+      // selection will be incorrect.
+      mInputLogic.mConnection.reloadTextCache(editorInfo, restarting);
     }
 
     if (isDifferentTextField
@@ -556,21 +512,11 @@ public class LatinIME extends InputMethodService
           currentSettingsValues,
           getCurrentAutoCapsState(),
           getCurrentRecapitalizeState());
-      if (needToCallLoadKeyboardLater) {
-        // If we need to call loadKeyboard again later, we need to save its state now. The
-        // later call will be done in #retryResetCaches.
-        switcher.saveKeyboardState();
-      }
-    } else if (restarting) {
+    } else {
       // TODO: Come up with a more comprehensive way to reset the keyboard layout when
       // a keyboard layout set doesn't get reloaded in this method.
       switcher.resetKeyboardStateToAlphabet(
           getCurrentAutoCapsState(), getCurrentRecapitalizeState());
-      // In apps like Talk, we come here when the text is sent and the field gets emptied and
-      // we need to re-evaluate the shift state, but not the whole layout which would be
-      // disruptive.
-      // Space state must be updated before calling updateShiftState
-      switcher.requestUpdatingShiftState(getCurrentAutoCapsState(), getCurrentRecapitalizeState());
     }
 
     if (TRACE) Debug.startMethodTracing("/data/trace/latinime");
@@ -591,7 +537,6 @@ public class LatinIME extends InputMethodService
     if (mainKeyboardView != null) {
       mainKeyboardView.closing();
     }
-    clearNavigationBarColor();
   }
 
   void onFinishInputInternal() {
@@ -621,28 +566,17 @@ public class LatinIME extends InputMethodService
       final int composingSpanEnd) {
     super.onUpdateSelection(
         oldSelStart, oldSelEnd, newSelStart, newSelEnd, composingSpanStart, composingSpanEnd);
-    if (DebugFlags.DEBUG_ENABLED) {
-      Log.i(
-          TAG,
-          "onUpdateSelection: oss="
-              + oldSelStart
-              + ", ose="
-              + oldSelEnd
-              + ", nss="
-              + newSelStart
-              + ", nse="
-              + newSelEnd
-              + ", cs="
-              + composingSpanStart
-              + ", ce="
-              + composingSpanEnd);
+    final MainKeyboardView keyboardView = mKeyboardSwitcher.getMainKeyboardView();
+    if (keyboardView != null && keyboardView.isInCursorMove()) {
+      return;
     }
 
-    // This call happens whether our view is displayed or not, but if it's not then we should
-    // not attempt recorrection. This is true even with a hardware keyboard connected: if the
-    // view is not displayed we have no means of showing suggestions anyway, and if it is then
-    // we want to show suggestions anyway.
-    if (isInputViewShown() && mInputLogic.onUpdateSelection(newSelStart, newSelEnd)) {
+    Log.i(TAG, "Update Selection. Cursor position = " + newSelStart + "," + newSelEnd);
+
+    mInputLogic.onUpdateSelection(newSelStart, newSelEnd);
+    if (isInputViewShown()) {
+      mInputLogic.reloadTextCache();
+
       mKeyboardSwitcher.requestUpdatingShiftState(
           getCurrentAutoCapsState(), getCurrentRecapitalizeState());
     }
@@ -677,7 +611,6 @@ public class LatinIME extends InputMethodService
       // no visual element will be shown on the screen.
       outInsets.contentTopInsets = inputHeight;
       outInsets.visibleTopInsets = inputHeight;
-      mInsetsUpdater.setInsets(outInsets);
       return;
     }
     final int visibleTopY = inputHeight - visibleKeyboardView.getHeight();
@@ -695,7 +628,6 @@ public class LatinIME extends InputMethodService
     }
     outInsets.contentTopInsets = visibleTopY;
     outInsets.visibleTopInsets = visibleTopY;
-    mInsetsUpdater.setInsets(outInsets);
   }
 
   @Override
@@ -786,21 +718,26 @@ public class LatinIME extends InputMethodService
   }
 
   @Override
-  public void onMovePointer(int steps) {
+  public void onMoveCursorPointer(int steps) {
     if (mInputLogic.mConnection.hasCursorPosition()) {
       if (TextUtils.getLayoutDirectionFromLocale(getCurrentLayoutLocale())
           == View.LAYOUT_DIRECTION_RTL) steps = -steps;
 
       steps = mInputLogic.mConnection.getUnicodeSteps(steps, true);
+      if (steps == 0) {
+        return;
+      }
       final int end = mInputLogic.mConnection.getExpectedSelectionEnd() + steps;
       final int start =
           mInputLogic.mConnection.hasSelection()
               ? mInputLogic.mConnection.getExpectedSelectionStart()
               : end;
       mInputLogic.mConnection.setSelection(start, end);
+      hapticTickFeedback();
     } else {
       for (; steps < 0; steps++) mInputLogic.sendDownUpKeyEvent(KeyEvent.KEYCODE_DPAD_LEFT);
       for (; steps > 0; steps--) mInputLogic.sendDownUpKeyEvent(KeyEvent.KEYCODE_DPAD_RIGHT);
+      hapticTickFeedback();
     }
   }
 
@@ -808,19 +745,27 @@ public class LatinIME extends InputMethodService
   public void onMoveDeletePointer(int steps) {
     if (mInputLogic.mConnection.hasCursorPosition()) {
       steps = mInputLogic.mConnection.getUnicodeSteps(steps, false);
+      if (steps == 0) {
+        return;
+      }
       final int end = mInputLogic.mConnection.getExpectedSelectionEnd();
       final int start = mInputLogic.mConnection.getExpectedSelectionStart() + steps;
-      if (start > end) return;
       mInputLogic.mConnection.setSelection(start, end);
+      hapticTickFeedback();
     } else {
       for (; steps < 0; steps++) mInputLogic.sendDownUpKeyEvent(KeyEvent.KEYCODE_DEL);
+      hapticTickFeedback();
     }
   }
 
   @Override
   public void onUpWithDeletePointerActive() {
-    if (mInputLogic.mConnection.hasSelection())
-      mInputLogic.sendDownUpKeyEvent(KeyEvent.KEYCODE_DEL);
+    if (mInputLogic.mConnection.hasSelection()) mInputLogic.mConnection.deleteSelectedText();
+  }
+
+  @Override
+  public void onUpWithSpacePointerActive() {
+    mInputLogic.reloadTextCache();
   }
 
   private boolean isShowingOptionDialog() {
@@ -849,17 +794,8 @@ public class LatinIME extends InputMethodService
   @Override
   public void onCodeInput(
       final int codePoint, final int x, final int y, final boolean isKeyRepeat) {
-    // TODO: this processing does not belong inside LatinIME, the caller should be doing this.
-    final MainKeyboardView mainKeyboardView = mKeyboardSwitcher.getMainKeyboardView();
-    // x and y include some padding, but everything down the line (especially native
-    // code) needs the coordinates in the keyboard frame.
-    // TODO: We should reconsider which coordinate system should be used to represent
-    // keyboard event. Also we should pull this up -- LatinIME has no business doing
-    // this transformation, it should be done already before calling onEvent.
-    final int keyX = mainKeyboardView.getKeyX(x);
-    final int keyY = mainKeyboardView.getKeyY(y);
     final Event event =
-        createSoftwareKeypressEvent(getCodePointForKeyboard(codePoint), keyX, keyY, isKeyRepeat);
+        createSoftwareKeypressEvent(getCodePointForKeyboard(codePoint), isKeyRepeat);
     onEvent(event);
   }
 
@@ -876,7 +812,7 @@ public class LatinIME extends InputMethodService
   // squashed into the same variable, and this method should be removed.
   // public for testing, as we don't want to copy the same logic into test code
   public static Event createSoftwareKeypressEvent(
-      final int keyCodeOrCodePoint, final int keyX, final int keyY, final boolean isKeyRepeat) {
+      final int keyCodeOrCodePoint, final boolean isKeyRepeat) {
     final int keyCode;
     final int codePoint;
     if (keyCodeOrCodePoint <= 0) {
@@ -886,7 +822,7 @@ public class LatinIME extends InputMethodService
       keyCode = Event.NOT_A_KEY_CODE;
       codePoint = keyCodeOrCodePoint;
     }
-    return Event.createSoftwareKeypressEvent(codePoint, keyCode, keyX, keyY, isKeyRepeat);
+    return Event.createSoftwareKeypressEvent(codePoint, keyCode, isKeyRepeat);
   }
 
   // Called from PointerTracker through the KeyboardActionListener interface
@@ -969,6 +905,12 @@ public class LatinIME extends InputMethodService
       feedbackManager.performHapticFeedback(keyboardView);
     }
     feedbackManager.performAudioFeedback(code);
+  }
+
+  private void hapticTickFeedback() {
+    final AudioAndHapticFeedbackManager feedbackManager =
+        AudioAndHapticFeedbackManager.getInstance();
+    feedbackManager.performTickFeedback();
   }
 
   // Callback of the {@link KeyboardActionListener}. This is called when a key is depressed;
@@ -1065,17 +1007,6 @@ public class LatinIME extends InputMethodService
     startActivity(intent);
   }
 
-  public void debugDumpStateAndCrashWithException(final String context) {
-    final SettingsValues settingsValues = mSettings.getCurrent();
-    String s =
-        settingsValues.toString()
-            + "\nAttributes : "
-            + settingsValues.mInputAttributes
-            + "\nContext : "
-            + context;
-    throw new RuntimeException(s);
-  }
-
   @Override
   protected void dump(final FileDescriptor fd, final PrintWriter fout, final String[] args) {
     super.dump(fd, fout, args);
@@ -1115,38 +1046,21 @@ public class LatinIME extends InputMethodService
   }
 
   private void setNavigationBarColor() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-        && mSettings.getCurrent().mUseMatchingNavbarColor) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      final Window window = getWindow().getWindow();
+      if (window == null) {
+        return;
+      }
       final SharedPreferences prefs = PreferenceManagerCompat.getDeviceSharedPreferences(this);
       final int keyboardColor = Settings.readKeyboardColor(prefs, this);
-      final Window window = getWindow().getWindow();
-      if (window == null) {
-        return;
-      }
-      mOriginalNavBarColor = window.getNavigationBarColor();
       window.setNavigationBarColor(keyboardColor);
-
-      final View view = window.getDecorView();
-      mOriginalNavBarFlags = view.getSystemUiVisibility();
+      window.setNavigationBarContrastEnforced(false);
+      final int flag = WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
       if (ResourceUtils.isBrightColor(keyboardColor)) {
-        view.setSystemUiVisibility(mOriginalNavBarFlags | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        window.getInsetsController().setSystemBarsAppearance(flag, flag);
       } else {
-        view.setSystemUiVisibility(
-            mOriginalNavBarFlags & ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        window.getInsetsController().setSystemBarsAppearance(0, flag);
       }
-    }
-  }
-
-  private void clearNavigationBarColor() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-        && mSettings.getCurrent().mUseMatchingNavbarColor) {
-      final Window window = getWindow().getWindow();
-      if (window == null) {
-        return;
-      }
-      window.setNavigationBarColor(mOriginalNavBarColor);
-      final View view = window.getDecorView();
-      view.setSystemUiVisibility(mOriginalNavBarFlags);
     }
   }
 }

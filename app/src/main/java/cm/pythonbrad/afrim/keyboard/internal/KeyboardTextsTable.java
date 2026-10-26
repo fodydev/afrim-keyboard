@@ -1,5 +1,13 @@
 /*
  * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2023 soshial
+ * Copyright (C) 2023 Md. Rifat Hasan Jihan
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2021 Luis
+ * Copyright (C) 2020 dioraman
+ * Copyright (C) 2019 Emmanuel
+ * Copyright (C) 2018 Saadat Mateen
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +24,6 @@
 
 package cm.pythonbrad.afrim.keyboard.internal;
 
-import android.os.Build;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -435,7 +442,7 @@ public final class KeyboardTextsTable {
     // U+2205: "∅" EMPTY SET
     /* morekeys_symbols_0 */ "\u207F,\u2205",
     /* morekeys_am_pm */ "!fixedColumnOrder!2,!hasLabels!,!text/keylabel_time_am,!text/keylabel_time_pm",
-    /* keyspec_settings */ "!icon/settings_key|!code/key_settings",
+    /* keyspec_settings */ "!icon/paste_key|!code/key_paste,!icon/settings_key|!code/key_settings",
     /* keyspec_action_next */ "!code/key_action_next",
     /* keyspec_action_previous */ "!code/key_action_previous",
     // Label for "switch to more symbol" modifier key ("= \ <"). Must be short to fit on key!
@@ -4566,9 +4573,210 @@ public final class KeyboardTextsTable {
     /* morekeys_s */ null,
     /* single_quotes */ "!text/single_9qm_lqm",
     // U+20BD ₽ RUBLE SIGN
-    /* keyspec_currency ~ */ Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP
-        ? "\u20BD"
-        : "\u20B1",
+    /* keyspec_currency ~ */ "\u20BD",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    /* ~ morekeys_k */
+    // U+0435 + U+0301: "е" CYRILLIC SMALL LETTER IE + ◌́ COMBINING ACUTE ACCENT
+    // U+0451: "ё" CYRILLIC SMALL LETTER IO
+    // U+0463: "ѣ" CYRILLIC SMALL LETTER YAT
+    /* morekeys_cyrillic_ie */ "\u0451,\u0435\u0301,\u0463",
+    /* keyspec_nordic_row1_11 ~ */
+    null,
+    null,
+    null,
+    null,
+    /* ~ morekeys_nordic_row2_10 */
+    // U+0449: "щ" CYRILLIC SMALL LETTER SHCHA
+    /* keyspec_east_slavic_row1_9 */ "\u0449",
+    // U+044B: "ы" CYRILLIC SMALL LETTER YERU
+    /* keyspec_east_slavic_row2_2 */ "\u044B",
+    // U+044D: "э" CYRILLIC SMALL LETTER E
+    /* keyspec_east_slavic_row2_11 */ "\u044D",
+    // U+0438: "и" CYRILLIC SMALL LETTER I
+    /* keyspec_east_slavic_row3_5 */ "\u0438",
+    // U+044A: "ъ" CYRILLIC SMALL LETTER HARD SIGN
+    /* morekeys_cyrillic_soft_sign */ "\u044A",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #32-41 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #42-51 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #52-61 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #62-71 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #72-86 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    // U+044B + U+0301: "ы" CYRILLIC SMALL LETTER YERU + ◌́ COMBINING ACUTE ACCENT
+    // U+A651: "ꙑ" CYRILLIC SMALL LETTER YERU WITH BACK YER
+    /* #87: morekeys_east_slavic_row2_2 */ "\u044B\u0301,\uA651",
+    // U+0443 + U+0301: "у" CYRILLIC SMALL LETTER U + ◌́ COMBINING ACUTE ACCENT
+    // U+045E: "ў" CYRILLIC SMALL LETTER SHORT U
+    /* morekeys_cyrillic_u */ "\u0443\u0301,\u045E",
+    /* morekeys_cyrillic_en */ null,
+    // U+0491: "ґ" CYRILLIC SMALL LETTER GHE WITH UPTURN
+    /* morekeys_cyrillic_ghe */ "\u0491",
+    // U+043E + U+0301: "о" CYRILLIC SMALL LETTER O + ◌́ COMBINING ACUTE ACCENT
+    /* #91: morekeys_cyrillic_o */ "\u043e\u0301",
+    // U+0438 + U+0301: "и" CYRILLIC SMALL LETTER I + ◌́ COMBINING ACUTE ACCENT
+    // U+0456: "і" CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
+    // U+0457: "ї" CYRILLIC SMALL LETTER YI
+    /* morekeys_cyrillic_i */ "\u0438\u0301,\u0456,\u0457",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #93-101 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #102-111 */
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, /* #112-118 */
+    // U+044D + U+0301: "э" CYRILLIC SMALL LETTER E + ◌́ COMBINING ACUTE ACCENT
+    // U+0454: "є" CYRILLIC SMALL LETTER UKRAINIAN IE
+    /* #119: morekeys_east_slavic_row2_11 */ "\u044d\u0301,\u0454",
+    /* #120: morekeys_cyrillic_ka */ null,
+    /* #121: morekeys_cyrillic_a */ "\u0430\u0301",
+    /* #122: "morekeys_currency_dollar" */ null,
+    /* #123: "morekeys_plus" */ null,
+    /* #124: "morekeys_less_than" */ null,
+    /* #125: "morekeys_greater_than" */ null,
+    /* #126: "morekeys_exclamation" */ null,
+    /* #127: "morekeys_currency_generic" */ null,
+    /* #128: "morekeys_symbols_1" */ null,
+    /* #129: "morekeys_symbols_2" */ null,
+    /* #130: "morekeys_symbols_3" */ null,
+    /* #131: "morekeys_symbols_4" */ null,
+    /* #132: "morekeys_symbols_5" */ null,
+    /* #133: "morekeys_symbols_6" */ null,
+    /* #134: "morekeys_symbols_7" */ null,
+    /* #135: "morekeys_symbols_8" */ null,
+    /* #136: "morekeys_symbols_9" */ null,
+    /* #137: "morekeys_symbols_0" */ null,
+    /* #138: "morekeys_am_pm" */ null,
+    /* #139: "keyspec_settings" */ null,
+    /* #140: "keyspec_action_next" */ null,
+    /* #141: "keyspec_action_previous" */ null,
+    /* #142: "keylabel_to_more_symbol" */ null,
+    /* #143: "keylabel_tablet_to_more_symbol" */ null,
+    /* #144: "keylabel_to_phone_numeric" */ null,
+    /* #145: "keylabel_to_phone_symbols" */ null,
+    /* #146: "keylabel_time_am" */ null,
+    /* #147: "keylabel_time_pm" */ null,
+    /* #148: "keyspecs_left_parenthesis_more_keys" */ null,
+    /* #149: "keyspecs_right_parenthesis_more_keys" */ null,
+    /* #150: "single_laqm_raqm" */ null,
+    /* #151: "single_raqm_laqm" */ null,
+    /* #152: "double_laqm_raqm" */ null,
+    /* #153: "double_raqm_laqm" */ null,
+    /* #154: "single_lqm_rqm" */ null,
+    /* #155: "single_9qm_lqm" */ null,
+    /* #156: "single_9qm_rqm" */ null,
+    /* #157: "single_rqm_9qm" */ null,
+    /* #158: "double_lqm_rqm" */ null,
+    /* #159: "double_9qm_lqm" */ null,
+    /* #160: "double_9qm_rqm" */ null,
+    /* #161: "double_rqm_9qm" */ null,
+    /* #162: "morekeys_single_quote" */ null,
+    /* #163: "morekeys_double_quote" */ null,
+    /* #164: "morekeys_tablet_double_quote" */ null,
+    // U+044F + U+0301: "я" CYRILLIC SMALL LETTER YA + ◌́ COMBINING ACUTE ACCENT
+    /* #165: "morekeys_cyrillic_ya" */ "\u044f\u0301",
+    // U+044E + U+0301: "ю" CYRILLIC SMALL LETTER YU + ◌́ COMBINING ACUTE ACCENT
+    /* #166: "morekeys_cyrillic_yu" */ "\u044e\u0301",
+  };
+
+  private static final String[] TEXTS_sah = {
+    /* morekeys_a ~ */
+    null,
+    null,
+    null,
+    null,
+    /* ~ morekeys_u */
+    // Label for "switch to alphabetic" key.
+    // U+0410: "А" CYRILLIC CAPITAL LETTER A
+    // U+0411: "Б" CYRILLIC CAPITAL LETTER BE
+    // U+0412: "В" CYRILLIC CAPITAL LETTER VE
+    /* keylabel_to_alpha */ "\u0410\u0411\u0412",
+    /* morekeys_i ~ */
+    null,
+    null,
+    null,
+    /* ~ morekeys_c */
+    /* double_quotes */ "!text/double_9qm_lqm",
+    /* morekeys_s */ null,
+    /* single_quotes */ "!text/single_9qm_lqm",
+    // U+20BD ₽ RUBLE SIGN
+    /* keyspec_currency ~ */ "\u20BD",
     null,
     null,
     null,
@@ -5333,6 +5541,21 @@ public final class KeyboardTextsTable {
     /* keyspec_currency */ "\u20B9",
   };
 
+  /* Locale tg: Tajik */
+  private static final String[] TEXTS_tg = {
+    /* morekeys_a ~ */
+    null,
+    null,
+    null,
+    null,
+    /* ~ morekeys_u */
+    // Label for "switch to alphabetic" key.
+    // U+0410: "А" CYRILLIC CAPITAL LETTER A
+    // U+0411: "Б" CYRILLIC CAPITAL LETTER BE
+    // U+0412: "В" CYRILLIC CAPITAL LETTER VE
+    /* keylabel_to_alpha */ "\u0410\u0411\u0412",
+  };
+
   /* Locale th: Thai */
   private static final String[] TEXTS_th = {
     /* morekeys_a ~ */
@@ -5522,7 +5745,7 @@ public final class KeyboardTextsTable {
     // U+0438: "и" CYRILLIC SMALL LETTER I
     /* keyspec_east_slavic_row3_5 */ "\u0438",
     // U+044A: "ъ" CYRILLIC SMALL LETTER HARD SIGN
-    /* morekeys_cyrillic_soft_sign */ "\u044A",
+    /* morekeys_cyrillic_soft_sign */ "\u044A,\u044B",
     /* keyspec_symbols_1 ~ */
     null,
     null,
@@ -5614,9 +5837,8 @@ public final class KeyboardTextsTable {
     null,
     null,
     null,
-    null,
     // U+044D: "э" CYRILLIC SMALL LETTER E
-    /* morekeys_east_slavic_row2_11 */ "\u044d",
+    /* #119: morekeys_east_slavic_row2_11 */ "\u044d",
   };
 
   /* Locale ur: Urdu */
@@ -6265,6 +6487,7 @@ public final class KeyboardTextsTable {
     "is", TEXTS_is, /*  10/ 16 Icelandic */
     "it", TEXTS_it, /*  11/ 66 Italian */
     "iw", TEXTS_iw, /*  20/131 Hebrew */
+    "he", TEXTS_iw, /*  20/131 Hebrew */
     "ka_GE", TEXTS_ka_GE, /*   3/ 11 Georgian (Georgia) */
     "kk", TEXTS_kk, /*  15/129 Kazakh */
     "km_KH", TEXTS_km_KH, /*   2/130 Khmer (Cambodia) */
@@ -6285,6 +6508,7 @@ public final class KeyboardTextsTable {
     "rm", TEXTS_rm, /*   1/  2 Raeto-Romance */
     "ro", TEXTS_ro, /*   6/ 16 Romanian */
     "ru", TEXTS_ru, /*   9/ 32 Russian */
+    "sah", TEXTS_sah, /*   9/ 32 Sakha */
     "si_LK", TEXTS_si_LK, /*   2/ 12 Sinhalese (Sri Lanka) */
     "sk", TEXTS_sk, /*  20/ 22 Slovak */
     "sl", TEXTS_sl, /*   8/ 20 Slovenian */
@@ -6296,6 +6520,7 @@ public final class KeyboardTextsTable {
     "ta_LK", TEXTS_ta_LK, /*   2/ 12 Tamil (Sri Lanka) */
     "ta_SG", TEXTS_ta_SG, /*   1/  5 Tamil (Singapore) */
     "te_IN", TEXTS_te_IN, /*   2/ 12 Telugu (India) */
+    "tg", TEXTS_tg, /*   1/  5 Tajik */
     "th", TEXTS_th, /*   2/ 12 Thai */
     "tl", TEXTS_tl, /*   7/  8 Tagalog */
     "tr", TEXTS_tr, /*  11/ 18 Turkish */

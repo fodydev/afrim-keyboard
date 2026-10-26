@@ -48,6 +48,8 @@
 
     <!-- Preference for input language selection -->
     <string name="select_language">Languages</string>
+    <string name="select_language_description" translatable="false">en_US:qwerty;en_US:qwertz;de:qwertz</string>
+    <string name="pref_keyboard_color_description" translatable="false">#ECEFF1</string>
 
     <!-- Description for English (UK) keyboard subtype [CHAR LIMIT=25]
          (UK) should be an abbreviation of United Kingdom to fit in the CHAR LIMIT. -->
@@ -68,7 +70,7 @@
     <!-- Description for Nufi (Afrim) keyboard subtype [CHAR LIMIT=25] -->
     <string name="locale_name_fmp_CM_afrim">Nufi (Cameroon,AFRIM)</string>
     <!-- Description for a keyboard layout listing the language and layout name. -->
-    <string name="subtype_generic_layout"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> (<xliff:g id="LAYOUT" example="QWERTY">%s</xliff:g>)</string>
+    <string name="subtype_generic_layout"><xliff:g id="LANGUAGE_NAME" example="English (US)">%1$s</xliff:g> (<xliff:g id="LAYOUT" example="QWERTY">%2$s</xliff:g>)</string>
     <!-- Description for a traditional keyboard layout, such as Nepali (Traditional). -->
     <string name="subtype_traditional">Traditional</string>
     <!-- Description for a compact keyboard layout, such as Hindi (Compact). -->
@@ -83,6 +85,10 @@
     <string name="subtype_akkhor">Akkhor</string>
     <!-- Description for X (Afrim) keyboard layout. -->
     <string name="subtype_afrim">Afrim</string>
+    <!-- Description for Ergo-L keyboard layout. -->
+    <string name="subtype_ergol">Ergo-L</string>
+    <!-- Description for Hcesar keyboard layout. -->
+    <string name="subtype_hcesar">HCESAR</string>
 
     <string name="keyboard_theme_dark_border" translatable="false">Material Dark Border</string>
     <string name="keyboard_theme_light_border" translatable="false">Material Light Border</string>
@@ -97,7 +103,6 @@
     <string name="remove">Remove</string>
 
     <!-- Title of the settings for keypress vibration duration [CHAR LIMIT=35] -->
-    <string name="prefs_keypress_vibration_duration_settings">Keypress vibration duration</string>
     <!-- Title of the settings for keypress sound volume [CHAR LIMIT=35] -->
     <string name="prefs_keypress_sound_volume_settings">Keypress sound volume</string>
     <!-- Title of the settings for key long press delay [CHAR LIMIT=35] -->
@@ -107,16 +112,19 @@
     <string name="button_default">Default</string>
 
     <string translatable="false" name="abbreviation_unit_percent"><xliff:g id="PERCENTS">%s</xliff:g>%%</string>
+    <string translatable="false" name="abbreviation_unit_dp"><xliff:g id="DENSITY_INDEPENDENT_PIXELS">%d</xliff:g> dp</string>
 
     <string name="prefs_keyboard_height_settings">Keyboard height</string>
+    <string name="prefs_bottom_offset_portrait_settings">Bottom offset</string>
     <string name="keyboard_color">Set custom keyboard color</string>
-    <string name="hide_special_chars">Hide special characters</string>
-    <string name="hide_language_switch_key">Hide language switch key</string>
+    <string name="show_special_chars">Show special characters</string>
+    <string name="show_language_switch_key">Show language switch key</string>
+    <string name="pref_use_on_screen">Show on-screen keyboard</string>
+    <string name="pref_use_on_screen_summary">Show on-screen keyboard while using physical keyboard</string>
     <string name="pref_enable_ime_switch">Switch to other keyboards</string>
     <string name="show_number_row">Show separate number row</string>
     <string name="space_swipe">Space swipe cursor move</string>
     <string name="delete_swipe">Delete swipe</string>
-    <string name="matching_navbar_color">Use matching navigation bar color</string>
     <string name="setup_message">Afrim Keyboard is not enabled. Click OK to open Languages &amp; Input settings. You will need to select Afrim Keyboard in your current keyboard to use it.</string>
     <string name="user_languages">Enabled keyboard languages</string>
     <string name="add_language">Add language</string>

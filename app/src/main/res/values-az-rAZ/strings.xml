@@ -38,14 +38,11 @@
     <string name="subtype_compact">"Kompakt"</string>
     <string name="add">"Əlavə et"</string>
     <string name="remove">"Ləğv et"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Vibrasiyalı klikləmə müddəti"</string>
     <string name="prefs_keypress_sound_volume_settings">"Səsli klikləmə səsi"</string>
     <string name="prefs_key_longpress_timeout_settings">"Klavişi uzun müddət basmada gecikmə"</string>
     <string name="button_default">"Defolt"</string>
     <string name="prefs_keyboard_height_settings">Klaviatura hündürlüyü</string>
     <string name="keyboard_color">Fərdi klaviatura rəngi təyin et</string>
-    <string name="hide_special_chars">Xüsusi simvolları gizlət</string>
-    <string name="hide_language_switch_key">Dil dəyişmə düyməsini gizlət</string>
     <string name="show_number_row">Nömrə sırası göstər</string>
     <string name="space_swipe">Boşluq sürüşdürmə kursor hərəkəti</string>
     <string name="delete_swipe">Sürüşdürməni sil</string>

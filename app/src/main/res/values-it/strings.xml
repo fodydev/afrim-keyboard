@@ -39,23 +39,26 @@
     <string name="subtype_compact">"compatto"</string>
     <string name="add">"Aggiungi"</string>
     <string name="remove">"Rimuovi"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Durata vibrazione pressione tasto"</string>
     <string name="prefs_keypress_sound_volume_settings">"Volume audio a pressione tasto"</string>
     <string name="prefs_key_longpress_timeout_settings">"Ritardo pressione lunga tasti"</string>
     <string name="button_default">"Predefinito"</string>
     <string name="prefs_keyboard_height_settings">Altezza tastiera</string>
+    <string name="prefs_bottom_offset_portrait_settings">Offset inferiore</string>
     <string name="keyboard_color">Cambia colore tastiera</string>
-    <string name="hide_special_chars">Nascondi caratteri speciali</string>
-    <string name="hide_language_switch_key">Nascondi tasto per cambiare lingua</string>
+    <string name="pref_use_on_screen_summary">Mostra la tastiera sullo schermo mentre usi la tastiera fisica</string>
     <string name="pref_enable_ime_switch">"Passa a un'altra tastiera"</string>
     <string name="show_number_row">Mostra numeri in una riga separata</string>
     <string name="space_swipe">Muovi cursore scorrendo sulla barra spaziatrice</string>
     <string name="delete_swipe">Cancella scorrendo sul tasto cancella</string>
-    <string name="matching_navbar_color">Colora anche la barra di navigazione</string>
     <string name="setup_message">Afrim Keyboard non è abilitata. Premi OK per aprire le impostazioni di lingua ed inserimento. Dovrai selezionare Afrim Keyboard come tastiera corrente per usarla.</string>
     <string name="user_languages">Lingue tastiera attive</string>
     <string name="add_language">Aggiungi lingua</string>
     <string name="remove_language">Rimuovi lingua</string>
     <string name="generic_language_layouts">Layout della tastiera in <xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g></string>
     <string name="change_keyboard">Cambia tastiera</string>
+    <string name="privacy_policy">Politica sulla Riservatezza</string>
+    <string name="license">Licenza</string>
+    <string name="show_language_switch_key">Mostra il tasto di cambio lingua</string>
+    <string name="pref_use_on_screen">Mostra la tastiera sullo schermo</string>
+    <string name="show_special_chars">Mostra caratteri speciali</string>
 </resources>

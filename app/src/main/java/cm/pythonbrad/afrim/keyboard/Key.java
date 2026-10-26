@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2010 The Android Open Source Project
+ * Copyright (C) 2023 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -143,10 +145,8 @@ public class Key implements Comparable<Key> {
   /** Background type that represents different key background visual than normal one. */
   private final int mBackgroundType;
 
-  public static final int BACKGROUND_TYPE_EMPTY = 0;
   public static final int BACKGROUND_TYPE_NORMAL = 1;
   public static final int BACKGROUND_TYPE_FUNCTIONAL = 2;
-  public static final int BACKGROUND_TYPE_ACTION = 5;
   public static final int BACKGROUND_TYPE_SPACEBAR = 6;
 
   private final int mActionFlags;
@@ -540,10 +540,6 @@ public class Key implements Comparable<Key> {
 
   public final boolean isSpacer() {
     return this instanceof Spacer;
-  }
-
-  public final boolean isActionKey() {
-    return mBackgroundType == BACKGROUND_TYPE_ACTION;
   }
 
   public final boolean isShift() {

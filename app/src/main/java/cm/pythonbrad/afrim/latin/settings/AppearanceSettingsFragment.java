@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2024 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +21,8 @@ package cm.pythonbrad.afrim.latin.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.keyboard.KeyboardTheme;
 
@@ -31,34 +33,33 @@ public final class AppearanceSettingsFragment extends SubScreenFragment {
     super.onCreate(icicle);
     addPreferencesFromResource(R.xml.prefs_screen_appearance);
 
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-      removePreference(Settings.PREF_MATCHING_NAVBAR_COLOR);
-    }
-
     setupKeyboardHeightSettings();
+    setupBottomOffsetPortraitSettings();
     setupKeyboardColorSettings();
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    refreshSettings();
+
+    ThemeSettingsFragment.updateKeyboardThemeSummary(findPreference(Settings.SCREEN_THEME));
+
+    final Preference colorPreference = findPreference(Settings.PREF_KEYBOARD_COLOR);
+    if (colorPreference.isEnabled()) {
+      final SharedPreferences prefs = getSharedPreferences();
+      final KeyboardTheme theme = KeyboardTheme.getKeyboardTheme(prefs);
+      colorPreference.setEnabled(theme.mCustomColorSupport);
+    }
   }
 
   @Override
   public void onSharedPreferenceChanged(final SharedPreferences prefs, final String key) {
-    refreshSettings();
-  }
+    if (KeyboardTheme.KEYBOARD_THEME_KEY.equals(key)) {
+      ThemeSettingsFragment.updateKeyboardThemeSummary(findPreference(Settings.SCREEN_THEME));
 
-  private void refreshSettings() {
-    ThemeSettingsFragment.updateKeyboardThemeSummary(findPreference(Settings.SCREEN_THEME));
-
-    final SharedPreferences prefs = getSharedPreferences();
-    final KeyboardTheme theme = KeyboardTheme.getKeyboardTheme(prefs);
-    final boolean isSystemTheme =
-        theme.mThemeId != KeyboardTheme.THEME_ID_SYSTEM
-            && theme.mThemeId != KeyboardTheme.THEME_ID_SYSTEM_BORDER;
-    setPreferenceEnabled(Settings.PREF_KEYBOARD_COLOR, isSystemTheme);
+      final KeyboardTheme theme = KeyboardTheme.getKeyboardTheme(prefs);
+      setPreferenceEnabled(Settings.PREF_KEYBOARD_COLOR, theme.mCustomColorSupport);
+    }
   }
 
   private void setupKeyboardHeightSettings() {
@@ -107,6 +108,49 @@ public final class AppearanceSettingsFragment extends SubScreenFragment {
               return res.getString(R.string.settings_system_default);
             }
             return res.getString(R.string.abbreviation_unit_percent, value);
+          }
+
+          @Override
+          public void feedbackValue(final int value) {}
+        });
+  }
+
+  private void setupBottomOffsetPortraitSettings() {
+    final SeekBarDialogPreference pref =
+        (SeekBarDialogPreference) findPreference(Settings.PREF_BOTTOM_OFFSET_PORTRAIT);
+    if (pref == null) {
+      return;
+    }
+    final SharedPreferences prefs = getSharedPreferences();
+    final Resources res = getResources();
+    pref.setInterface(
+        new SeekBarDialogPreference.ValueProxy() {
+          @Override
+          public void writeValue(final int value, final String key) {
+            prefs.edit().putInt(key, value).apply();
+          }
+
+          @Override
+          public void writeDefaultValue(final String key) {
+            prefs.edit().remove(key).apply();
+          }
+
+          @Override
+          public int readValue(final String key) {
+            return Settings.readBottomOffsetPortrait(prefs);
+          }
+
+          @Override
+          public int readDefaultValue(final String key) {
+            return Settings.DEFAULT_BOTTOM_OFFSET;
+          }
+
+          @Override
+          public String getValueText(final int value) {
+            if (value < 0) {
+              return res.getString(R.string.settings_system_default);
+            }
+            return res.getString(R.string.abbreviation_unit_dp, value);
           }
 
           @Override

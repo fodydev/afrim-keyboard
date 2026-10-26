@@ -39,23 +39,26 @@
     <string name="subtype_compact">"kompaktna"</string>
     <string name="add">"Dodaj"</string>
     <string name="remove">"Ukloni"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Trajanje vibracije pritiska"</string>
     <string name="prefs_keypress_sound_volume_settings">"Glasnoća pritiska tipke"</string>
     <string name="prefs_key_longpress_timeout_settings">"Trajanje dugog pritiska tipke"</string>
     <string name="button_default">"Zadano"</string>
     <string name="prefs_keyboard_height_settings">Visina tipkovnice</string>
+    <string name="prefs_bottom_offset_portrait_settings">Donji pomak</string>
     <string name="keyboard_color">Postavi boju tipkovnice</string>
-    <string name="hide_special_chars">Sakrij posebne znakove</string>
+    <string name="pref_use_on_screen_summary">Prikaži tipkovnicu na zaslonu tijekom korištenja fizičke tipkovnice</string>
     <string name="pref_enable_ime_switch">Prebaci na drugu tipkovnicu</string>
-    <string name="hide_language_switch_key">Sakrij posebne znakove</string>
     <string name="show_number_row">Prikaži zaseban red brojeva</string>
     <string name="space_swipe">Pomiči pokazivač potezom preko razmaknice</string>
     <string name="delete_swipe">Brisanje potezima preko tipkovnice</string>
-    <string name="matching_navbar_color">Koristi podudarajuću boju navigacijske trake</string>
     <string name="setup_message">Afrim Keyboard nije omogućen. Dodirnite OK za otvaranje odjeljka Jezici i unos u postavkama. Da biste koristili Afrim Keyboard, odaberite tu opciju u postavkama.</string>
     <string name="user_languages">Omogućeni jezici tipkovnice</string>
     <string name="add_language">Dodaj jezik</string>
     <string name="remove_language">Ukloni jezik</string>
     <string name="generic_language_layouts">Rasporedi tipkovnica za <xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g></string>
     <string name="change_keyboard">Promijeni tipkovnicu</string>
+    <string name="privacy_policy">Pravila o privatnosti</string>
+    <string name="license">Licenca</string>
+    <string name="show_language_switch_key">Prikaži tipku za promjenu jezika</string>
+    <string name="pref_use_on_screen">Prikaži tipkovnicu na zaslonu</string>
+    <string name="show_special_chars">Prikaži posebne znakove</string>
 </resources>

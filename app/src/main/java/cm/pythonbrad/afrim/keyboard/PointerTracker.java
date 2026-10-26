@@ -1,5 +1,8 @@
 /*
  * Copyright (C) 2010 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2019 Emmanuel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,6 +153,10 @@ public final class PointerTracker implements PointerTrackerQueue.Element {
 
   public static boolean isAnyInDraggingFinger() {
     return sPointerTrackerQueue.isAnyInDraggingFinger();
+  }
+
+  public static boolean isAnyInCursorMove() {
+    return sPointerTrackerQueue.isAnyInCursorMove();
   }
 
   public static void cancelAllPointerTrackers() {
@@ -305,6 +312,11 @@ public final class PointerTracker implements PointerTrackerQueue.Element {
   @Override
   public boolean isInDraggingFinger() {
     return mIsInDraggingFinger;
+  }
+
+  @Override
+  public boolean isInCursorMove() {
+    return mCursorMoved;
   }
 
   public Key getKey() {
@@ -639,7 +651,7 @@ public final class PointerTracker implements PointerTrackerQueue.Element {
       if (steps != 0 && mStartTime + swipeIgnoreTime < System.currentTimeMillis()) {
         mCursorMoved = true;
         mStartX += steps * sPointerStep;
-        sListener.onMovePointer(steps);
+        sListener.onMoveCursorPointer(steps);
       }
       return;
     }
@@ -679,7 +691,6 @@ public final class PointerTracker implements PointerTrackerQueue.Element {
       printTouchEvent("onUpEvent  :", x, y, eventTime);
     }
 
-    sTimerProxy.cancelUpdateBatchInputTimer(this);
     if (mCurrentKey != null && mCurrentKey.isModifier()) {
       // Before processing an up event of modifier key, all pointers already being
       // tracked should be released.
@@ -717,6 +728,9 @@ public final class PointerTracker implements PointerTrackerQueue.Element {
 
     if (mCursorMoved && currentKey.getCode() == Constants.CODE_DELETE) {
       sListener.onUpWithDeletePointerActive();
+    }
+    if (mCursorMoved && currentKey.getCode() == Constants.CODE_SPACE) {
+      sListener.onUpWithSpacePointerActive();
     }
 
     if (isShowingMoreKeysPanel()) {

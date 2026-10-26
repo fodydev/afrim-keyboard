@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +19,15 @@ package cm.pythonbrad.afrim.latin;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import cm.pythonbrad.afrim.latin.common.Constants;
 import cm.pythonbrad.afrim.latin.settings.SettingsValues;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class gathers audio feedback and haptic feedback functions.
@@ -31,11 +36,14 @@ import cm.pythonbrad.afrim.latin.settings.SettingsValues;
  * complexity of settings and the like.
  */
 public final class AudioAndHapticFeedbackManager {
+  private static final long TICK_FREQUENCY = 100;
+  private ExecutorService mBackgroundThread;
   private AudioManager mAudioManager;
   private Vibrator mVibrator;
 
   private SettingsValues mSettingsValues;
   private boolean mSoundOn;
+  private long mLastTickTime = 0;
 
   private static final AudioAndHapticFeedbackManager sInstance =
       new AudioAndHapticFeedbackManager();
@@ -53,19 +61,16 @@ public final class AudioAndHapticFeedbackManager {
   }
 
   private void initInternal(final Context context) {
-    mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-    mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    mBackgroundThread = Executors.newSingleThreadExecutor();
+    mBackgroundThread.execute(
+        () -> {
+          mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+          mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        });
   }
 
   public boolean hasVibrator() {
     return mVibrator != null && mVibrator.hasVibrator();
-  }
-
-  public void vibrate(final long milliseconds) {
-    if (mVibrator == null) {
-      return;
-    }
-    mVibrator.vibrate(milliseconds);
   }
 
   private boolean reevaluateIfSoundIsOn() {
@@ -98,21 +103,49 @@ public final class AudioAndHapticFeedbackManager {
         sound = AudioManager.FX_KEYPRESS_STANDARD;
         break;
     }
-    mAudioManager.playSoundEffect(sound, mSettingsValues.mKeypressSoundVolume);
+    playSoundEffect(sound, mSettingsValues.mKeypressSoundVolume);
+  }
+
+  public void playSoundEffect(final int effectType, final float volume) {
+    if (mAudioManager == null) {
+      return;
+    }
+
+    mBackgroundThread.execute(
+        () -> {
+          mAudioManager.playSoundEffect(effectType, volume);
+        });
   }
 
   public void performHapticFeedback(final View viewToPerformHapticFeedbackOn) {
-    if (!mSettingsValues.mVibrateOn) {
+    if (!mSettingsValues.mVibrateOn || mVibrator == null) {
       return;
     }
-    if (mSettingsValues.mKeypressVibrationDuration >= 0) {
-      vibrate(mSettingsValues.mKeypressVibrationDuration);
+    mBackgroundThread.execute(
+        () -> {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            mVibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+          } else if (viewToPerformHapticFeedbackOn != null) {
+            viewToPerformHapticFeedbackOn.performHapticFeedback(
+                HapticFeedbackConstants.KEYBOARD_TAP,
+                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+          }
+        });
+  }
+
+  public void performTickFeedback() {
+    if (!mSettingsValues.mVibrateOn
+        || mVibrator == null
+        || System.currentTimeMillis() - mLastTickTime < TICK_FREQUENCY) {
       return;
     }
-    // Go ahead with the system default
-    if (viewToPerformHapticFeedbackOn != null) {
-      viewToPerformHapticFeedbackOn.performHapticFeedback(
-          HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      mLastTickTime = System.currentTimeMillis();
+      mBackgroundThread.execute(
+          () -> {
+            mVibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK));
+          });
     }
   }
 

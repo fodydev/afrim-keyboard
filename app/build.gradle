@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     defaultConfig {
         applicationId "cm.pythonbrad.afrim"
-        compileSdk 34
-        minSdkVersion 21
-        targetSdkVersion 34
+        compileSdk 37
+        minSdkVersion 24
+        targetSdkVersion 37
         versionCode 20240310
         versionName "1.0.0"
     }
@@ -17,7 +17,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     namespace 'cm.pythonbrad.afrim'
@@ -43,6 +43,11 @@ android {
         sourceSets.getByName("main").jniLibs.srcDirs(setOf("prebuilt"))
     } else {
         externalNativeBuild.cmake.path("src/main/jni/CMakeLists.txt")
+    }
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
 }
 

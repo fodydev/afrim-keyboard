@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2010 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2019 Emmanuel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,11 +76,13 @@ public interface KeyboardActionListener {
    */
   boolean onCustomRequest(int requestCode);
 
-  void onMovePointer(int steps);
+  void onMoveCursorPointer(int steps);
 
   void onMoveDeletePointer(int steps);
 
   void onUpWithDeletePointerActive();
+
+  void onUpWithSpacePointerActive();
 
   KeyboardActionListener EMPTY_LISTENER = new Adapter();
 
@@ -104,12 +108,15 @@ public interface KeyboardActionListener {
     }
 
     @Override
-    public void onMovePointer(int steps) {}
+    public void onMoveCursorPointer(int steps) {}
 
     @Override
     public void onMoveDeletePointer(int steps) {}
 
     @Override
     public void onUpWithDeletePointerActive() {}
+
+    @Override
+    public void onUpWithSpacePointerActive() {}
   }
 }

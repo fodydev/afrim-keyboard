@@ -1,5 +1,10 @@
 /*
  * Copyright (C) 2013 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2025 Camille019
+ * Copyright (C) 2023 Md. Rifat Hasan Jihan
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2019 Emmanuel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +36,6 @@ import cm.pythonbrad.afrim.latin.settings.SettingsValues;
 import cm.pythonbrad.afrim.latin.utils.InputTypeUtils;
 import cm.pythonbrad.afrim.latin.utils.RecapitalizeStatus;
 import cm.pythonbrad.afrim.latin.utils.SubtypeLocaleUtils;
-import java.util.TreeSet;
 
 /** This class manages the input logic. */
 public final class InputLogic {
@@ -41,8 +45,6 @@ public final class InputLogic {
   // This has package visibility so it can be accessed from InputLogicHandler.
   public final RichInputConnection mConnection;
   private final RecapitalizeStatus mRecapitalizeStatus = new RecapitalizeStatus();
-
-  public final TreeSet<Long> mCurrentlyPressedHardwareKeys = new TreeSet<>();
 
   /**
    * Create a new instance of the input logic.
@@ -62,7 +64,10 @@ public final class InputLogic {
    */
   public void startInput() {
     mRecapitalizeStatus.disable(); // Do not perform recapitalize until the cursor is moved once
-    mCurrentlyPressedHardwareKeys.clear();
+  }
+
+  public void clearCaches() {
+    mConnection.clearCaches();
   }
 
   /** Call this when the subtype changes. */
@@ -97,16 +102,16 @@ public final class InputLogic {
    *
    * @param newSelStart new selection start
    * @param newSelEnd new selection end
-   * @return whether the cursor has moved as a result of user interaction.
    */
-  public boolean onUpdateSelection(final int newSelStart, final int newSelEnd) {
-    resetEntireInputState(newSelStart, newSelEnd);
+  public void onUpdateSelection(final int newSelStart, final int newSelEnd) {
+    mConnection.updateSelection(newSelStart, newSelEnd);
+  }
 
-    // The cursor has been moved : we now accept to perform recapitalization
+  public void reloadTextCache() {
+    mConnection.reloadTextCache();
+
     mRecapitalizeStatus.enable();
-    // Stop the last recapitalization, if started.
     mRecapitalizeStatus.stop();
-    return true;
   }
 
   /**
@@ -174,7 +179,7 @@ public final class InputLogic {
         // Backspace is a functional key, but it affects the contents of the editor.
         break;
       case Constants.CODE_SHIFT:
-        performRecapitalization(inputTransaction.mSettingsValues);
+        performRecapitalization();
         inputTransaction.requireShiftUpdate(InputTransaction.SHIFT_UPDATE_NOW);
         break;
       case Constants.CODE_CAPSLOCK:
@@ -191,6 +196,9 @@ public final class InputLogic {
         break;
       case Constants.CODE_SETTINGS:
         onSettingsKeyPressed();
+        break;
+      case Constants.CODE_PASTE:
+        mConnection.pasteClipboard();
         break;
       case Constants.CODE_ACTION_NEXT:
         performEditorAction(EditorInfo.IME_ACTION_NEXT);
@@ -314,7 +322,17 @@ public final class InputLogic {
             : InputTransaction.SHIFT_UPDATE_NOW;
     inputTransaction.requireShiftUpdate(shiftUpdateKind);
 
-    sendDownUpKeyEvent(KeyEvent.KEYCODE_DEL);
+    if (mConnection.hasSelection()) {
+      mConnection.deleteSelectedText();
+    } else {
+      final int codePointBeforeCursor = mConnection.getCodePointBeforeCursor();
+      if (codePointBeforeCursor == Constants.NOT_A_CODE) {
+        sendDownUpKeyEvent(KeyEvent.KEYCODE_DEL);
+      } else {
+        final int numChars = Character.isSupplementaryCodePoint(codePointBeforeCursor) ? 2 : 1;
+        mConnection.deleteTextBeforeCursor(numChars);
+      }
+    }
   }
 
   /** Handle a press on the language switch key (the "globe key") */
@@ -322,12 +340,8 @@ public final class InputLogic {
     mLatinIME.switchToNextSubtype();
   }
 
-  /**
-   * Performs a recapitalization event.
-   *
-   * @param settingsValues The current settings values.
-   */
-  private void performRecapitalization(final SettingsValues settingsValues) {
+  /** Performs a recapitalization event. */
+  private void performRecapitalization() {
     if (!mConnection.hasSelection() || !mRecapitalizeStatus.mIsEnabled()) {
       return; // No selection or recapitalize is disabled for now
     }
@@ -342,7 +356,7 @@ public final class InputLogic {
     // If we have a recapitalize in progress, use it; otherwise, start a new one.
     if (!mRecapitalizeStatus.isStarted()
         || !mRecapitalizeStatus.isSetAt(selectionStart, selectionEnd)) {
-      final CharSequence selectedText = mConnection.getSelectedText(0 /* flags, 0 for no styles */);
+      final CharSequence selectedText = mConnection.getSelectedText();
       if (TextUtils.isEmpty(selectedText)) return; // Race condition with the input connection
       mRecapitalizeStatus.start(
           selectionStart,
@@ -474,20 +488,6 @@ public final class InputLogic {
   }
 
   /**
-   * Resets the whole input state to the starting state.
-   *
-   * <p>This will clear the composing word, reset the last composed word, clear the suggestion strip
-   * and tell the input connection about it so that it can refresh its caches.
-   *
-   * @param newSelStart the new selection start, in java characters.
-   * @param newSelEnd the new selection end, in java characters.
-   */
-  // TODO: how is this different from startInput ?!
-  private void resetEntireInputState(final int newSelStart, final int newSelEnd) {
-    mConnection.resetCachesUponCursorMoveAndReturnSuccess(newSelStart, newSelEnd);
-  }
-
-  /**
    * Sends a DOWN key event followed by an UP key event to the editor.
    *
    * <p>If possible at all, avoid using this method. It causes all sorts of race conditions with the
@@ -544,32 +544,5 @@ public final class InputLogic {
     }
 
     mConnection.commitText(StringUtils.newSingleCodePointString(codePoint), 1);
-  }
-
-  /**
-   * Retry resetting caches in the rich input connection.
-   *
-   * <p>When the editor can't be accessed we can't reset the caches, so we schedule a retry. This
-   * method handles the retry, and re-schedules a new retry if we still can't access. We only retry
-   * up to 5 times before giving up.
-   *
-   * @param tryResumeSuggestions Whether we should resume suggestions or not.
-   * @param remainingTries How many times we may try again before giving up.
-   * @return whether true if the caches were successfully reset, false otherwise.
-   */
-  public boolean retryResetCachesAndReturnSuccess(
-      final boolean tryResumeSuggestions,
-      final int remainingTries,
-      final LatinIME.UIHandler handler) {
-    if (!mConnection.resetCachesUponCursorMoveAndReturnSuccess(
-        mConnection.getExpectedSelectionStart(), mConnection.getExpectedSelectionEnd())) {
-      if (0 < remainingTries) {
-        handler.postResetCaches(tryResumeSuggestions, remainingTries - 1);
-        return false;
-      }
-      // If remainingTries is 0, we should stop waiting for new tries, however we'll still
-      // return true as we need to perform other tasks (for example, loading the keyboard).
-    }
-    return true;
   }
 }

@@ -39,23 +39,26 @@
     <string name="subtype_compact">"Kompakt"</string>
     <string name="add">"Ekle"</string>
     <string name="remove">"Kaldır"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Tuşa basma titreşim süresi"</string>
     <string name="prefs_keypress_sound_volume_settings">"Tuşa basma ses seviyesi"</string>
     <string name="prefs_key_longpress_timeout_settings">"Tuşa uzun basma gecikmesi"</string>
     <string name="button_default">"Varsayılan"</string>
     <string name="prefs_keyboard_height_settings">Klavye yüksekliği</string>
+    <string name="prefs_bottom_offset_portrait_settings">Ekran dibinden uzaklık</string>
     <string name="keyboard_color">Özel klavye rengi ayarla</string>
-    <string name="hide_special_chars">Özel karakterleri gizle</string>
-    <string name="hide_language_switch_key">Dil değiştirme tuşunu gizle</string>
+    <string name="show_special_chars">Özel karakterleri göster</string>
+    <string name="show_language_switch_key">Dil değiştirme düğmesini göster</string>
+    <string name="pref_use_on_screen">Ekran klavyesini göster</string>
+    <string name="pref_use_on_screen_summary">Fiziksel klavyeyi kullanırken ekran klavyesini göster</string>
     <string name="pref_enable_ime_switch">Diğer klavyelere geç</string>
     <string name="show_number_row">Ayrık rakam satırını göster</string>
     <string name="space_swipe">Boşluk tuşunda kaydırarak imleci taşı</string>
     <string name="delete_swipe">Sil tuşu kaydırması</string>
-    <string name="matching_navbar_color">Eşleşen gezinti çubuğu rengini kullan</string>
     <string name="setup_message">Afrim Keyboard etkin değil. Diller &amp; Giriş ayarlarını açmak için Tamam\'ı tıklayın. Kullanmak için geçerli klavyenizde Afrim Keyboard\'u seçmeniz gerekmektedir.</string>
     <string name="user_languages">Geçerli klavye dilleri</string>
     <string name="add_language">Dil ekle</string>
     <string name="remove_language">Dil kaldır</string>
     <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME">%s</xliff:g> klavye düzenleri</string>
     <string name="change_keyboard">Klavyeyi değiştir</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="license">Lisans</string>
 </resources>

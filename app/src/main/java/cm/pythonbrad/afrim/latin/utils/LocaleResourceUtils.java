@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.latin.common.LocaleUtils;
-import cm.pythonbrad.afrim.latin.common.StringUtils;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -53,6 +54,10 @@ public final class LocaleResourceUtils {
         sInitialized = true;
       }
     }
+  }
+
+  public static void onLocalChange(final Context context) {
+    sResources = context.getResources();
   }
 
   private static void initLocked(final Context context) {
@@ -156,13 +161,10 @@ public final class LocaleResourceUtils {
       exceptionalNameResId = null;
     }
 
-    final String displayName;
     if (exceptionalNameResId != null) {
-      displayName = sResources.getString(exceptionalNameResId);
+      return sResources.getString(exceptionalNameResId);
     } else {
-      displayName =
-          LocaleUtils.constructLocaleFromString(localeString).getDisplayName(displayLocale);
+      return LocaleUtils.constructLocaleFromString(localeString).getDisplayName(displayLocale);
     }
-    return StringUtils.capitalizeFirstCodePoint(displayName, displayLocale);
   }
 }

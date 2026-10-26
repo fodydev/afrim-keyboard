@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (C) 2024 wittmane
+ * Copyright (C) 2024 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +53,11 @@ public final class KeyboardId {
   public final int mThemeId;
   public final int mWidth;
   public final int mHeight;
+  public final int mBottomOffset;
   public final int mMode;
   public final int mElementId;
   public final EditorInfo mEditorInfo;
+  public final boolean mClobberSettingsKey;
   public final boolean mLanguageSwitchKeyEnabled;
   public final String mCustomActionLabel;
   public final boolean mShowMoreKeys;
@@ -66,9 +70,11 @@ public final class KeyboardId {
     mThemeId = params.mKeyboardThemeId;
     mWidth = params.mKeyboardWidth;
     mHeight = params.mKeyboardHeight;
+    mBottomOffset = params.mKeyboardBottomOffset;
     mMode = params.mMode;
     mElementId = elementId;
     mEditorInfo = params.mEditorInfo;
+    mClobberSettingsKey = params.mNoSettingsKey;
     mLanguageSwitchKeyEnabled = params.mLanguageSwitchKeyEnabled;
     mCustomActionLabel =
         (mEditorInfo.actionLabel != null) ? mEditorInfo.actionLabel.toString() : null;
@@ -85,7 +91,9 @@ public final class KeyboardId {
           id.mMode,
           id.mWidth,
           id.mHeight,
+          id.mBottomOffset,
           id.passwordInput(),
+          id.mClobberSettingsKey,
           id.mLanguageSwitchKeyEnabled,
           id.isMultiLine(),
           id.imeAction(),
@@ -93,7 +101,9 @@ public final class KeyboardId {
           id.navigateNext(),
           id.navigatePrevious(),
           id.mSubtype,
-          id.mThemeId
+          id.mThemeId,
+          id.mShowMoreKeys,
+          id.mShowNumberRow
         });
   }
 
@@ -103,7 +113,9 @@ public final class KeyboardId {
         && other.mMode == mMode
         && other.mWidth == mWidth
         && other.mHeight == mHeight
+        && other.mBottomOffset == mBottomOffset
         && other.passwordInput() == passwordInput()
+        && other.mClobberSettingsKey == mClobberSettingsKey
         && other.mLanguageSwitchKeyEnabled == mLanguageSwitchKeyEnabled
         && other.isMultiLine() == isMultiLine()
         && other.imeAction() == imeAction()
@@ -111,7 +123,9 @@ public final class KeyboardId {
         && other.navigateNext() == navigateNext()
         && other.navigatePrevious() == navigatePrevious()
         && other.mSubtype.equals(mSubtype)
-        && other.mThemeId == mThemeId;
+        && other.mThemeId == mThemeId
+        && other.mShowMoreKeys == mShowMoreKeys
+        && other.mShowNumberRow == mShowNumberRow;
   }
 
   private static boolean isAlphabetKeyboard(final int elementId) {
@@ -164,16 +178,18 @@ public final class KeyboardId {
   public String toString() {
     return String.format(
         Locale.ROOT,
-        "[%s %s:%s %dx%d %s %s%s%s%s%s%s %s]",
+        "[%s %s:%s %dx%d +%d %s %s%s%s%s%s%s %s]",
         elementIdToName(mElementId),
         mSubtype.getLocale(),
         mSubtype.getKeyboardLayoutSet(),
         mWidth,
         mHeight,
+        mBottomOffset,
         modeName(mMode),
         actionName(imeAction()),
         (navigateNext() ? " navigateNext" : ""),
         (navigatePrevious() ? " navigatePrevious" : ""),
+        (mClobberSettingsKey ? " clobberSettingsKey" : ""),
         (passwordInput() ? " passwordInput" : ""),
         (mLanguageSwitchKeyEnabled ? " languageSwitchKeyEnabled" : ""),
         (isMultiLine() ? " isMultiLine" : ""),

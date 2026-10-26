@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2018 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +46,7 @@ public final class KeyboardCodesSet {
     "key_output_text",
     "key_delete",
     "key_settings",
+    "key_paste",
     "key_action_next",
     "key_action_previous",
     "key_shift_enter",
@@ -63,6 +66,7 @@ public final class KeyboardCodesSet {
     Constants.CODE_OUTPUT_TEXT,
     Constants.CODE_DELETE,
     Constants.CODE_SETTINGS,
+    Constants.CODE_PASTE,
     Constants.CODE_ACTION_NEXT,
     Constants.CODE_ACTION_PREVIOUS,
     Constants.CODE_SHIFT_ENTER,

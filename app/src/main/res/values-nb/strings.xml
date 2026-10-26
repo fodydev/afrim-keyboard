@@ -39,23 +39,26 @@
     <string name="subtype_compact">"kompakt"</string>
     <string name="add">"Legg til"</string>
     <string name="remove">"Fjern"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Vibrasjonstid ved tastetrykk"</string>
     <string name="prefs_keypress_sound_volume_settings">"Lydstyrke ved tastetrykk"</string>
     <string name="prefs_key_longpress_timeout_settings">"Forsinkelse ved lange tastetrykk"</string>
     <string name="button_default">"Standard"</string>
     <string name="prefs_keyboard_height_settings">Tastaturhøyde</string>
+    <string name="prefs_bottom_offset_portrait_settings">Bunnforskyvning</string>
     <string name="keyboard_color">Still inn tilpasset tastaturfarge</string>
-    <string name="hide_special_chars">Skjul spesielle tegn</string>
-    <string name="hide_language_switch_key">Skjul tast for språkbytte</string>
+    <string name="pref_use_on_screen_summary">Vis skjermtastaturet når du bruker det fysiske tastaturet</string>
     <string name="pref_enable_ime_switch">Skift til andre tastaturer</string>
     <string name="show_number_row">Vis separat tallrad</string>
     <string name="space_swipe">Mellomrom-sveip flytter markør</string>
     <string name="delete_swipe">Slette-sveip</string>
-    <string name="matching_navbar_color">Bruk matchende navigasjonslinjefarge</string>
     <string name="setup_message">Afrim Keyboard er ikke aktivert. Trykk OK for å åpne innstillinger for Språk og inndata. Du må velge Afrim Keyboard som standardtastatur for å bruke det.</string>
     <string name="user_languages">Aktiverte tastaturspråk</string>
     <string name="add_language">Legg til språk</string>
     <string name="remove_language">Fjern språk</string>
     <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> tastaturlayouter</string>
     <string name="change_keyboard">Endre tastatur</string>
+    <string name="privacy_policy">Personvernerklæring</string>
+    <string name="license">Lisens</string>
+    <string name="show_language_switch_key">Vis knapp for å endre språk</string>
+    <string name="pref_use_on_screen">Vis skjermtastaturet</string>
+    <string name="show_special_chars">Vis symbol</string>
 </resources>

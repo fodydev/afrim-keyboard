@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +23,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import cm.pythonbrad.afrim.R;
@@ -91,6 +97,25 @@ public class SettingsActivity extends PreferenceActivity {
   @Override
   protected void onCreate(final Bundle savedState) {
     super.onCreate(savedState);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      final View container = (View) getListView().getParent().getParent();
+      // com.android.internal.R.id.prefs_container in
+      // https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/core/res/res/layout/preference_list_content.xml
+      container.setOnApplyWindowInsetsListener(
+          (view, windowInsets) -> {
+            android.graphics.Insets insets = windowInsets.getInsets(WindowInsets.Type.systemBars());
+            ViewGroup.MarginLayoutParams mlp =
+                (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            mlp.topMargin = insets.top;
+            mlp.leftMargin = insets.left;
+            mlp.bottomMargin = insets.bottom;
+            mlp.rightMargin = insets.right;
+            view.setLayoutParams(mlp);
+            return WindowInsets.CONSUMED;
+          });
+    }
+
     final ActionBar actionBar = getActionBar();
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
