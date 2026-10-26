@@ -27,7 +27,7 @@
     <string name="settings_screen_appearance">Външен вид</string>
     <string name="settings_screen_theme">"Тема"</string>
     <string name="abbreviation_unit_milliseconds">"<xliff:g id="MILLISECONDS">%s</xliff:g> милисек"</string>
-    <string name="settings_system_default">"Станд. за системата"</string>gith
+    <string name="settings_system_default">"Станд. за системата"</string>
     <string name="auto_cap">"Авт. поставяне на главни букви"</string>
     <string name="auto_cap_summary">"Главна буква за първата дума от всяко изречение"</string>
     <string name="select_language">"Езици"</string>
@@ -41,25 +41,26 @@
     <string name="subtype_bds">"БДС"</string>
     <string name="add">"Добавяне"</string>
     <string name="remove">"Премахване"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Продълж. на вибриране при натискане"</string>
     <string name="prefs_keypress_sound_volume_settings">"Сила на звука при натиск. на клавиш"</string>
     <string name="prefs_key_longpress_timeout_settings">"Забавяне при продълж. натискане"</string>
     <string name="button_default">"Стандартно"</string>
     <string name="prefs_keyboard_height_settings">Височина на клавиатурата</string>
+    <string name="prefs_bottom_offset_portrait_settings">Долно отместване</string>
     <string name="keyboard_color">Задай избираем цвят на клавиатурата</string>
-    <string name="hide_special_chars">Скрий специалните символи</string>
-    <string name="hide_language_switch_key">Скрий бутона за превключване на езика</string>
+    <string name="pref_use_on_screen_summary">Показване на екранната клавиатура при използване на физическа клавиатура</string>
     <string name="pref_enable_ime_switch">Смени на други клавиатури</string>
     <string name="show_number_row">Показвай отделен ред с цифри</string>
     <string name="space_swipe">Местене на курсора с плъзгане върху интервал</string>
     <string name="delete_swipe">Изтриване с плъзгане</string>
-    <string name="matching_navbar_color">Използвайте съвпадащия цвят на навигационната лента</string>
     <string name="setup_message">Afrim Keyboard не е активирана. Щракнете върху OK, за да отворите настройките за въвеждане на езици. Ще трябва да изберете Afrim Keyboard в текущата клавиатура, за да я използвате.</string>
     <string name="user_languages">Активирани клавиатурни езици</string>
     <string name="add_language">Добави език</string>
     <string name="remove_language">Премахни език</string>
     <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> клавиатурни оформления</string>
     <string name="change_keyboard">Смени клавиатурата</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="license">License</string>
+    <string name="privacy_policy">Политика за поверителност</string>
+    <string name="license">Лиценз</string>
+    <string name="show_language_switch_key">Показване на клавиша за превключване на езика</string>
+    <string name="pref_use_on_screen">Показване на екранната клавиатура</string>
+    <string name="show_special_chars">Показване на специални символи</string>
 </resources>

@@ -39,22 +39,26 @@
     <string name="subtype_compact">"tiivis"</string>
     <string name="add">"Lisää"</string>
     <string name="remove">"Poista"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Painalluksen värinän kesto"</string>
     <string name="prefs_keypress_sound_volume_settings">"Näppäinpainalluksen äänenvoimakkuus"</string>
     <string name="prefs_key_longpress_timeout_settings">"Pitkän painalluksen viive"</string>
     <string name="button_default">"Oletusarvot"</string>
     <string name="prefs_keyboard_height_settings">Näppäimistön korkeus</string>
+    <string name="prefs_bottom_offset_portrait_settings">Pohjan siirtymä</string>
     <string name="keyboard_color">Laita mukautettu näppäimistön väri</string>
-    <string name="hide_special_chars">Piilota erikoismerkit</string>
-    <string name="hide_language_switch_key">Piilota kielen vaihtonappula</string>
+    <string name="pref_use_on_screen_summary">Näytä näyttönäppäimistö fyysistä näppäimistöä käytettäessä</string>
     <string name="pref_enable_ime_switch">Vaihda toisiin näppäimistöihin</string>
     <string name="show_number_row">Näytä erillinen numerorivi</string>
     <string name="space_swipe">Liikuta kursoria pyyhkäisemällä välilyöntiä</string>
     <string name="delete_swipe">Poista pyyhkäisemällä</string>
-    <string name="matching_navbar_color">Käytä samaa navigointipalkin väriä</string>
     <string name="setup_message">Afrim Keyboard ei ole käytössä. Paina OK avataksesi Kielten ja syöttötapojen asetukset. Sinun pitää valita Afrim Keyboard nykyisessä näppäimistössä käyttääksesi sitä.</string>
     <string name="user_languages">Käytössä olevat näppäimistön kielet</string>
     <string name="add_language">Lisää kieli</string>
     <string name="remove_language">Poista kieli</string>
+    <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> näppäimistöasettelut</string>
     <string name="change_keyboard">Vaihda näppäimistöä</string>
+    <string name="privacy_policy">Tietosuojakäytäntö</string>
+    <string name="license">Lisenssi</string>
+    <string name="show_language_switch_key">Näytä kielenvaihtonäppäin</string>
+    <string name="pref_use_on_screen">Näytä näyttönäppäimistö</string>
+    <string name="show_special_chars">Näytä erikoismerkit</string>
 </resources>

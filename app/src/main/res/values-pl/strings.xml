@@ -39,23 +39,26 @@
     <string name="subtype_compact">"kompaktowa"</string>
     <string name="add">"Dodaj"</string>
     <string name="remove">"Usuń"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Wibracja przy naciśniętym klawiszu"</string>
     <string name="prefs_keypress_sound_volume_settings">"Głośność przy naciśniętym klawiszu"</string>
     <string name="prefs_key_longpress_timeout_settings">"Opóźnienie przy długim naciśnięciu"</string>
     <string name="button_default">"Domyślne"</string>
     <string name="prefs_keyboard_height_settings">Wysokość klawiatury</string>
+    <string name="prefs_bottom_offset_portrait_settings">Dolne przesunięcie</string>
     <string name="keyboard_color">Ustaw niestandardowy kolor klawiatury</string>
-    <string name="hide_special_chars">Ukryj znaki specjalne</string>
-    <string name="hide_language_switch_key">Ukryj przycisk zmiany języka</string>
+    <string name="pref_use_on_screen_summary">Pokaż klawiaturę ekranową podczas korzystania z klawiatury fizycznej</string>
     <string name="pref_enable_ime_switch">Przycisk zmiany klawiatury</string>
     <string name="show_number_row">Pokaż oddzielny rząd z cyframi</string>
     <string name="space_swipe">Przesuń kursor przeciągając spację</string>
     <string name="delete_swipe">Usuń poprzez przesunięcie</string>
-    <string name="matching_navbar_color">Dopasuj kolor paska nawigacji</string>
     <string name="setup_message">Afrim Keyboard nie jest włączona. Kliknij OK, żeby otworzyć ustawienia języka i wprowadzania. Następnie wybierz Afrim Keyboard w ustawieniach klawiatury.</string>
-    <string name="user_languages">Aktywne języki</string>
+    <string name="user_languages">Włączone języki</string>
     <string name="add_language">Dodaj język</string>
     <string name="remove_language">Usuń język</string>
     <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> układ klawiatury</string>
     <string name="change_keyboard">Zmień klawiaturę</string>
+    <string name="privacy_policy">Polityka prywatności</string>
+    <string name="license">Licencja</string>
+    <string name="show_language_switch_key">Pokaż klawisz zmiany języka</string>
+    <string name="pref_use_on_screen">Pokaż klawiaturę ekranową</string>
+    <string name="show_special_chars">Pokaż znaki specjalne</string>
 </resources>

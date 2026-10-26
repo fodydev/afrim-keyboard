@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2024 Raimondas Rimkus
+ * Copyright (C) 2024 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +18,7 @@
 
 package cm.pythonbrad.afrim.keyboard;
 
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -34,6 +37,7 @@ import cm.pythonbrad.afrim.latin.utils.InputTypeUtils;
 import cm.pythonbrad.afrim.latin.utils.XmlParseUtils;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
+import java.util.Arrays;
 import java.util.HashMap;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -90,19 +94,17 @@ public final class KeyboardLayoutSet {
     int mMode;
     // TODO: Use {@link InputAttributes} instead of these variables.
     EditorInfo mEditorInfo;
+    boolean mNoSettingsKey;
     boolean mLanguageSwitchKeyEnabled;
     Subtype mSubtype;
     int mKeyboardThemeId;
     int mKeyboardWidth;
     int mKeyboardHeight;
+    int mKeyboardBottomOffset;
     boolean mShowMoreKeys;
     boolean mShowNumberRow;
     // Sparse array of KeyboardLayoutSet element parameters indexed by element's id.
     final SparseArray<ElementParams> mKeyboardLayoutSetElementIdToParamsMap = new SparseArray<>();
-  }
-
-  public static void onSystemLocaleChanged() {
-    clearKeyboardCache();
   }
 
   public static void onKeyboardThemeChanged() {
@@ -112,6 +114,7 @@ public final class KeyboardLayoutSet {
   private static void clearKeyboardCache() {
     sKeyboardCache.clear();
     sUniqueKeysCache.clear();
+    Arrays.fill(sForcibleKeyboardCache, null);
   }
 
   KeyboardLayoutSet(final Context context, final Params params) {
@@ -214,6 +217,10 @@ public final class KeyboardLayoutSet {
       params.mMode = getKeyboardMode(editorInfo);
       // TODO: Consolidate those with {@link InputAttributes}.
       params.mEditorInfo = editorInfo;
+
+      final KeyguardManager kgMgr =
+          (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+      params.mNoSettingsKey = kgMgr.isKeyguardLocked();
     }
 
     public Builder setKeyboardTheme(final int themeId) {
@@ -221,9 +228,11 @@ public final class KeyboardLayoutSet {
       return this;
     }
 
-    public Builder setKeyboardGeometry(final int keyboardWidth, final int keyboardHeight) {
+    public Builder setKeyboardGeometry(
+        final int keyboardWidth, final int keyboardHeight, final int keyboardBottomOffset) {
       mParams.mKeyboardWidth = keyboardWidth;
       mParams.mKeyboardHeight = keyboardHeight;
+      mParams.mKeyboardBottomOffset = keyboardBottomOffset;
       return this;
     }
 

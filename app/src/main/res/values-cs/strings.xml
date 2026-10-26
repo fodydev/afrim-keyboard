@@ -39,22 +39,26 @@
     <string name="subtype_compact">"kompaktní"</string>
     <string name="add">"Přidat"</string>
     <string name="remove">"Odebrat"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Délka vibrace při stisknutí klávesy"</string>
     <string name="prefs_keypress_sound_volume_settings">"Hlasitost stisknutí klávesy"</string>
     <string name="prefs_key_longpress_timeout_settings">"Prodleva dlouhého stisknutí"</string>
     <string name="button_default">"Výchozí"</string>
     <string name="prefs_keyboard_height_settings">Výška klávesnice</string>
+    <string name="prefs_bottom_offset_portrait_settings">Spodní odsazení</string>
     <string name="keyboard_color">Nastavit barvu klávesnice</string>
-    <string name="hide_special_chars">Skrýt speciální znaky</string>
-    <string name="hide_language_switch_key">Skrýt klávesu pro přepínání jazyka</string>
+    <string name="pref_use_on_screen_summary">Zobrazit klávesnici na obrazovce při používání fyzické klávesnice</string>
     <string name="pref_enable_ime_switch">Změna na jiné klávesnice</string>
     <string name="show_number_row">Zobrazit řádek s čísly</string>
     <string name="space_swipe">Pohybovat kurzorem táhnutím po mezerníku</string>
     <string name="delete_swipe">Mazat text táhnutím po Backspace</string>
-    <string name="matching_navbar_color">Změnit barvu navigační lišty</string>
     <string name="setup_message">Afrim Keyboard není povolený. Tlačítkem OK se dostanete do nabídky dostupných virtuálních klávesnic. Zde prosím povolte Afrim Keyboard. Poté je nutné nastavit Afrim Keyboard jako výchozí klávesnici.</string>
     <string name="user_languages">Povolené jazyky klávesnice</string>
     <string name="add_language">Přidat jazyk</string>
     <string name="remove_language">Odstranit jazyk</string>
+    <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> rozložení klávesnic</string>
     <string name="change_keyboard">Změnit klávesnici</string>
+    <string name="privacy_policy">Zásady ochrany osobních údajů</string>
+    <string name="license">Licence</string>
+    <string name="show_language_switch_key">Zobrazit klávesu pro přepínání jazyků</string>
+    <string name="pref_use_on_screen">Zobrazit klávesnici na obrazovce</string>
+    <string name="show_special_chars">Zobrazit speciální znaky</string>
 </resources>

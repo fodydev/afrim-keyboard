@@ -39,23 +39,26 @@
     <string name="subtype_compact">"kompaktne"</string>
     <string name="add">"Lisa"</string>
     <string name="remove">"Eemalda"</string>
-    <string name="prefs_keypress_vibration_duration_settings">"Klahvivajutuse vibreerimise kestus"</string>
     <string name="prefs_keypress_sound_volume_settings">"Klahvivajutuse helitugevus"</string>
     <string name="prefs_key_longpress_timeout_settings">"Pika klahvivajutuse viide"</string>
     <string name="button_default">"Vaikeväärtus"</string>
-    <string name="prefs_keyboard_height_settings">Klavjatuuri kõrgus</string>
-    <string name="keyboard_color">Määrake kohandatud klaviatuuri värv</string>
-    <string name="hide_special_chars">HPeida eri tähed</string>
-    <string name="hide_language_switch_key">Peida keele vahetus nupp</string>
+    <string name="prefs_keyboard_height_settings">Klaviatuuri kõrgus</string>
+    <string name="prefs_bottom_offset_portrait_settings">Veerised all ääres</string>
+    <string name="keyboard_color">Määra kohandatud klaviatuuri värv</string>
+    <string name="show_special_chars">Näita erimärke</string>
+    <string name="show_language_switch_key">Näita keelevahetuse nuppi</string>
+    <string name="pref_use_on_screen">Kuva ekraaniklaviatuur</string>
+    <string name="pref_use_on_screen_summary">Kuva füüsilise klaviatuuri kasutamisel ekraaniklaviatuur</string>
     <string name="pref_enable_ime_switch">Vaheta teistele klavjatuuridele</string>
     <string name="show_number_row">Kuva eraldi numbririda</string>
     <string name="space_swipe">Space pühi kursori liigutus</string>
     <string name="delete_swipe">Kustuta pühkimine</string>
-    <string name="matching_navbar_color">Kasuta sobivat navigatsiooni riba värvi</string>
     <string name="setup_message">Lihtne klaviatuur pole lubatud. Klõpsake nuppu OK, et avada Keeled &amp; Sisestusseaded. Selle kasutamiseks peate oma praegusel klaviatuuril valima lihtsa klaviatuuri.</string>
     <string name="user_languages">Lubatud klavjatuuri keeled</string>
     <string name="add_language">Lisa keel</string>
     <string name="remove_language">Eemalda keel</string>
     <string name="generic_language_layouts"><xliff:g id="LANGUAGE_NAME" example="English (US)">%s</xliff:g> klavjatuuri paigutused</string>
     <string name="change_keyboard">Vaheta klavjatuuri</string>
+    <string name="privacy_policy">Privaatsus poliis</string>
+    <string name="license">Litsents</string>
 </resources>

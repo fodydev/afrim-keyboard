@@ -3,6 +3,7 @@
 /*
 **
 ** Copyright 2011, The Android Open Source Project
+** Copyright 2026, Raimondas Rimkus
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -23,7 +24,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="?attr/inputViewStyle">
-    <include
-        android:id="@+id/main_keyboard_frame"
-        layout="@layout/main_keyboard_frame" />
+    <cm.pythonbrad.afrim.keyboard.MainKeyboardView
+        android:id="@+id/keyboard_view"
+        android:layoutDirection="ltr"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </cm.pythonbrad.afrim.latin.InputView>

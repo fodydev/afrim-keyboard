@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (C) 2019 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +17,6 @@
 
 package cm.pythonbrad.afrim.event;
 
-import cm.pythonbrad.afrim.latin.common.Constants;
 import cm.pythonbrad.afrim.latin.common.StringUtils;
 
 /**
@@ -80,13 +80,6 @@ public class Event {
   // NOT_A_KEY_CODE.
   public final int mKeyCode;
 
-  // Coordinates of the touch event, if relevant. If useful, we may want to replace this with
-  // a MotionEvent or something in the future. This is only relevant when the keypress is from
-  // a software keyboard obviously, unless there are touch-sensitive hardware keyboards in the
-  // future or some other awesome sauce.
-  public final int mX;
-  public final int mY;
-
   // Some flags that can't go into the key code. It's a bit field of FLAG_*
   private final int mFlags;
 
@@ -99,29 +92,23 @@ public class Event {
       final CharSequence text,
       final int codePoint,
       final int keyCode,
-      final int x,
-      final int y,
       final int flags,
       final Event next) {
     mEventType = type;
     mText = text;
     mCodePoint = codePoint;
     mKeyCode = keyCode;
-    mX = x;
-    mY = y;
     mFlags = flags;
     mNextEvent = next;
   }
 
   public static Event createSoftwareKeypressEvent(
-      final int codePoint, final int keyCode, final int x, final int y, final boolean isKeyRepeat) {
+      final int codePoint, final int keyCode, final boolean isKeyRepeat) {
     return new Event(
         EVENT_TYPE_INPUT_KEYPRESS,
         null,
         codePoint,
         keyCode,
-        x,
-        y,
         isKeyRepeat ? FLAG_REPEAT : FLAG_NONE,
         null);
   }
@@ -141,8 +128,6 @@ public class Event {
         text,
         NOT_A_CODE_POINT,
         keyCode,
-        Constants.NOT_A_COORDINATE,
-        Constants.NOT_A_COORDINATE,
         FLAG_NONE,
         null /* next */);
   }

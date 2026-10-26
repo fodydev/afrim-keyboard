@@ -1,5 +1,8 @@
 /*
  * Copyright (C) 2013 The Android Open Source Project
+ * Copyright (C) 2025 Raimondas Rimkus
+ * Copyright (C) 2024 wittmane
+ * Copyright (C) 2019 Micha LaQua
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +19,30 @@
 
 package cm.pythonbrad.afrim.latin.settings;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.RestrictionsManager;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import cm.pythonbrad.afrim.R;
 import cm.pythonbrad.afrim.compat.PreferenceManagerCompat;
 import cm.pythonbrad.afrim.keyboard.KeyboardTheme;
 import cm.pythonbrad.afrim.latin.AudioAndHapticFeedbackManager;
 import cm.pythonbrad.afrim.latin.InputAttributes;
-import cm.pythonbrad.afrim.latin.utils.ResourceUtils;
+import cm.pythonbrad.afrim.latin.RichInputMethodManager;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-public final class Settings implements SharedPreferences.OnSharedPreferenceChangeListener {
+public final class Settings extends BroadcastReceiver
+    implements SharedPreferences.OnSharedPreferenceChangeListener {
   private static final String TAG = Settings.class.getSimpleName();
+  public static final String ACTIVE_RESTRICTIONS = "active_restrictions";
   // Settings screens
   public static final String SCREEN_THEME = "screen_theme";
   // In the same order as xml/prefs.xml
@@ -39,26 +50,28 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
   public static final String PREF_VIBRATE_ON = "vibrate_on";
   public static final String PREF_SOUND_ON = "sound_on";
   public static final String PREF_POPUP_ON = "popup_on";
-  public static final String PREF_HIDE_LANGUAGE_SWITCH_KEY = "pref_hide_language_switch_key";
+  public static final String PREF_SHOW_LANGUAGE_SWITCH_KEY = "pref_show_language_switch_key";
+  public static final String PREF_USE_ON_SCREEN = "pref_use_on_screen";
   public static final String PREF_ENABLE_IME_SWITCH = "pref_enable_ime_switch";
   public static final String PREF_ENABLED_SUBTYPES = "pref_enabled_subtypes";
-  public static final String PREF_VIBRATION_DURATION_SETTINGS = "pref_vibration_duration_settings";
   public static final String PREF_KEYPRESS_SOUND_VOLUME = "pref_keypress_sound_volume";
   public static final String PREF_KEY_LONGPRESS_TIMEOUT = "pref_key_longpress_timeout";
   public static final String PREF_KEYBOARD_HEIGHT = "pref_keyboard_height";
+  public static final String PREF_BOTTOM_OFFSET_PORTRAIT = "pref_bottom_offset_portrait";
   public static final String PREF_KEYBOARD_COLOR = "pref_keyboard_color";
-  public static final String PREF_HIDE_SPECIAL_CHARS = "pref_hide_special_chars";
+  public static final String PREF_SHOW_SPECIAL_CHARS = "pref_show_special_chars";
   public static final String PREF_SHOW_NUMBER_ROW = "pref_show_number_row";
   public static final String PREF_SPACE_SWIPE = "pref_space_swipe";
   public static final String PREF_DELETE_SWIPE = "pref_delete_swipe";
-  public static final String PREF_MATCHING_NAVBAR_COLOR = "pref_matching_navbar_color";
 
   private static final float UNDEFINED_PREFERENCE_VALUE_FLOAT = -1.0f;
   private static final int UNDEFINED_PREFERENCE_VALUE_INT = -1;
 
+  private Context mContext;
   private Resources mRes;
   private SharedPreferences mPrefs;
   private SettingsValues mSettingsValues;
+  private RestrictionsManager mRestrictionsMgr;
   private final ReentrantLock mSettingsValuesLock = new ReentrantLock();
 
   private static final Settings sInstance = new Settings();
@@ -76,13 +89,19 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
   }
 
   private void onCreate(final Context context) {
+    mContext = context;
     mRes = context.getResources();
     mPrefs = PreferenceManagerCompat.getDeviceSharedPreferences(context);
     mPrefs.registerOnSharedPreferenceChangeListener(this);
+    mRestrictionsMgr = (RestrictionsManager) context.getSystemService(Context.RESTRICTIONS_SERVICE);
+    loadRestrictions(mRestrictionsMgr, mPrefs);
+    context.registerReceiver(
+        this, new IntentFilter(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED));
   }
 
   public void onDestroy() {
     mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+    mContext.unregisterReceiver(this);
   }
 
   @Override
@@ -99,6 +118,81 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     } finally {
       mSettingsValuesLock.unlock();
     }
+  }
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    loadRestrictions(mRestrictionsMgr, mPrefs);
+    onSharedPreferenceChanged(mPrefs, null);
+    RichInputMethodManager.getInstance().reloadSubtypes(context);
+  }
+
+  public static Set<String> loadRestrictions(
+      final RestrictionsManager restrictionsMgr, final SharedPreferences prefs) {
+    final Bundle appRestrictions = restrictionsMgr.getApplicationRestrictions();
+    final Set<String> restrictionKeys = appRestrictions.keySet();
+    if (restrictionKeys.isEmpty()) {
+      if (prefs.contains(ACTIVE_RESTRICTIONS)) {
+        prefs.edit().remove(ACTIVE_RESTRICTIONS).apply();
+      }
+    } else {
+      final SharedPreferences.Editor prefsEditor = prefs.edit();
+      for (final String key : restrictionKeys) {
+        switch (key) {
+          case PREF_ENABLED_SUBTYPES:
+            Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getString(key));
+            prefsEditor.putString(key, appRestrictions.getString(key));
+            break;
+          case SCREEN_THEME:
+            Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getString(key));
+            prefsEditor.putString(KeyboardTheme.KEYBOARD_THEME_KEY, appRestrictions.getString(key));
+            break;
+          case PREF_AUTO_CAP:
+          case PREF_SHOW_NUMBER_ROW:
+          case PREF_SHOW_SPECIAL_CHARS:
+          case PREF_SHOW_LANGUAGE_SWITCH_KEY:
+          case PREF_USE_ON_SCREEN:
+          case PREF_ENABLE_IME_SWITCH:
+          case PREF_DELETE_SWIPE:
+          case PREF_SPACE_SWIPE:
+          case PREF_VIBRATE_ON:
+          case PREF_SOUND_ON:
+          case PREF_POPUP_ON:
+            Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getBoolean(key));
+            prefsEditor.putBoolean(key, appRestrictions.getBoolean(key));
+            break;
+          case PREF_KEYPRESS_SOUND_VOLUME:
+          case PREF_KEYBOARD_HEIGHT:
+            Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getInt(key));
+            prefsEditor.putFloat(key, appRestrictions.getInt(key) / 100f);
+            break;
+          case PREF_KEY_LONGPRESS_TIMEOUT:
+          case PREF_BOTTOM_OFFSET_PORTRAIT:
+            Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getInt(key));
+            prefsEditor.putInt(key, appRestrictions.getInt(key));
+            break;
+          case PREF_KEYBOARD_COLOR:
+            Log.i(TAG, "Loading restriction: " + key + "=" + appRestrictions.getString(key));
+            String color = appRestrictions.getString(key);
+            if (color.startsWith("#")) {
+              try {
+                color = "FF" + color.substring(1);
+                prefsEditor.putInt(key, Integer.parseUnsignedInt(color, 16));
+                break;
+              } catch (NumberFormatException ignored) {
+              }
+            }
+            prefsEditor.remove(key);
+            break;
+          default:
+            Log.e(TAG, "Unhandled restriction: " + key);
+        }
+      }
+
+      prefsEditor.putStringSet(ACTIVE_RESTRICTIONS, restrictionKeys);
+      prefsEditor.apply();
+    }
+    return restrictionKeys;
   }
 
   public void loadSettings(final InputAttributes inputAttributes) {
@@ -131,15 +225,19 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
   }
 
   public static boolean readShowLanguageSwitchKey(final SharedPreferences prefs) {
-    return !prefs.getBoolean(PREF_HIDE_LANGUAGE_SWITCH_KEY, false);
+    return prefs.getBoolean(PREF_SHOW_LANGUAGE_SWITCH_KEY, true);
+  }
+
+  public static boolean readUseOnScreenKeyboard(final SharedPreferences prefs) {
+    return prefs.getBoolean(PREF_USE_ON_SCREEN, false);
   }
 
   public static boolean readEnableImeSwitch(final SharedPreferences prefs) {
     return prefs.getBoolean(PREF_ENABLE_IME_SWITCH, false);
   }
 
-  public static boolean readHideSpecialChars(final SharedPreferences prefs) {
-    return prefs.getBoolean(PREF_HIDE_SPECIAL_CHARS, false);
+  public static boolean readShowSpecialChars(final SharedPreferences prefs) {
+    return prefs.getBoolean(PREF_SHOW_SPECIAL_CHARS, true);
   }
 
   public static boolean readShowNumberRow(final SharedPreferences prefs) {
@@ -162,22 +260,16 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     prefs.edit().putString(PREF_ENABLED_SUBTYPES, prefSubtypes).apply();
   }
 
-  public static float readKeypressSoundVolume(final SharedPreferences prefs, final Resources res) {
+  public static float readKeypressSoundVolume(final SharedPreferences prefs) {
     final float volume =
         prefs.getFloat(PREF_KEYPRESS_SOUND_VOLUME, UNDEFINED_PREFERENCE_VALUE_FLOAT);
-    return (volume != UNDEFINED_PREFERENCE_VALUE_FLOAT)
-        ? volume
-        : readDefaultKeypressSoundVolume(res);
+    return (volume != UNDEFINED_PREFERENCE_VALUE_FLOAT) ? volume : readDefaultKeypressSoundVolume();
   }
 
-  // Default keypress sound volume for unknown devices.
-  // The negative value means system default.
-  private static final String DEFAULT_KEYPRESS_SOUND_VOLUME = Float.toString(-1.0f);
+  private static final float DEFAULT_KEYPRESS_SOUND_VOLUME = 0.5f;
 
-  public static float readDefaultKeypressSoundVolume(final Resources res) {
-    return Float.parseFloat(
-        ResourceUtils.getDeviceOverrideValue(
-            res, R.array.keypress_volumes, DEFAULT_KEYPRESS_SOUND_VOLUME));
+  public static float readDefaultKeypressSoundVolume() {
+    return DEFAULT_KEYPRESS_SOUND_VOLUME;
   }
 
   public static int readKeyLongpressTimeout(final SharedPreferences prefs, final Resources res) {
@@ -192,41 +284,32 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     return res.getInteger(R.integer.config_default_longpress_key_timeout);
   }
 
-  public static int readKeypressVibrationDuration(
-      final SharedPreferences prefs, final Resources res) {
-    final int milliseconds =
-        prefs.getInt(PREF_VIBRATION_DURATION_SETTINGS, UNDEFINED_PREFERENCE_VALUE_INT);
-    return (milliseconds != UNDEFINED_PREFERENCE_VALUE_INT)
-        ? milliseconds
-        : readDefaultKeypressVibrationDuration(res);
-  }
-
-  // Default keypress vibration duration for unknown devices.
-  // The negative value means system default.
-  private static final String DEFAULT_KEYPRESS_VIBRATION_DURATION = Integer.toString(-1);
-
-  public static int readDefaultKeypressVibrationDuration(final Resources res) {
-    return Integer.parseInt(
-        ResourceUtils.getDeviceOverrideValue(
-            res, R.array.keypress_vibration_durations, DEFAULT_KEYPRESS_VIBRATION_DURATION));
-  }
-
   public static float readKeyboardHeight(final SharedPreferences prefs, final float defaultValue) {
     return prefs.getFloat(PREF_KEYBOARD_HEIGHT, defaultValue);
   }
+
+  public static int readBottomOffsetPortrait(final SharedPreferences prefs) {
+    return prefs.getInt(PREF_BOTTOM_OFFSET_PORTRAIT, DEFAULT_BOTTOM_OFFSET);
+  }
+
+  public static final int DEFAULT_BOTTOM_OFFSET = 0;
 
   public static int readKeyboardDefaultColor(final Context context) {
     final int[] keyboardThemeColors =
         context.getResources().getIntArray(R.array.keyboard_theme_colors);
     final int[] keyboardThemeIds = context.getResources().getIntArray(R.array.keyboard_theme_ids);
-    final int themeId = KeyboardTheme.getKeyboardTheme(context).mThemeId;
+    final int themeId = getKeyboardTheme(context).mThemeId;
     for (int index = 0; index < keyboardThemeIds.length; index++) {
       if (themeId == keyboardThemeIds[index]) {
         return keyboardThemeColors[index];
       }
     }
 
-    return Color.LTGRAY;
+    return Color.TRANSPARENT;
+  }
+
+  public static KeyboardTheme getKeyboardTheme(final Context context) {
+    return KeyboardTheme.getKeyboardTheme(context);
   }
 
   public static int readKeyboardColor(final SharedPreferences prefs, final Context context) {
@@ -248,9 +331,5 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     // is NOKEYS and if it's not hidden (e.g. folded inside the device).
     return conf.keyboard != Configuration.KEYBOARD_NOKEYS
         && conf.hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_YES;
-  }
-
-  public static boolean readUseMatchingNavbarColor(final SharedPreferences prefs) {
-    return prefs.getBoolean(PREF_MATCHING_NAVBAR_COLOR, false);
   }
 }

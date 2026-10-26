@@ -1,5 +1,8 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (C) 2023 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
+ * Copyright (C) 2018 Raimondas
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +92,7 @@ public final class Constants {
   public static final int CODE_OUTPUT_TEXT = -4;
   public static final int CODE_DELETE = -5;
   public static final int CODE_SETTINGS = -6;
+  public static final int CODE_PASTE = -7;
   public static final int CODE_ACTION_NEXT = -8;
   public static final int CODE_ACTION_PREVIOUS = -9;
   public static final int CODE_LANGUAGE_SWITCH = -10;
@@ -115,6 +119,8 @@ public final class Constants {
         return "delete";
       case CODE_SETTINGS:
         return "settings";
+      case CODE_PASTE:
+        return "paste";
       case CODE_ACTION_NEXT:
         return "actionNext";
       case CODE_ACTION_PREVIOUS:

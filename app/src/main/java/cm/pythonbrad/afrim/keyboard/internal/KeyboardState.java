@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2024 Raimondas Rimkus
+ * Copyright (C) 2021 wittmane
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +30,7 @@ import cm.pythonbrad.afrim.latin.utils.RecapitalizeStatus;
  *
  * <p>This class contains all keyboard state transition logic.
  *
- * <p>The input events are {@link #onLoadKeyboard(int, int)}, {@link #onSaveKeyboardState()}, {@link
+ * <p>The input events are {@link #onLoadKeyboard(int, int)}, {@link
  * #onPressKey(int,boolean,int,int)}, {@link #onReleaseKey(int,boolean,int,int)}, {@link
  * #onEvent(Event,int,int)}, {@link #onFinishSlidingInput(int,int)}, {@link
  * #onUpdateShiftState(int,int)}, {@link #onResetKeyboardStateToAlphabet(int,int)}.
@@ -93,28 +95,6 @@ public final class KeyboardState {
   private boolean mIsInAlphabetUnshiftedFromShifted;
   private boolean mIsInDoubleTapShiftKey;
 
-  private final SavedKeyboardState mSavedKeyboardState = new SavedKeyboardState();
-
-  static final class SavedKeyboardState {
-    public boolean mIsValid;
-    public boolean mIsAlphabetMode;
-    public boolean mIsAlphabetShiftLocked;
-    public int mShiftMode;
-
-    @Override
-    public String toString() {
-      if (!mIsValid) {
-        return "INVALID";
-      }
-      if (mIsAlphabetMode) {
-        return mIsAlphabetShiftLocked
-            ? "ALPHABET_SHIFT_LOCKED"
-            : "ALPHABET_" + shiftModeToString(mShiftMode);
-      }
-      return "SYMBOLS_" + shiftModeToString(mShiftMode);
-    }
-  }
-
   public KeyboardState(final SwitchActions switchActions) {
     mSwitchActions = switchActions;
     mRecapitalizeMode = RecapitalizeStatus.NOT_A_RECAPITALIZE_MODE;
@@ -130,13 +110,8 @@ public final class KeyboardState {
     mPrevSymbolsKeyboardWasShifted = false;
     mShiftKeyState.onRelease();
     mSymbolKeyState.onRelease();
-    if (mSavedKeyboardState.mIsValid) {
-      onRestoreKeyboardState(autoCapsFlags, recapitalizeMode);
-      mSavedKeyboardState.mIsValid = false;
-    } else {
-      // Reset keyboard to alphabet mode.
-      setAlphabetKeyboard(autoCapsFlags, recapitalizeMode);
-    }
+
+    setAlphabetKeyboard(autoCapsFlags, recapitalizeMode);
   }
 
   // Constants for {@link SavedKeyboardState#mShiftMode} and {@link #setShifted(int)}.
@@ -144,52 +119,6 @@ public final class KeyboardState {
   private static final int MANUAL_SHIFT = 1;
   private static final int AUTOMATIC_SHIFT = 2;
   private static final int SHIFT_LOCK_SHIFTED = 3;
-
-  public void onSaveKeyboardState() {
-    final SavedKeyboardState state = mSavedKeyboardState;
-    state.mIsAlphabetMode = mIsAlphabetMode;
-    if (mIsAlphabetMode) {
-      state.mIsAlphabetShiftLocked = mAlphabetShiftState.isShiftLocked();
-      state.mShiftMode =
-          mAlphabetShiftState.isAutomaticShifted()
-              ? AUTOMATIC_SHIFT
-              : (mAlphabetShiftState.isShiftedOrShiftLocked() ? MANUAL_SHIFT : UNSHIFT);
-    } else {
-      state.mIsAlphabetShiftLocked = mPrevMainKeyboardWasShiftLocked;
-      state.mShiftMode = mIsSymbolShifted ? MANUAL_SHIFT : UNSHIFT;
-    }
-    state.mIsValid = true;
-    if (DEBUG_EVENT) {
-      Log.d(TAG, "onSaveKeyboardState: saved=" + state + " " + this);
-    }
-  }
-
-  private void onRestoreKeyboardState(final int autoCapsFlags, final int recapitalizeMode) {
-    final SavedKeyboardState state = mSavedKeyboardState;
-    if (DEBUG_EVENT) {
-      Log.d(
-          TAG,
-          "onRestoreKeyboardState: saved="
-              + state
-              + " "
-              + stateToString(autoCapsFlags, recapitalizeMode));
-    }
-    mPrevMainKeyboardWasShiftLocked = state.mIsAlphabetShiftLocked;
-    if (state.mIsAlphabetMode) {
-      setAlphabetKeyboard(autoCapsFlags, recapitalizeMode);
-      setShiftLocked(state.mIsAlphabetShiftLocked);
-      if (!state.mIsAlphabetShiftLocked) {
-        setShifted(state.mShiftMode);
-      }
-      return;
-    }
-    // Symbol mode
-    if (state.mShiftMode == MANUAL_SHIFT) {
-      setSymbolsShiftedKeyboard();
-    } else {
-      setSymbolsKeyboard();
-    }
-  }
 
   private void setShifted(final int shiftMode) {
     if (DEBUG_INTERNAL_ACTION) {

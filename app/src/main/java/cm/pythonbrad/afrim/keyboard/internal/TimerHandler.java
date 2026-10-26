@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013 The Android Open Source Project
+ * Copyright (C) 2024 Raimondas Rimkus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +31,7 @@ public final class TimerHandler extends LeakGuardHandlerWrapper<DrawingProxy>
   private static final int MSG_LONGPRESS_KEY = 2;
   private static final int MSG_LONGPRESS_SHIFT_KEY = 3;
   private static final int MSG_DOUBLE_TAP_SHIFT_KEY = 4;
-  private static final int MSG_UPDATE_BATCH_INPUT = 5;
   private static final int MSG_DISMISS_KEY_PREVIEW = 6;
-  private static final int MSG_DISMISS_GESTURE_FLOATING_PREVIEW_TEXT = 7;
 
   private final int mIgnoreAltCodeKeyTimeout;
 
@@ -177,24 +176,12 @@ public final class TimerHandler extends LeakGuardHandlerWrapper<DrawingProxy>
     cancelLongPressTimers();
   }
 
-  @Override
-  public void cancelUpdateBatchInputTimer(final PointerTracker tracker) {
-    removeMessages(MSG_UPDATE_BATCH_INPUT, tracker);
-  }
-
-  @Override
-  public void cancelAllUpdateBatchInputTimers() {
-    removeMessages(MSG_UPDATE_BATCH_INPUT);
-  }
-
   public void postDismissKeyPreview(final Key key, final long delay) {
     sendMessageDelayed(obtainMessage(MSG_DISMISS_KEY_PREVIEW, key), delay);
   }
 
   public void cancelAllMessages() {
     cancelAllKeyTimers();
-    cancelAllUpdateBatchInputTimers();
     removeMessages(MSG_DISMISS_KEY_PREVIEW);
-    removeMessages(MSG_DISMISS_GESTURE_FLOATING_PREVIEW_TEXT);
   }
 }
