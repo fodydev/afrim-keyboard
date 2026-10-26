@@ -49,6 +49,12 @@
     <!-- Common keyboard configuration. -->
     <dimen name="config_keyboard_vertical_correction">0.0dp</dimen>
 
+    <!-- Suggestion strip -->
+    <dimen name="config_suggestion_strip_height">40dp</dimen>
+    <dimen name="config_suggestion_strip_text_size">18sp</dimen>
+    <dimen name="config_suggestion_item_padding">12dp</dimen>
+    <dimen name="config_suggestion_min_width">48dp</dimen>
+
     <!-- Keyboard height -->
     <integer name="config_max_keyboar_height">150</integer>
     <integer name="config_min_keyboar_height">50</integer>

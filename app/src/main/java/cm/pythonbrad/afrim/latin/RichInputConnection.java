@@ -357,6 +357,32 @@ public final class RichInputConnection {
     endBatchEdit();
   }
 
+  /**
+   * Deletes the given text if it is located right before the cursor.
+   *
+   * <p>The text before the cursor is verified first, so that we never delete text which is not the
+   * expected one (e.g. when the editor has been modified behind our back).
+   *
+   * @param text the text to delete.
+   * @return whether the text has been deleted.
+   */
+  public boolean deleteTextBeforeCursor(final CharSequence text) {
+    final int length = text.length();
+    if (length == 0) return true;
+
+    CharSequence textBeforeCursor = mTextBeforeCursor;
+    // The cache may not be loaded yet, then we ask the editor.
+    if (textBeforeCursor.length() < length && isConnected()) {
+      textBeforeCursor = mIC.getTextBeforeCursor(length, 0);
+    }
+    if (textBeforeCursor == null || !textBeforeCursor.toString().endsWith(text.toString())) {
+      return false;
+    }
+
+    deleteTextBeforeCursor(length);
+    return true;
+  }
+
   public void performEditorAction(final int actionId) {
     mIC = mLatinIME.getCurrentInputConnection();
     if (isConnected()) {
