@@ -99,16 +99,26 @@ public final class Afrim {
   }
 
   // Translator.
-  // TODO: display suggestions
-  // For the moment, we just manage the fully matched predicate
-  public String getSuggestion() {
-    Object[] predicates = nativeTranslateText();
+  /** Returns the suggestions matching the current input. */
+  @NonNull public Suggestion[] getSuggestions() {
+    final Object[] predicates = nativeTranslateText();
+    if (predicates == null) return new Suggestion[0];
 
-    if (predicates.length == 0) return null;
-    String[] predicate = (String[]) predicates[0];
+    final Suggestion[] suggestions = new Suggestion[predicates.length];
+    for (int i = 0; i < predicates.length; i++) {
+      // Predicate format: [code, remaining_code, texts (separated by "|"), can_commit].
+      final String[] predicate = (String[]) predicates[i];
+      suggestions[i] =
+          new Suggestion(
+              predicate[0], predicate[1], predicate[2].split("\\|"), predicate[3].equals("true"));
+    }
+    return suggestions;
+  }
 
-    if (!predicate[3].equals("true")) return null;
-    return predicate[2].split("\\|")[0];
+  /** Returns the text to commit automatically, if the best suggestion is fully matched. */
+  public static String getSuggestion(@NonNull Suggestion[] suggestions) {
+    if (suggestions.length == 0 || !suggestions[0].canCommit()) return null;
+    return suggestions[0].getTexts()[0];
   }
 
   // Custom

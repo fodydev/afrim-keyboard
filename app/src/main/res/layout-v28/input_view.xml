@@ -24,12 +24,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="?attr/inputViewStyle">
-    <cm.pythonbrad.afrim.keyboard.MainKeyboardView
-        android:id="@+id/keyboard_view"
-        android:layoutDirection="ltr"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:fitsSystemWindows="true"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <cm.pythonbrad.afrim.latin.SuggestionStripView
+            android:id="@+id/suggestion_strip_view"
+            style="?attr/keyboardViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/config_suggestion_strip_height"
+            android:visibility="gone" />
+
+        <cm.pythonbrad.afrim.keyboard.MainKeyboardView
+            android:id="@+id/keyboard_view"
+            android:layoutDirection="ltr"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:fitsSystemWindows="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </cm.pythonbrad.afrim.latin.InputView>

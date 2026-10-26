@@ -34,6 +34,7 @@ import cm.pythonbrad.afrim.keyboard.internal.KeyboardTextsSet;
 import cm.pythonbrad.afrim.latin.InputView;
 import cm.pythonbrad.afrim.latin.LatinIME;
 import cm.pythonbrad.afrim.latin.RichInputMethodManager;
+import cm.pythonbrad.afrim.latin.SuggestionStripView;
 import cm.pythonbrad.afrim.latin.settings.Settings;
 import cm.pythonbrad.afrim.latin.settings.SettingsValues;
 import cm.pythonbrad.afrim.latin.utils.CapsModeUtils;
@@ -45,6 +46,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
   private static final String TAG = KeyboardSwitcher.class.getSimpleName();
 
   private MainKeyboardView mKeyboardView;
+  private SuggestionStripView mSuggestionStripView;
   private LatinIME mLatinIME;
   private RichInputMethodManager mRichImm;
 
@@ -357,6 +359,10 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
     return mKeyboardView;
   }
 
+  public SuggestionStripView getSuggestionStripView() {
+    return mSuggestionStripView;
+  }
+
   public MainKeyboardView getMainKeyboardView() {
     return mKeyboardView;
   }
@@ -380,6 +386,8 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
 
     mKeyboardView = currentInputView.findViewById(R.id.keyboard_view);
     mKeyboardView.setKeyboardActionListener(mLatinIME);
+    mSuggestionStripView = currentInputView.findViewById(R.id.suggestion_strip_view);
+    mSuggestionStripView.setListener(mLatinIME);
     return currentInputView;
   }
 }
