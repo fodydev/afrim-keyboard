@@ -23,28 +23,6 @@
     >
     <switch>
         <case
-            latin:keyboardLayoutSet="bengali_akkhor|farsi|kannada|nepali_romanized|nepali_traditional|urdu|telugu"
-            latin:languageSwitchKeyEnabled="true"
-            >
-            <Key
-                latin:keyStyle="languageSwitchKeyStyle" />
-            <Key
-                latin:keyStyle="spaceKeyStyle"
-                latin:keyWidth="45.0%p" />
-            <Key
-                latin:keyStyle="zwnjKeyStyle" />
-        </case>
-        <case
-            latin:keyboardLayoutSet="bengali_akkhor|farsi|kannada|nepali_romanized|nepali_traditional|urdu|telugu"
-            latin:languageSwitchKeyEnabled="false"
-            >
-            <Key
-                latin:keyStyle="spaceKeyStyle"
-                latin:keyWidth="54.0%p" />
-            <Key
-                latin:keyStyle="zwnjKeyStyle" />
-        </case>
-        <case
             latin:languageSwitchKeyEnabled="true"
             >
             <Key

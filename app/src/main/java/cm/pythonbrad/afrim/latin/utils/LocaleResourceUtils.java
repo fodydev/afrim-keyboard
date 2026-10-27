@@ -33,14 +33,9 @@ public final class LocaleResourceUtils {
   private static volatile boolean sInitialized = false;
   private static final Object sInitializeLock = new Object();
   private static Resources sResources;
-  // Exceptional locale whose name should be displayed in Locale.ROOT.
-  private static final HashMap<String, Integer> sExceptionalLocaleDisplayedInRootLocale =
-      new HashMap<>();
   // Exceptional locale to locale name resource id map.
   private static final HashMap<String, Integer> sExceptionalLocaleToNameIdsMap = new HashMap<>();
   private static final String LOCALE_NAME_RESOURCE_PREFIX = "string/locale_name_";
-  private static final String LOCALE_NAME_RESOURCE_IN_ROOT_LOCALE_PREFIX =
-      "string/locale_name_in_root_locale_";
 
   private LocaleResourceUtils() {
     // Intentional empty constructor for utility class.
@@ -64,15 +59,6 @@ public final class LocaleResourceUtils {
     final Resources res = context.getResources();
     sResources = res;
 
-    final String[] exceptionalLocaleInRootLocale =
-        res.getStringArray(R.array.locale_displayed_in_root_locale);
-    for (int i = 0; i < exceptionalLocaleInRootLocale.length; i++) {
-      final String localeString = exceptionalLocaleInRootLocale[i];
-      final String resourceName = LOCALE_NAME_RESOURCE_IN_ROOT_LOCALE_PREFIX + localeString;
-      final int resId = res.getIdentifier(resourceName, null, RESOURCE_PACKAGE_NAME);
-      sExceptionalLocaleDisplayedInRootLocale.put(localeString, resId);
-    }
-
     final String[] exceptionalLocales = res.getStringArray(R.array.locale_exception_keys);
     for (int i = 0; i < exceptionalLocales.length; i++) {
       final String localeString = exceptionalLocales[i];
@@ -83,9 +69,6 @@ public final class LocaleResourceUtils {
   }
 
   private static Locale getDisplayLocale(final String localeString) {
-    if (sExceptionalLocaleDisplayedInRootLocale.containsKey(localeString)) {
-      return Locale.ROOT;
-    }
     return LocaleUtils.constructLocaleFromString(localeString);
   }
 
@@ -123,7 +106,7 @@ public final class LocaleResourceUtils {
   public static String getLanguageDisplayNameInSystemLocale(final String localeString) {
     final Locale displayLocale = sResources.getConfiguration().locale;
     final String languageString;
-    if (sExceptionalLocaleDisplayedInRootLocale.containsKey(localeString)) {
+    if (SubtypeLocaleUtils.getAfrimDatasetName(localeString, sResources) != null) {
       languageString = localeString;
     } else {
       languageString = LocaleUtils.constructLocaleFromString(localeString).getLanguage();
@@ -141,7 +124,7 @@ public final class LocaleResourceUtils {
   public static String getLanguageDisplayNameInLocale(final String localeString) {
     final Locale displayLocale = getDisplayLocale(localeString);
     final String languageString;
-    if (sExceptionalLocaleDisplayedInRootLocale.containsKey(localeString)) {
+    if (SubtypeLocaleUtils.getAfrimDatasetName(localeString, sResources) != null) {
       languageString = localeString;
     } else {
       languageString = LocaleUtils.constructLocaleFromString(localeString).getLanguage();
@@ -151,18 +134,12 @@ public final class LocaleResourceUtils {
 
   private static String getLocaleDisplayNameInternal(
       final String localeString, final Locale displayLocale) {
-    final Integer exceptionalNameResId;
-    if (displayLocale.equals(Locale.ROOT)
-        && sExceptionalLocaleDisplayedInRootLocale.containsKey(localeString)) {
-      exceptionalNameResId = sExceptionalLocaleDisplayedInRootLocale.get(localeString);
-    } else if (sExceptionalLocaleToNameIdsMap.containsKey(localeString)) {
-      exceptionalNameResId = sExceptionalLocaleToNameIdsMap.get(localeString);
-    } else {
-      exceptionalNameResId = null;
-    }
-
+    final Integer exceptionalNameResId = sExceptionalLocaleToNameIdsMap.get(localeString);
+    final String datasetName = SubtypeLocaleUtils.getAfrimDatasetName(localeString, sResources);
     if (exceptionalNameResId != null) {
       return sResources.getString(exceptionalNameResId);
+    } else if (datasetName != null) {
+      return datasetName;
     } else {
       return LocaleUtils.constructLocaleFromString(localeString).getDisplayName(displayLocale);
     }

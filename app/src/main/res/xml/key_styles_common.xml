@@ -84,14 +84,6 @@
         latin:keySpec="!icon/space_key|!code/key_space"
         latin:backgroundType="spacebar"
         latin:keyActionFlags="noKeyPreview|enableLongPress" />
-    <!-- U+200C: ZERO WIDTH NON-JOINER
-         U+200D: ZERO WIDTH JOINER -->
-    <key-style
-        latin:styleName="zwnjKeyStyle"
-        latin:keySpec="!icon/zwnj_key|&#x200C;"
-        latin:moreKeys="!icon/zwj_key|&#x200D;"
-        latin:keyLabelFlags="hasPopupHint"
-        latin:keyActionFlags="noKeyPreview" />
     <key-style
         latin:styleName="settingsKeyStyle"
         latin:keySpec="!icon/settings_key|!code/key_settings"

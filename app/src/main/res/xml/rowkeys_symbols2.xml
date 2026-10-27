@@ -22,20 +22,6 @@
     xmlns:latin="http://schemas.android.com/apk/res-auto"
 >
     <switch>
-        <case
-            latin:languageCode="fa"
-        >
-            <!-- U+066C: "٬" ARABIC THOUSANDS SEPARATOR
-                 U+066B: "٫" ARABIC DECIMAL SEPARATOR -->
-            <Key
-                latin:keySpec="&#x066C;"
-                latin:keyHintLabel="\@"
-                latin:moreKeys="\@" />
-            <Key
-                latin:keySpec="&#x066B;"
-                latin:keyHintLabel="\#"
-                latin:moreKeys="\#" />
-        </case>
         <default>
             <Key
                 latin:keySpec="\@" />

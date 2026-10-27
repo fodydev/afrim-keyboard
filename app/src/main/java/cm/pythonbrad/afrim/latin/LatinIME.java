@@ -71,6 +71,7 @@ import cm.pythonbrad.afrim.latin.settings.SettingsValues;
 import cm.pythonbrad.afrim.latin.utils.ApplicationUtils;
 import cm.pythonbrad.afrim.latin.utils.LeakGuardHandlerWrapper;
 import cm.pythonbrad.afrim.latin.utils.ResourceUtils;
+import cm.pythonbrad.afrim.latin.utils.SubtypeLocaleUtils;
 import cm.pythonbrad.afrim.latin.utils.ViewLayoutUtils;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -298,7 +299,7 @@ public class LatinIME extends InputMethodService
 
     // Update the keyboard language.
     // Disable the afrim if not related.
-    if (!mLocale.getVariant().equals("afrim") && !mLocale.getLanguage().equals("afrim")) {
+    if (!mLocale.getVariant().equals(SubtypeLocaleUtils.VARIANT_AFRIM)) {
       mAfrim.setState(false);
       return;
     }
@@ -697,8 +698,7 @@ public class LatinIME extends InputMethodService
   }
 
   int getCurrentAutoCapsState() {
-    return mInputLogic.getCurrentAutoCapsState(
-        mSettings.getCurrent(), mRichImm.getCurrentSubtype().getKeyboardLayoutSet());
+    return mInputLogic.getCurrentAutoCapsState(mSettings.getCurrent());
   }
 
   int getCurrentRecapitalizeState() {

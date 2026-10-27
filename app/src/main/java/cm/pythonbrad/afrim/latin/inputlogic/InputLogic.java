@@ -35,7 +35,6 @@ import cm.pythonbrad.afrim.latin.common.StringUtils;
 import cm.pythonbrad.afrim.latin.settings.SettingsValues;
 import cm.pythonbrad.afrim.latin.utils.InputTypeUtils;
 import cm.pythonbrad.afrim.latin.utils.RecapitalizeStatus;
-import cm.pythonbrad.afrim.latin.utils.SubtypeLocaleUtils;
 
 /** This class manages the input logic. */
 public final class InputLogic {
@@ -385,12 +384,10 @@ public final class InputLogic {
    * right layout.
    *
    * @param settingsValues the relevant settings values
-   * @param layoutSetName the name of the current keyboard layout set
    * @return a caps mode from TextUtils.CAP_MODE_* or Constants.TextUtils.CAP_MODE_OFF.
    */
-  public int getCurrentAutoCapsState(
-      final SettingsValues settingsValues, final String layoutSetName) {
-    if (!settingsValues.mAutoCap || !layoutUsesAutoCaps(layoutSetName)) {
+  public int getCurrentAutoCapsState(final SettingsValues settingsValues) {
+    if (!settingsValues.mAutoCap) {
       return Constants.TextUtils.CAP_MODE_OFF;
     }
 
@@ -400,34 +397,6 @@ public final class InputLogic {
     // Warning: this depends on mSpaceState, which may not be the most current value. If
     // mSpaceState gets updated later, whoever called this may need to be told about it.
     return mConnection.getCursorCapsMode(inputType, settingsValues.mSpacingAndPunctuations);
-  }
-
-  private boolean layoutUsesAutoCaps(final String layoutSetName) {
-    switch (layoutSetName) {
-      case SubtypeLocaleUtils.LAYOUT_ARABIC:
-      case SubtypeLocaleUtils.LAYOUT_BENGALI:
-      case SubtypeLocaleUtils.LAYOUT_BENGALI_AKKHOR:
-      case SubtypeLocaleUtils.LAYOUT_BENGALI_UNIJOY:
-      case SubtypeLocaleUtils.LAYOUT_FARSI:
-      case SubtypeLocaleUtils.LAYOUT_GEORGIAN:
-      case SubtypeLocaleUtils.LAYOUT_HEBREW:
-      case SubtypeLocaleUtils.LAYOUT_HINDI:
-      case SubtypeLocaleUtils.LAYOUT_HINDI_COMPACT:
-      case SubtypeLocaleUtils.LAYOUT_KANNADA:
-      case SubtypeLocaleUtils.LAYOUT_KHMER:
-      case SubtypeLocaleUtils.LAYOUT_LAO:
-      case SubtypeLocaleUtils.LAYOUT_MALAYALAM:
-      case SubtypeLocaleUtils.LAYOUT_MARATHI:
-      case SubtypeLocaleUtils.LAYOUT_NEPALI_ROMANIZED:
-      case SubtypeLocaleUtils.LAYOUT_NEPALI_TRADITIONAL:
-      case SubtypeLocaleUtils.LAYOUT_TAMIL:
-      case SubtypeLocaleUtils.LAYOUT_TELUGU:
-      case SubtypeLocaleUtils.LAYOUT_THAI:
-      case SubtypeLocaleUtils.LAYOUT_URDU:
-        return false;
-      default:
-        return true;
-    }
   }
 
   public int getCurrentRecapitalizeState() {
