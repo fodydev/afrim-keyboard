@@ -29,21 +29,36 @@ Afrim Keyboard is a versatile keyboard for Android users who wish to use African
 - [x] 📺 Ads-free
 - [ ] 😄 Emojis
 - [ ] GIFs
-- [ ] ☑️ Auto-suggestion / Auto-correction / Auto-completion
-- [ ] ☁️ Full immersion mode for non-latin languages. (🚧 Experimental 🚧)
+- [x] ☑️ Auto-suggestion / Auto-correction / Auto-completion
 
-### What african languages (and layouts) are supported ?
+### Supported African Languages & Layouts
 
-- 🇪🇹 Amharic Keyboard - Transliteration
-- 🇨🇲 Clafrica Keyboard - Transliteration
-- 🇪🇹 Geez Keyboard - Transliteration
-- 🇨🇲 Nufi Keyboard (Fe'efe'e) - Transliteration
+* **🇪🇹 Ethiopia**
+  * Amharic — Transliteration
+  * Ge'ez (Geez) — Transliteration
+  * Ethiopic — Transliteration
+  * GeezIME — Transliteration
 
-### What is a keyboard layout ?
-Afrim keyboard provides multiple "keyboard layouts".
- This means that you will have different ways to type in your native language.
- Transliteration allows you to type out words using English characters, but will automatically transform the words to your native language.
- For example, if you type "Afrim" in English while using Amharic transliteration keyboard, it will transform it to ዐፍሪም correctly.
+* **🇨🇲 Cameroon**
+  * Clafrica — Transliteration
+  * Nufi (Fe'efe'e) — Transliteration
+  * Medumba — Transliteration
+  * Ewondo — Transliteration
+  * Bamun — Transliteration
+
+---
+
+Missing your language? Add it → [fodydev/afrim-data](https://github.com/fodydev/afrim-data)
+
+### What is a Keyboard Layout?
+
+The Afrim keyboard provides multiple **keyboard layouts**, offering different input methods to type in your native language.
+
+**Transliteration** allows you to type out words using standard Latin/English characters, which Afrim automatically converts into your native script in real time. 
+
+> **Example:** Typing `Afrim` while using the Amharic Transliteration layout automatically transforms it to **ዐፍሪም**.
+
+---
 
 ## Downloads
 
