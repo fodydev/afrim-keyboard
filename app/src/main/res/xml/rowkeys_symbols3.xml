@@ -25,16 +25,6 @@
         latin:keySpec="*"
         latin:moreKeys="!text/morekeys_star" />
     <switch>
-        <case
-            latin:languageCode="fa"
-        >
-            <Key
-                latin:keySpec="!text/keyspec_left_double_angle_quote"
-                latin:moreKeys="!text/morekeys_double_quote" />
-            <Key
-                latin:keySpec="!text/keyspec_right_double_angle_quote"
-                latin:moreKeys="!text/morekeys_single_quote" />
-        </case>
         <default>
             <Key
                 latin:keySpec="&quot;"

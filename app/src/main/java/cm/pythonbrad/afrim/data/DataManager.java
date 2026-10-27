@@ -13,7 +13,12 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import java.io.*;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataManager {
   static final String TAG = DataManager.class.getSimpleName();
@@ -24,6 +29,12 @@ public class DataManager {
   static final String dataFolder = "afrim-data";
   static final String sharedDataDir = addTrailingSlash(sharedDir) + dataFolder;
   private static final DataManager sInstance = new DataManager();
+  // A dataset code is used as the language of its locale, so it must stay a valid one.
+  private static final Pattern DATASET_CODE_PATTERN = Pattern.compile("^[a-z0-9]+$");
+  private static final Pattern INFO_SECTION_PATTERN = Pattern.compile("^\\s*\\[(.*)\\]\\s*$");
+  private static final Pattern INFO_NAME_PATTERN =
+      Pattern.compile("^\\s*name\\s*=\\s*\"(.*)\"\\s*$");
+  private static volatile Map<String, String> sDatasets;
 
   private DataManager() {
     // Intentional empty constructor for singleton.
@@ -98,6 +109,7 @@ public class DataManager {
       if (new File(sharedDataDir).exists()) return;
       Toast.makeText(context, R.string.dataset_deploy_progress, Toast.LENGTH_SHORT).show();
       copyDirorfileFromAssetManager(context, dataFolder, dataFolder);
+      reloadDatasets(context.getAssets());
       Toast.makeText(context, R.string.dataset_deploy_success, Toast.LENGTH_SHORT).show();
     } catch (IOException ex) {
       Log.e(TAG, "I/O Exception", ex);
@@ -177,6 +189,84 @@ public class DataManager {
         throw new IOException("Unable to create directory: ");
       }
     }
+  }
+
+  /**
+   * Get the datasets available in the afrim-data folder. A dataset is a sub folder named "code"
+   * containing a "code/code.toml" config file. The deployed folder is preferred since the user can
+   * customize it, otherwise the bundled assets are used.
+   *
+   * @param assets the asset manager to use as fallback.
+   * @return the dataset names indexed by their code.
+   */
+  public static Map<String, String> getDatasets(final AssetManager assets) {
+    if (sDatasets == null) {
+      reloadDatasets(assets);
+    }
+    return sDatasets;
+  }
+
+  /**
+   * Scan the afrim-data folder again for its datasets.
+   *
+   * @param assets the asset manager to use as fallback.
+   */
+  public static void reloadDatasets(final AssetManager assets) {
+    final Map<String, String> datasets = new TreeMap<>();
+    final File[] dirs = new File(sharedDataDir).listFiles(File::isDirectory);
+
+    if (dirs != null) {
+      for (File dir : dirs) {
+        final String code = dir.getName();
+        final File config = new File(dir, code + ".toml");
+        if (!DATASET_CODE_PATTERN.matcher(code).matches() || !config.isFile()) continue;
+        try (InputStream in = new FileInputStream(config)) {
+          datasets.put(code, readDatasetName(in, code));
+        } catch (IOException ex) {
+          Log.w(TAG, "Unable to read the dataset " + code, ex);
+        }
+      }
+    } else {
+      try {
+        for (String code : assets.list(dataFolder)) {
+          final String config = dataFolder + "/" + code + "/" + code + ".toml";
+          if (!DATASET_CODE_PATTERN.matcher(code).matches()) continue;
+          try (InputStream in = assets.open(config)) {
+            datasets.put(code, readDatasetName(in, code));
+          } catch (FileNotFoundException ex) {
+            // Not a dataset.
+          }
+        }
+      } catch (IOException ex) {
+        Log.w(TAG, "Unable to list the bundled datasets", ex);
+      }
+    }
+
+    sDatasets = Collections.unmodifiableMap(datasets);
+  }
+
+  /** Read the name declared in the [info] section of a dataset config, or fallback to its code. */
+  private static String readDatasetName(final InputStream in, final String code)
+      throws IOException {
+    final BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+    boolean inInfoSection = false;
+    String line;
+
+    while ((line = reader.readLine()) != null) {
+      final Matcher section = INFO_SECTION_PATTERN.matcher(line);
+      if (section.matches()) {
+        if (inInfoSection) break;
+        inInfoSection = section.group(1).trim().equals("info");
+        continue;
+      }
+      final Matcher name = INFO_NAME_PATTERN.matcher(line);
+      if (inInfoSection && name.matches() && !name.group(1).trim().isEmpty()) {
+        final String value = name.group(1).trim();
+        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+      }
+    }
+
+    return code;
   }
 
   public static String buildPath(String[] values) {

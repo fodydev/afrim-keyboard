@@ -36,14 +36,6 @@
                 latin:keySpec="\@"
                 latin:keyStyle="settingsMoreKeysStyle" />
         </case>
-        <case
-            latin:keyboardLayoutSet="dvorak"
-        >
-            <Key
-                latin:keySpec="!"
-                latin:moreKeys="!text/morekeys_exclamation,%"
-                latin:keyStyle="settingsMoreKeysStyle" />
-        </case>
         <default>
             <Key
                 latin:keySpec="!text/keyspec_tablet_comma"

@@ -172,7 +172,7 @@ public final class LanguagesSettingsFragment extends PreferenceFragment {
   private SortedSet<Locale> getUnusedLocales(
       final Set<Locale> usedLocales, final Comparator<Locale> comparator) {
     final SortedSet<Locale> locales = new TreeSet<>(comparator);
-    for (String localeString : SubtypeLocaleUtils.getSupportedLocales()) {
+    for (String localeString : SubtypeLocaleUtils.getSupportedLocales(getResources())) {
       final Locale locale = LocaleUtils.constructLocaleFromString(localeString);
       if (usedLocales.contains(locale)) {
         continue;
