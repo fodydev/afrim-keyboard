@@ -45,6 +45,11 @@ android {
         externalNativeBuild.cmake.path("src/main/jni/CMakeLists.txt")
     }
 
+    lint {
+        // Translations are inherited from upstream and are partially incomplete.
+        disable 'MissingTranslation'
+    }
+
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false

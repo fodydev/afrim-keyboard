@@ -32,20 +32,21 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: 17
+          java-version: 25
           # will restore cache of dependencies and wrappers
           cache: 'gradle'
 
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.100.0
+          components: clippy, rustfmt
+          targets: aarch64-linux-android, armv7-linux-androideabi, i686-linux-android, x86_64-linux-android
+
       - uses: Swatinem/rust-cache@v2
 
-      - name: Add Rust components
+      - name: Install cbindgen
         run: |
-          rustup component add clippy rustfmt
-          rustup target add \
-            aarch64-linux-android \
-            armv7-linux-androideabi \
-            i686-linux-android \
-            x86_64-linux-android --toolchain stable-x86_64-unknown-linux-gnu
           cargo install cbindgen
 
       - name: Fetch build cache
@@ -55,12 +56,20 @@ jobs:
           path: "app/build"
           key: build
 
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+
       - name: Fetch submodules
         run: |
           git submodule update --init --recursive
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # the legacy 'tools' package (default) no longer exists
+          packages: platform-tools
 
       - name: Generate the C bindgen
         run: |

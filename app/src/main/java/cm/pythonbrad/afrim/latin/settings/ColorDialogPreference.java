@@ -79,6 +79,7 @@ public final class ColorDialogPreference extends DialogPreference
 
   @Override
   protected void onBindDialogView(final View view) {
+    super.onBindDialogView(view);
     final int color = mValueProxy.readValue(getKey());
     mSeekBarRed.setProgress(Color.red(color));
     mSeekBarGreen.setProgress(Color.green(color));

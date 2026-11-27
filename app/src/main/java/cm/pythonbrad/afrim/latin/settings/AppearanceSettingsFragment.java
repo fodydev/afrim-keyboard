@@ -107,7 +107,7 @@ public final class AppearanceSettingsFragment extends SubScreenFragment {
             if (value < 0) {
               return res.getString(R.string.settings_system_default);
             }
-            return res.getString(R.string.abbreviation_unit_percent, value);
+            return res.getString(R.string.abbreviation_unit_percent, String.valueOf(value));
           }
 
           @Override

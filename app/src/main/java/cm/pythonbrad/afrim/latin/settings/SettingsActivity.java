@@ -102,18 +102,16 @@ public class SettingsActivity extends PreferenceActivity {
       final View container = (View) getListView().getParent().getParent();
       // com.android.internal.R.id.prefs_container in
       // https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/core/res/res/layout/preference_list_content.xml
-      container.setOnApplyWindowInsetsListener(
-          (view, windowInsets) -> {
-            android.graphics.Insets insets = windowInsets.getInsets(WindowInsets.Type.systemBars());
-            ViewGroup.MarginLayoutParams mlp =
-                (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            mlp.topMargin = insets.top;
-            mlp.leftMargin = insets.left;
-            mlp.bottomMargin = insets.bottom;
-            mlp.rightMargin = insets.right;
-            view.setLayoutParams(mlp);
-            return WindowInsets.CONSUMED;
-          });
+      container.setOnApplyWindowInsetsListener((view, windowInsets) -> {
+        android.graphics.Insets insets = windowInsets.getInsets(WindowInsets.Type.systemBars());
+        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        mlp.topMargin = insets.top;
+        mlp.leftMargin = insets.left;
+        mlp.bottomMargin = insets.bottom;
+        mlp.rightMargin = insets.right;
+        view.setLayoutParams(mlp);
+        return WindowInsets.CONSUMED;
+      });
     }
 
     final ActionBar actionBar = getActionBar();

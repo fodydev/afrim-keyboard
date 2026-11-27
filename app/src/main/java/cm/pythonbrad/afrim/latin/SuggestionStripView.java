@@ -98,10 +98,9 @@ public final class SuggestionStripView extends HorizontalScrollView {
       view.setBackgroundResource(outValue.resourceId);
     }
 
-    view.setOnClickListener(
-        v -> {
-          if (mListener != null) mListener.onPickSuggestion(text);
-        });
+    view.setOnClickListener(v -> {
+      if (mListener != null) mListener.onPickSuggestion(text);
+    });
     view.setLayoutParams(
         new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
