@@ -17,6 +17,7 @@
 
 package cm.pythonbrad.afrim.keyboard.internal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -32,6 +33,7 @@ import cm.pythonbrad.afrim.keyboard.Key;
 import java.util.HashSet;
 
 /** The pop up key preview view. */
+@SuppressLint("AppCompatCustomView")
 public class KeyPreviewView extends TextView {
   private final Rect mBackgroundPadding = new Rect();
   private static final HashSet<String> sNoScaleXTextSet = new HashSet<>();

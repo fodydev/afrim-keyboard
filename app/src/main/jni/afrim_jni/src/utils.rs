@@ -1,60 +1,56 @@
 use jni::{
+    errors::Result,
+    jni_sig, jni_str,
     objects::{JClass, JString, JValue},
-    JNIEnv,
+    strings::JNIStr,
+    Env,
 };
 
-pub struct AndroidLogger<'a> {
-    /// JNI Environement.
-    env: JNIEnv<'a>,
+pub struct AndroidLogger<'local> {
     /// Reference to the android.util.Log class.
-    log_class: JClass<'a>,
+    log_class: JClass<'local>,
     /// Tag for log messages.
-    tag: JString<'a>,
+    tag: JString<'local>,
 }
 
-impl<'a> AndroidLogger<'a> {
-    pub fn new(mut env: JNIEnv<'a>, tag: &str) -> Self {
-        // Should not panic!
-        Self {
-            log_class: env.find_class("android/util/Log").unwrap(),
-            tag: env.new_string(tag).unwrap(),
-            env,
-        }
+impl<'local> AndroidLogger<'local> {
+    pub fn new(env: &mut Env<'local>, tag: &str) -> Result<Self> {
+        Ok(Self {
+            log_class: env.find_class(jni_str!("android/util/Log"))?,
+            tag: env.new_string(tag)?,
+        })
     }
 
     /// Prints a message at the specific level.
-    unsafe fn log(&mut self, level: &str, message: impl AsRef<str>) {
-        // Should not panic!
-        self.env
-            .call_static_method(
-                &self.log_class,
-                level,
-                "(Ljava/lang/String;Ljava/lang/String;)I",
-                &[
-                    JValue::Object(&self.tag),
-                    JValue::Object(&self.env.new_string(message).unwrap()),
-                ],
-            )
-            .unwrap();
+    fn log(&self, env: &mut Env<'local>, level: &JNIStr, message: impl AsRef<str>) -> Result<()> {
+        let message = env.new_string(message)?;
+        env.call_static_method(
+            &self.log_class,
+            level,
+            jni_sig!("(Ljava/lang/String;Ljava/lang/String;)I"),
+            &[JValue::Object(&self.tag), JValue::Object(&message)],
+        )?;
+
+        Ok(())
     }
 
     /// Prints a message at the debug level.
-    pub unsafe fn d(&mut self, message: impl AsRef<str>) {
-        self.log("d", message);
+    pub fn d(&self, env: &mut Env<'local>, message: impl AsRef<str>) -> Result<()> {
+        self.log(env, jni_str!("d"), message)
     }
 
     /// Prints a message at the error level.
-    pub unsafe fn e(&mut self, message: impl AsRef<str>) {
-        self.log("e", message);
+    pub fn e(&self, env: &mut Env<'local>, message: impl AsRef<str>) -> Result<()> {
+        self.log(env, jni_str!("e"), message)
     }
 
     /// Prints a message at the info level.
-    pub unsafe fn i(&mut self, message: impl AsRef<str>) {
-        self.log("i", message);
+    pub fn i(&self, env: &mut Env<'local>, message: impl AsRef<str>) -> Result<()> {
+        self.log(env, jni_str!("i"), message)
     }
 
     /// Prints a message at the warning level.
-    pub unsafe fn w(&mut self, message: impl AsRef<str>) {
-        self.log("w", message);
+    pub fn w(&self, env: &mut Env<'local>, message: impl AsRef<str>) -> Result<()> {
+        self.log(env, jni_str!("w"), message)
     }
 }

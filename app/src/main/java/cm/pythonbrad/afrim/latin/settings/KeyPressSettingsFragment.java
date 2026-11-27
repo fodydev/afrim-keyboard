@@ -142,7 +142,7 @@ public final class KeyPressSettingsFragment extends SubScreenFragment {
 
           @Override
           public String getValueText(final int value) {
-            return res.getString(R.string.abbreviation_unit_milliseconds, value);
+            return res.getString(R.string.abbreviation_unit_milliseconds, String.valueOf(value));
           }
 
           @Override
