@@ -62,11 +62,10 @@ public final class AudioAndHapticFeedbackManager {
 
   private void initInternal(final Context context) {
     mBackgroundThread = Executors.newSingleThreadExecutor();
-    mBackgroundThread.execute(
-        () -> {
-          mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-          mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        });
+    mBackgroundThread.execute(() -> {
+      mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+      mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    });
   }
 
   public boolean hasVibrator() {
@@ -111,26 +110,24 @@ public final class AudioAndHapticFeedbackManager {
       return;
     }
 
-    mBackgroundThread.execute(
-        () -> {
-          mAudioManager.playSoundEffect(effectType, volume);
-        });
+    mBackgroundThread.execute(() -> {
+      mAudioManager.playSoundEffect(effectType, volume);
+    });
   }
 
   public void performHapticFeedback(final View viewToPerformHapticFeedbackOn) {
     if (!mSettingsValues.mVibrateOn || mVibrator == null) {
       return;
     }
-    mBackgroundThread.execute(
-        () -> {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mVibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
-          } else if (viewToPerformHapticFeedbackOn != null) {
-            viewToPerformHapticFeedbackOn.performHapticFeedback(
-                HapticFeedbackConstants.KEYBOARD_TAP,
-                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-          }
-        });
+    mBackgroundThread.execute(() -> {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        mVibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK));
+      } else if (viewToPerformHapticFeedbackOn != null) {
+        viewToPerformHapticFeedbackOn.performHapticFeedback(
+            HapticFeedbackConstants.KEYBOARD_TAP,
+            HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+      }
+    });
   }
 
   public void performTickFeedback() {
@@ -142,10 +139,9 @@ public final class AudioAndHapticFeedbackManager {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       mLastTickTime = System.currentTimeMillis();
-      mBackgroundThread.execute(
-          () -> {
-            mVibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK));
-          });
+      mBackgroundThread.execute(() -> {
+        mVibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK));
+      });
     }
   }
 

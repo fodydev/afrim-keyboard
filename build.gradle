@@ -14,7 +14,7 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.25.0"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:8.12.0"
   }
 }
 
@@ -25,7 +25,7 @@ spotless {
             removeUnusedImports()
             target 'app/src/*/java/**/*.java'
 	    // apply a specific flavor of google-java-format
-	    googleJavaFormat("1.19.2")
+	    googleJavaFormat("2.0.0")
 	    // fix formatting of type annotations
 	    formatAnnotations()
 	  }
