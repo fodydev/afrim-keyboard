@@ -46,7 +46,7 @@ mod android {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
 
         let config_file: String = env.get_string(&config_file).unwrap().into();
-        log.d(&format!(
+        log.d(format!(
             "Updating the afrim singleton using config_file={config_file}."
         ));
 
@@ -58,7 +58,7 @@ mod android {
                 1
             }
             Err(err) => {
-                log.e(&format!(
+                log.e(format!(
                     "Error while the updating of the afrim singleton: {err:?}",
                 ));
 
@@ -91,7 +91,7 @@ mod android {
 
         let key: String = env.get_string(&key).unwrap().into();
         let state: String = env.get_string(&state).unwrap().into();
-        log.d(&format!("Processing key={key} state={state}."));
+        log.d(format!("Processing key={key} state={state}."));
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
@@ -126,7 +126,7 @@ mod android {
         let mut log = AndroidLogger::new(env.unsafe_clone(), "libafrim_jni");
 
         let text = env.get_string(&text).unwrap().into();
-        log.d(&format!("Commiting text={text}"));
+        log.d(format!("Commiting text={text}"));
 
         let afrim_ptr = Singleton::get_afrim();
         if let Some(afrim) = (*afrim_ptr).as_mut() {
@@ -224,7 +224,7 @@ mod android {
             predicates.iter().enumerate().for_each(|(id, predicate)| {
                 let length = predicate.len() as i32;
                 let subarray = env
-                    .new_object_array(length, &subarray_class, &JObject::null())
+                    .new_object_array(length, &subarray_class, JObject::null())
                     .unwrap();
 
                 predicate.iter().enumerate().for_each(|(id, data)| {
